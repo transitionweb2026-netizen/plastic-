@@ -229,7 +229,7 @@ export const INDUSTRY_MODALS: Record<string, IndustryModal> = {
     "availability": "Inspection reports and batch certificates available for all product lines."
   },
   "step5": {
-    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuB8nNHlsRyVPcT0OWA9pp_v6LzoCVXmE4UHPAvre_eSxRK97mMEG48AfPjw7886hN5LOku9p3_U5Bj2OuHL4DSd5_gVfZ2MMWZyUDuuH8Nr-PU0WoWWPkidsIWLnpXIPa-3uN745dLsNlHUXAOSDnri9Ixp_VyVEs9n0OJZkWBWnd4hFwzk_EW8qh7S7dS1DQRHWx-HJ6UpVzDB9YjazaGfWj5_4Xqwso_KaaXd97klnP3tKb4GhSy5jjp100vOVVjwJR7feSmPTU8",
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuAuIePElBxhVt48XqlFqlqBsk3g1mwziD_BkF1-bMHP5-QjUJygm6yUEEA0hDUPOIF6LbJ4r7_YDHwtD8OGzWVQdlfEwUxlbrSGDS-a0YBN9Fprtq10M2ZIP1oWAbnF84niJD_-WmP9Lae6-0Q4WZevp9gD3p3Re37XTEAPyL9sbV78XGUSl94jjEBJXFL1KKtNLVtkoP9uINBAFUWAiKILlXeTOaDh4hKP01r6q1Fo5a2QHWK8aK_F5h6oYcnmmh40ScP4-OmUzxKS",
     "category": "Manufacturing Process",
     "badge": "Stage 05",
     "status": "Global Ready",
@@ -590,7 +590,7 @@ export const INDUSTRY_MODALS: Record<string, IndustryModal> = {
     "availability": "Food-grade containers in stock. HACCP documentation available upon request."
   },
   "ind4": {
-    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuB8nNHlsRyVPcT0OWA9pp_v6LzoCVXmE4UHPAvre_eSxRK97mMEG48AfPjw7886hN5LOku9p3_U5Bj2OuHL4DSd5_gVfZ2MMWZyUDuuH8Nr-PU0WoWWPkidsIWLnpXIPa-3uN745dLsNlHUXAOSDnri9Ixp_VyVEs9n0OJZkWBWnd4hFwzk_EW8qh7S7dS1DQRHWx-HJ6UpVzDB9YjazaGfWj5_4Xqwso_KaaXd97klnP3tKb4GhSy5jjp100vOVVjwJR7feSmPTU8",
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuAuIePElBxhVt48XqlFqlqBsk3g1mwziD_BkF1-bMHP5-QjUJygm6yUEEA0hDUPOIF6LbJ4r7_YDHwtD8OGzWVQdlfEwUxlbrSGDS-a0YBN9Fprtq10M2ZIP1oWAbnF84niJD_-WmP9Lae6-0Q4WZevp9gD3p3Re37XTEAPyL9sbV78XGUSl94jjEBJXFL1KKtNLVtkoP9uINBAFUWAiKILlXeTOaDh4hKP01r6q1Fo5a2QHWK8aK_F5h6oYcnmmh40ScP4-OmUzxKS",
     "category": "Industries We Serve",
     "badge": "Logistics",
     "status": "Industry 4.0",

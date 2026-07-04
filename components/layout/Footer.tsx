@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SocialIcon from "@/components/ui/SocialIcon";
 import { CONTACT, SOCIAL_LINKS } from "@/lib/nav";
 
 /**
@@ -7,8 +8,6 @@ import { CONTACT, SOCIAL_LINKS } from "@/lib/nav";
  * about-us footer. Contact info is standardized and uses tel:/mailto: links.
  */
 export default function Footer() {
-  const socials = SOCIAL_LINKS.filter((s) => s.href);
-
   return (
     <footer className="bg-surface-container-highest text-on-surface border-t border-outline-variant relative overflow-hidden">
       <div className="absolute inset-0 dot-pattern-light opacity-30 pointer-events-none" />
@@ -22,22 +21,20 @@ export default function Footer() {
             Innovative plastic solutions for the world&apos;s most demanding
             logistics challenges. Precision engineered in Egypt.
           </p>
-          {socials.length > 0 && (
-            <div className="flex gap-4">
-              {socials.map((s) => (
-                <a
-                  key={s.label}
-                  className="footer-social w-10 h-10 border border-outline rounded-full flex items-center justify-center hover:bg-primary hover:text-on-primary"
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                >
-                  <span className="material-symbols-outlined">{s.icon}</span>
-                </a>
-              ))}
-            </div>
-          )}
+          <div className="flex gap-4">
+            {SOCIAL_LINKS.map((s) => (
+              <a
+                key={s.label}
+                className="footer-social w-10 h-10 border border-outline rounded-full flex items-center justify-center hover:bg-primary hover:text-on-primary hover:border-primary"
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.label}
+              >
+                <SocialIcon brand={s.brand} size={17} />
+              </a>
+            ))}
+          </div>
         </div>
 
         <div className="col-span-1">

@@ -109,14 +109,11 @@
   --font-label-md: var(--font-inter), sans-serif;
   --font-label-sm: var(--font-inter), sans-serif;
 
-  /* ── Named spacing (legacy spacing tokens) ── */
-  --spacing-unit: 8px;
-  --spacing-base: 8px;
-  --spacing-xs: 4px;
-  --spacing-sm: 12px;
-  --spacing-md: 24px;
-  --spacing-lg: 48px;
-  --spacing-xl: 80px;
+  /* ── Named spacing (legacy spacing tokens) ──
+     NOTE: legacy also defined xs/sm/md/lg/xl spacing, but in Tailwind v4
+     --spacing-{sm,md,lg,xl} hijack the max-w-sm/md/lg/xl container scale,
+     breaking paragraph widths site-wide — so only the non-colliding names
+     are kept (explicit utilities are used in JSX instead). */
   --spacing-gutter: 32px;
   --spacing-margin-mobile: 20px;
   --spacing-margin-tablet: 32px;
@@ -444,9 +441,11 @@ iframe {
 }
 .hero-title {
   animation: heroFadeUp 0.9s ease-out 0.2s both;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
 }
 .hero-para {
   animation: heroFadeUp 0.9s ease-out 0.5s both;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
 }
 .hero-btn-1 {
   animation: heroFadeUp 0.9s ease-out 0.75s both;
@@ -600,6 +599,46 @@ iframe {
   width: 18px;
   height: 18px;
   fill: #fff;
+}
+
+/* Circular social buttons inside the widget (override the generic row styles) */
+.contact-widget-inner a.widget-social {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #fff;
+  opacity: 0;
+  animation: heroFadeUp 0.55s ease-out both;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.25s,
+    box-shadow 0.25s, border-color 0.25s;
+}
+.contact-widget-inner a.widget-social:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-3px) scale(1.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+.contact-widget-inner a.widget-social:active {
+  transform: scale(0.95);
+}
+.contact-widget-inner a.widget-social svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Phone row keeps the legacy row style, separated from the icons */
+.contact-widget-inner a.widget-phone {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 0.65rem;
+  margin-top: 0.1rem;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ═══════════════ ABOUT SECTION ═══════════════ */
@@ -2120,6 +2159,16 @@ a[role="button"],
 .btn-primary,
 .btn-outline {
   min-height: 44px;
+}
+
+/* ═══════════════ KEYBOARD FOCUS (a11y polish) ═══════════════ */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #014e2a;
+  outline-offset: 2px;
 }
 
 /* ═══════════════ REDUCED MOTION ═══════════════ */

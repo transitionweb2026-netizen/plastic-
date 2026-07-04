@@ -28,21 +28,20 @@ export const CONTACT = {
   address: "22 El Tayaran St., Nasr City, Cairo, Egypt",
 } as const;
 
-/**
- * TODO: fill in real social profile URLs. The legacy footer had Facebook/Share
- * icons pointing at href="#"; icons are hidden until a real URL is provided so
- * the site ships with no dead links.
- */
-export const SOCIAL_LINKS: { label: string; icon: string; href: string }[] = [
-  { label: "Facebook", icon: "thumb_up", href: "" }, // TODO: e.g. https://facebook.com/giantstorage
-  { label: "Instagram", icon: "photo_camera", href: "" }, // TODO: e.g. https://instagram.com/giantstorage
-  { label: "TikTok", icon: "music_note", href: "" }, // TODO: e.g. https://tiktok.com/@giantstorage
-  { label: "LinkedIn", icon: "share", href: "" }, // TODO: e.g. https://linkedin.com/company/giantstorage
-];
+/** WhatsApp chat deep link derived from the real main office number. */
+export const WHATSAPP_HREF = `https://wa.me/${CONTACT.phoneMain.href.replace(/\D/g, "")}`;
 
-export function socialHref(label: string): string {
-  return SOCIAL_LINKS.find((s) => s.label === label)?.href ?? "";
-}
+/**
+ * Social profiles shown in the footer and the home hero contact widget.
+ * TODO: replace the placeholder handles below with the company's real
+ * profile URLs when available (WhatsApp already uses the real number).
+ */
+export const SOCIAL_LINKS: { label: string; brand: string; href: string }[] = [
+  { label: "WhatsApp", brand: "whatsapp", href: WHATSAPP_HREF },
+  { label: "Instagram", brand: "instagram", href: "https://www.instagram.com/giantstorage.eg" },
+  { label: "Facebook", brand: "facebook", href: "https://www.facebook.com/giantstorage.eg" },
+  { label: "TikTok", brand: "tiktok", href: "https://www.tiktok.com/@giantstorage.eg" },
+];
 
 /** Legacy header logo (remote; see README note about re-hosting images locally). */
 export const LOGO_SRC =

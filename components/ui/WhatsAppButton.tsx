@@ -1,20 +1,19 @@
-const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
+import { WHATSAPP_HREF } from "@/lib/nav";
+
+const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 
 /**
- * Floating WhatsApp chat button (new addition requested for the migration).
- * Renders only when NEXT_PUBLIC_WHATSAPP_NUMBER is configured, so the site
- * never ships a dead button.
+ * Floating WhatsApp chat button. Uses NEXT_PUBLIC_WHATSAPP_NUMBER when set,
+ * otherwise falls back to the main office number from lib/nav.ts.
  */
 export default function WhatsAppButton() {
-  if (!whatsappNumber) return null;
-
   return (
     <a
-      href={`https://wa.me/${whatsappNumber}`}
+      href={envNumber ? `https://wa.me/${envNumber}` : WHATSAPP_HREF}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with us on WhatsApp"
-      className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_6px_24px_rgba(37,211,102,0.45)] transition-transform duration-200 hover:scale-110 active:scale-95"
+      className="fixed bottom-6 left-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_6px_24px_rgba(37,211,102,0.45)] transition-transform duration-200 hover:scale-110 active:scale-95"
     >
       {/* WhatsApp glyph (inline SVG — Material Symbols has no WhatsApp icon) */}
       <svg

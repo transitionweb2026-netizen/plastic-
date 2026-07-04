@@ -27,7 +27,7 @@ const RECENT_ARTICLES = [
   },
   {
     href: "/blog/urban-fulfillment",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCNPxQPmmNYVdxT76yKC5NKNvGeB48Yvcy0rl9G-sDkDPLCYXmAxU9F2gv1fxCj_fMW8cmA6Z7pR-9TamLGlTXv9lXR7AbYHpBAAzvs_DlYeXE3Qi6YX32FqBS1zKXAysb0VhryyE7uaMEyS5sN7JYozlOi2FeoMDJEfuk97fTNl8PpS0UoOHtEVzZRObvMx1n7h-nbdiDjHO6iDKTPbrwDXAxDrGePe0PAPtOXAEX4y_sjp1jFelUdDEu0T2VkHr8SecHPxIXZGc",
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCNPxQPmmNYVdxT76yKC5NKNvGeB48Yvcy0rl9G-sDkDPLCYXmAxU9F2gv1fxCj_fMW8cmA6Z7pR-9TamLGlTXv9lXR7AbYHpBAAzvs_DlYeXE3Qi6YX32FqBS1zKXAysb0VhryyE7uaMEyS5sN7JYozlOi2FeoMDJEfuk97fTNl8PpS0UoOHtEVzZRObvMx1n7h-nbdiDjHO6iDKTPbrwDXAxDrGePe0PAPtOXAEX4y_sjp1jFelUdDUEu0T2VkHr8SecHPxIXZGc",
     alt: "Racking system",
     tag: "Logistics Trends",
     title: "Maximizing Floor Space in Urban Fulfillment Centers",
