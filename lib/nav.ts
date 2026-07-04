@@ -35,8 +35,14 @@ export const CONTACT = {
  */
 export const SOCIAL_LINKS: { label: string; icon: string; href: string }[] = [
   { label: "Facebook", icon: "thumb_up", href: "" }, // TODO: e.g. https://facebook.com/giantstorage
+  { label: "Instagram", icon: "photo_camera", href: "" }, // TODO: e.g. https://instagram.com/giantstorage
+  { label: "TikTok", icon: "music_note", href: "" }, // TODO: e.g. https://tiktok.com/@giantstorage
   { label: "LinkedIn", icon: "share", href: "" }, // TODO: e.g. https://linkedin.com/company/giantstorage
 ];
+
+export function socialHref(label: string): string {
+  return SOCIAL_LINKS.find((s) => s.label === label)?.href ?? "";
+}
 
 /** Legacy header logo (remote; see README note about re-hosting images locally). */
 export const LOGO_SRC =

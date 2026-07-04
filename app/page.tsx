@@ -1,4 +1,692 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import CursorGlow from "@/components/ui/CursorGlow";
+import ScrollProgressBar from "@/components/ui/ScrollProgressBar";
+import RevealObserver from "@/components/ui/RevealObserver";
+import SectionSeparator from "@/components/ui/SectionSeparator";
+import AboutImageParallax from "@/components/home/AboutImageParallax";
+import StatsSection from "@/components/home/StatsSection";
+import VideoSection from "@/components/home/VideoSection";
+import { CONTACT, socialHref } from "@/lib/nav";
+
+export const metadata: Metadata = {
+  title: "Giant Storage | Integrated Industrial Solutions",
+  description:
+    "Leading Egyptian industrial plastic solutions — precision-engineered pallets, crates, and storage assets for global logistics, exported from Cairo to 22+ markets.",
+};
+
+const HERO_BG =
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuCvUppSIUhiLWIyyd-8B9t1tvTbccTRdXY9Nl-ZoAMQrVOWoSEOBUPOzR4MChZDQSGPBzoURAW5wiRz03UypGYnBhWRbL2bHFzLdP4oa__H5VSKHFILgRqm0OOjKI_7w5MoM1iXx21UsvZl9WUzk4UcYgTUkk9G0PPt690qiXU3pWB6FeHpoaWkfiQZQFt4WubDwOjG6SAiXOfUv6idi7QaGe3ZpmEqEMdT0z2YUXQlyT0Jtm9qCq9LAAc0s580PKk41Bbw42nyesw";
+const ABOUT_IMG =
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuD1kpyOH_iWnAUZX8-RTg76vb4zbqZ4iP47eRO4mAHmjwp8dQT9IjGWzmq3jAk1XItktWoHE2kkRymnoB8jRwEF4INzD_7Y2_PS0wkkt2233pj6Cz9JkXj3BxSe5K8ACtSTQmkDyuSITv8x1zJU36sRXWuIra4y1GQvE65kh5Gl3-t_Jexsy5tuaIfv6WV1mPWHSubrOuhaDGrJogMrTJo1DbZUIwZkcslAGl68yoW_YUy4dDTlqTz7nBcucm11d95hnYR5zJFHvz8";
+const MFG_TEASER_BG =
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuAdJc6ylJWEXyzDimYyjnQ00x9XeNWK9KPZjA140wr00AvC3HpOha8CRMQffb43tWBWd5yxbzkA-ixSLkuKY-r2HOXfkEq-vYsKBp1s9aFYbGRwcmy7Q9KkED-wQcDJ2NgzMQKLq_t9VitW_ahLz27Kn2QyAWRETwkE07VNOdNwXMx_-nQZ-BEd0MsWAXmE56g9obqnPkfvTznouerMn7vRreb0zQc0xU7-gv3HdLRYmhCXA3gzBhycrRJx9C8DTc05i0FwVAMl8MM";
+
+const CLIENT_LOGOS = [
+  { src: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", alt: "Amazon" },
+  { src: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Carrefour_logo.svg", alt: "Carrefour" },
+  { src: "https://upload.wikimedia.org/wikipedia/commons/7/76/Lidl-Logo.svg", alt: "Lidl" },
+  { src: "https://upload.wikimedia.org/wikipedia/commons/4/48/Dell_Logo.svg", alt: "Dell" },
+  { src: "https://upload.wikimedia.org/wikipedia/commons/6/69/Airbus_logo_2017.png", alt: "Airbus" },
+  { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Nestl%C3%A9_textlogo_blue.svg/512px-Nestl%C3%A9_textlogo_blue.svg.png", alt: "Nestlé" },
+  { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Unilever.svg/512px-Unilever.svg.png", alt: "Unilever" },
+];
+
+const PRODUCT_CATEGORIES = [
+  {
+    span: "md:col-span-7",
+    stagger: "stagger-1",
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAF7K_7bxI6zZEwCDg0qwrfYNZTQ6cd4O6D1ZlTJErRG9xY4mE0_JUMGJVBZapnc1bGbgWKyN_gYKtmM7IjTLqPKHTuj81b4SV72jPsX1pUfu7Nw5pFvkzRLcGBwOHx67pmEtiOGBNCK4tyebHi3mk9cEQsvSkqoBi2o7Q35EQ5WdF8v92AYzQprZKNQ0ZA2xrcQS5caPRGT_JOgy6CVsfmYf1m6aoVB5_ODkjHhYhIrAz96Su8peHEkWLB_KXyT-NBw-Gg8CVQYug",
+    alt: "Plastic Pallets",
+    title: "Plastic Pallets",
+    titleClass: "font-headline-lg text-headline-lg",
+    desc: "Ultra-durable, hygienic, and rackable solutions for heavy-load logistics and export.",
+    descClass: "max-w-md",
+    cta: "Explore Series",
+    href: "/products",
+    ctaStyle: "solid" as const,
+  },
+  {
+    span: "md:col-span-5",
+    stagger: "stagger-2",
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBq5RaPEnQ-nVljl3gMJjyk9Ci9IB2ANDnUZlM8YoMBkLBrWL1jAa3576FGEca3sFj68a1EXm6xqzhc2K62Oti6UOMG_rYwJ00rvrOgWSgHqo0WUYE7lAwAPfJEcChweyaHmU-juKmHArlQl51D7ioeazXCnItYwd6Rha06-AM0WdGdNPgBR6UDYS0VgBtUs6U9t5OQ8t62lXf0O9DkPVHr0MDGjAeswNL4M45mES3t0W9jFzyKkpKhXWxdoZ0EtNhFnnKtLqONpas",
+    alt: "Industrial Crates",
+    title: "Industrial Crates",
+    titleClass: "font-headline-lg text-headline-lg",
+    desc: "Optimized for agricultural and food processing industries.",
+    descClass: "",
+    cta: "View Range",
+    href: "/products",
+    ctaStyle: "solid" as const,
+  },
+  {
+    span: "md:col-span-4",
+    stagger: "stagger-3",
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAi7lX7MXKrbHrWBmmjBIrDOr-GkiDn11wjBI-4tJzzLTByVB4pLWgl03p7OzrUAv1z55KSeIbovkI1iGr1KPXaL8GtfZ3d5msswFDWb4Q7ypGNNjOorErYM85QzZdecEFaizTGKtW5V8Tj_RlLbpnLGqmrmy_IuXDAqUh379HVhVEgk-r3wsUg-lv_J_WMFfTWGa4wsaPX1e0Tn1wGhisKLuIdFP96aqybf2Zq01F-wI8Wbk6qbUubNsum4rTk2kX4KRwzRj5kjtQ",
+    alt: "Industrial Bins",
+    title: "Industrial Bins",
+    titleClass: "font-headline-md text-headline-md",
+    desc: "",
+    descClass: "",
+    cta: "View Specs",
+    href: "/products",
+    ctaStyle: "underline" as const,
+  },
+  {
+    span: "md:col-span-8",
+    stagger: "stagger-4",
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBGXe8LA-bga17T9a2Vpsftq01DixGiLApBkzi6tmzwh1obOx6MwKMYUXla6REnQ00qhqHmrjWZ7pND_dnNW2uNdBgrZgflIMhMeOmOS6O3Ja0LGsD8-kfHveDxjoIbbFbYeylVw4VhvGxeybduhOz0H2_ZDxOG9_PPJJ78iBYqY9uBR4DAdi5_aH5XIoPJecGr4OHNBne3SamwVIFBwwHbPvHuE9Wt-YPPYVgzbI_qnpXtA8vneiWXgHSZwn2Ba7ycKwaClD7Iv-s",
+    alt: "Specialty Storage",
+    title: "Specialty Storage",
+    titleClass: "font-headline-lg text-headline-lg",
+    desc: "Nesting and stackable containers for specialized supply chain needs.",
+    descClass: "",
+    cta: "Custom Solutions",
+    href: "/request-quote",
+    ctaStyle: "solid" as const,
+  },
+];
+
+const INDUSTRIES = [
+  { icon: "local_shipping", label: "Logistics", stagger: "stagger-1" },
+  { icon: "restaurant", label: "Food & Bev", stagger: "stagger-2" },
+  { icon: "medication", label: "Pharma", stagger: "stagger-3" },
+  { icon: "agriculture", label: "Agri-Tech", stagger: "stagger-4" },
+  { icon: "precision_manufacturing", label: "Automotive", stagger: "stagger-1" },
+  { icon: "shopping_basket", label: "Retail", stagger: "stagger-2" },
+];
+
+const FEATURES = [
+  {
+    icon: "verified_user",
+    title: "Uncompromising Quality",
+    desc: "Our products undergo rigorous stress tests, including load-bearing analysis and temperature resilience, ensuring zero failure in critical environments.",
+    stagger: "stagger-1",
+  },
+  {
+    icon: "public",
+    title: "Global Export Hub",
+    desc: "Strategically located in Cairo, we leverage Egypt's logistical routes to provide rapid, cost-effective shipping to Europe, Africa, and the Middle East.",
+    stagger: "stagger-2",
+  },
+  {
+    icon: "eco",
+    title: "Eco-Forward Vision",
+    desc: "We champion a circular economy. All our plastic products are 100% recyclable, and we offer buy-back programs for damaged units to reduce industrial waste.",
+    stagger: "stagger-3",
+  },
+];
+
+const CERTIFICATIONS = [
+  {
+    icon: "workspace_premium",
+    title: "ISO 9001:2015",
+    desc: "Quality management systems ensuring consistent, high-standard production processes across all product lines.",
+    stagger: "stagger-1",
+  },
+  {
+    icon: "health_and_safety",
+    title: "OHSAS 18001",
+    desc: "Occupational health and safety standards protecting our workforce and operational environments.",
+    stagger: "stagger-2",
+  },
+  {
+    icon: "eco",
+    title: "ISO 14001",
+    desc: "Environmental management certification reflecting our commitment to sustainable and eco-forward manufacturing.",
+    stagger: "stagger-3",
+  },
+  {
+    icon: "verified",
+    title: "CE Marked",
+    desc: "European conformity marking confirming our products meet EU safety, health, and environmental requirements.",
+    stagger: "stagger-4",
+  },
+];
+
+/** Hero contact-widget social rows (legacy inline SVGs). Hidden until a real URL is configured. */
+const HERO_SOCIALS: { label: string; path: string }[] = [
+  {
+    label: "Instagram",
+    path: "M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z",
+  },
+  {
+    label: "Facebook",
+    path: "M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z",
+  },
+  {
+    label: "TikTok",
+    path: "M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z",
+  },
+];
+
 export default function Home() {
-  // Placeholder — replaced by the full home.html migration in the next step.
-  return <div className="min-h-[50vh]" />;
+  const heroSocials = HERO_SOCIALS.map((s) => ({
+    ...s,
+    href: socialHref(s.label),
+  })).filter((s) => s.href);
+
+  return (
+    <>
+      <CursorGlow />
+      <ScrollProgressBar />
+      <RevealObserver />
+
+      {/* ═══ 1. HERO ═══ */}
+      <section className="relative h-[90vh] min-h-[600px] flex items-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <div className="hero-bg relative w-full h-full">
+            <Image
+              src={HERO_BG}
+              alt="Giant Storage industrial warehouse"
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-on-background/88 via-on-background/55 to-transparent" />
+        </div>
+
+        <div className="hero-geo hero-geo-1 hidden lg:block" />
+        <div className="hero-geo hero-geo-2 hidden lg:block" />
+        <div className="hero-geo hero-geo-3 hidden lg:block" />
+
+        <div className="relative z-10 w-full px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
+          <div className="max-w-2xl text-on-primary">
+            <h1 className="hero-title font-display-lg text-headline-xl-mobile md:text-display-lg mb-6 leading-tight">
+              Leading Egyptian Industrial Plastic Solutions
+            </h1>
+            <p className="hero-para font-body-lg text-body-lg mb-10 opacity-90 max-w-xl">
+              Pioneering precision-engineered storage and logistics assets for
+              global industries. Scaling your operations with reliability and
+              Egyptian craftsmanship.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link href="/products" className="hero-btn-1 btn-primary">
+                <span
+                  className="material-symbols-outlined text-base"
+                  style={{
+                    fontVariationSettings: "'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24",
+                  }}
+                >
+                  inventory_2
+                </span>
+                Explore Products
+              </Link>
+              <Link
+                href="/contact"
+                className="hero-btn-2 border-2 border-on-primary text-on-primary px-8 py-4 rounded-full font-label-lg text-label-lg hover:bg-on-primary hover:text-primary transition-all inline-flex items-center"
+              >
+                Contact Us
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Floating contact widget */}
+        <div className="contact-widget absolute bottom-8 right-6 md:right-12 z-20">
+          <div className="contact-widget-inner rounded-2xl p-4 flex flex-col gap-2 min-w-[190px]">
+            <p className="text-white/60 text-xs font-semibold uppercase tracking-widest mb-1 px-1">
+              Connect With Us
+            </p>
+            {heroSocials.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.label}
+              >
+                <span className="icon-wrap">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d={s.path} />
+                  </svg>
+                </span>
+                {s.label}
+              </a>
+            ))}
+            <a href={CONTACT.phoneMain.href} aria-label="Call us">
+              <span className="icon-wrap">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+                </svg>
+              </span>
+              {CONTACT.phoneMain.display}
+            </a>
+          </div>
+        </div>
+
+        <div className="scroll-indicator hidden md:flex">
+          <span>Scroll</span>
+          <div className="arrow" />
+        </div>
+      </section>
+
+      <SectionSeparator label="About Us" />
+
+      {/* ═══ 2. ABOUT US ═══ */}
+      <section className="pb-28 bg-surface overflow-hidden relative" id="about">
+        <div
+          className="absolute top-0 right-0 w-64 h-64 dot-pattern-bg opacity-40 pointer-events-none"
+          style={{
+            maskImage: "radial-gradient(circle,#000 40%,transparent 80%)",
+            WebkitMaskImage: "radial-gradient(circle,#000 40%,transparent 80%)",
+          }}
+        />
+
+        <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="reveal">
+              <span className="section-eyebrow">Who We Are</span>
+              <h2 className="font-headline-xl text-headline-xl mb-6 leading-tight">
+                Integrated Storage
+                <br />
+                Excellence
+              </h2>
+              <p className="text-on-surface-variant font-body-lg text-body-lg mb-5">
+                Giant Storage Integrated Solutions stands at the forefront of
+                the Egyptian manufacturing sector. We specialize in high-density
+                polyethylene (HDPE) solutions designed to survive the rigors of
+                heavy-duty industrial cycles.
+              </p>
+              <p className="text-on-surface-variant font-body-lg text-body-lg mb-8">
+                From the heart of Cairo to the global market, our commitment to
+                quality control and sustainable manufacturing processes ensures
+                that every pallet and crate meets international standards for
+                durability and safety.
+              </p>
+              <div className="grid grid-cols-2 gap-6 mb-10">
+                <div className="mini-stat p-5 bg-surface-container-low rounded-xl cursor-default">
+                  <h3 className="font-headline-md text-headline-md text-primary mb-1">
+                    20+
+                  </h3>
+                  <p className="font-label-sm text-label-sm opacity-70">
+                    Years of Excellence
+                  </p>
+                </div>
+                <div className="mini-stat p-5 bg-surface-container-low rounded-xl cursor-default">
+                  <h3 className="font-headline-md text-headline-md text-primary mb-1">
+                    50k+
+                  </h3>
+                  <p className="font-label-sm text-label-sm opacity-70">
+                    Monthly Capacity
+                  </p>
+                </div>
+              </div>
+              <Link href="/about" className="btn-primary">
+                About Us
+                <span className="material-symbols-outlined text-base">
+                  arrow_forward
+                </span>
+              </Link>
+            </div>
+
+            <div className="reveal reveal-right relative">
+              <AboutImageParallax
+                src={ABOUT_IMG}
+                alt="Giant Storage manufacturing facility"
+              />
+              <div className="about-corner-tl" />
+              <div className="about-corner-br" />
+              <div className="absolute -bottom-6 -left-6 bg-primary p-6 rounded-xl text-on-primary hidden md:flex items-center gap-4 shadow-xl">
+                <span
+                  className="material-symbols-outlined text-4xl"
+                  style={{
+                    fontVariationSettings: "'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24",
+                  }}
+                >
+                  verified
+                </span>
+                <div>
+                  <p className="font-headline-md text-headline-md leading-tight">
+                    ISO 9001:2015
+                  </p>
+                  <p className="font-label-sm text-label-sm opacity-80">
+                    Certified Quality
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <SectionSeparator label="Trusted Partners" bgClassName="bg-surface-container-low" />
+
+      {/* ═══ 3. TRUSTED BY ═══ */}
+      <section className="pb-20 bg-surface-container-low overflow-hidden relative">
+        <div className="absolute inset-0 dot-pattern-light opacity-60 pointer-events-none" />
+
+        <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto relative">
+          <div className="text-center mb-12 reveal">
+            <span className="section-eyebrow">Trusted By</span>
+            <h2 className="font-headline-xl text-headline-xl">
+              Companies That Trust Us
+            </h2>
+          </div>
+
+          {/* Desktop infinite scroll (track duplicated for seamless loop) */}
+          <div className="hidden md:block logo-track-wrap">
+            <div className="logo-track">
+              {[...CLIENT_LOGOS, ...CLIENT_LOGOS].map((logo, i) => (
+                <div key={`${logo.alt}-${i}`} className="logo-item">
+                  <Image
+                    src={logo.src}
+                    alt={i >= CLIENT_LOGOS.length ? "" : logo.alt}
+                    width={120}
+                    height={40}
+                    unoptimized
+                    aria-hidden={i >= CLIENT_LOGOS.length}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Mobile grid */}
+          <div className="grid grid-cols-3 gap-4 md:hidden">
+            {CLIENT_LOGOS.slice(0, 6).map((logo) => (
+              <div key={logo.alt} className="logo-item">
+                <Image
+                  src={logo.src}
+                  alt={logo.alt}
+                  width={120}
+                  height={40}
+                  unoptimized
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <SectionSeparator label="Our Products" bgClassName="bg-surface-container-low" />
+
+      {/* ═══ 4. PRODUCT CATEGORIES ═══ */}
+      <section className="pb-24 bg-surface-container-low relative overflow-hidden">
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(1,78,42,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(1,78,42,.03) 1px,transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+        />
+
+        <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto relative">
+          <div className="text-center mb-16 reveal">
+            <span className="section-eyebrow">Products</span>
+            <h2 className="font-headline-xl text-headline-xl mb-4">
+              Core Product Categories
+            </h2>
+            <p className="text-on-surface-variant max-w-2xl mx-auto">
+              Precision engineered solutions for every logistics challenge.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[320px]">
+            {PRODUCT_CATEGORIES.map((cat) => (
+              <div
+                key={cat.title}
+                className={`${cat.span} product-card reveal ${cat.stagger}`}
+              >
+                <div className="relative h-full overflow-hidden">
+                  <Image
+                    className="prod-img absolute inset-0"
+                    src={cat.img}
+                    alt={cat.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 60vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-on-background/82 via-transparent to-transparent" />
+                  <div className="absolute bottom-0 p-8">
+                    <h3 className={`text-on-primary ${cat.titleClass} mb-2`}>
+                      {cat.title}
+                    </h3>
+                    {cat.desc && (
+                      <p
+                        className={`text-on-primary/80 font-body-md text-body-md mb-5 ${cat.descClass}`}
+                      >
+                        {cat.desc}
+                      </p>
+                    )}
+                    {cat.ctaStyle === "solid" ? (
+                      <Link
+                        href={cat.href}
+                        className="card-btn bg-on-primary text-primary px-6 py-2 rounded-lg font-label-lg text-label-lg hover:bg-primary hover:text-on-primary transition-all"
+                      >
+                        {cat.cta}
+                      </Link>
+                    ) : (
+                      <Link
+                        href={cat.href}
+                        className="card-btn text-on-primary font-label-lg text-label-lg underline"
+                      >
+                        {cat.cta}
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ 5. STATS ═══ */}
+      <StatsSection />
+
+      <SectionSeparator label="Latest Videos" />
+
+      {/* ═══ 6. VIDEOS ═══ */}
+      <VideoSection />
+
+      <SectionSeparator label="Industries We Serve" bgClassName="bg-surface-container-low" />
+
+      {/* ═══ INDUSTRIES SERVED ═══ */}
+      <section className="pb-24 bg-surface-container-low">
+        <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 reveal">
+            <div className="max-w-xl">
+              <span className="section-eyebrow">Sectors</span>
+              <h2 className="font-headline-xl text-headline-xl mb-4">
+                Industries Served
+              </h2>
+              <p className="text-on-surface-variant font-body-lg text-body-lg">
+                Our products are engineered to meet the specific sanitation,
+                temperature, and weight requirements of diverse global sectors.
+              </p>
+            </div>
+            <Link
+              href="/industries"
+              className="border-2 border-primary text-primary px-8 py-3 rounded-full font-label-lg text-label-lg hover:bg-primary hover:text-on-primary transition-all hover:scale-105 inline-flex items-center self-start md:self-auto"
+            >
+              Industry Partnerships
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+            {INDUSTRIES.map((industry) => (
+              <Link
+                key={industry.label}
+                href="/industries"
+                className={`industry-card p-7 bg-surface rounded-xl text-center hover:bg-primary hover:text-on-primary transition-all group reveal ${industry.stagger} cursor-pointer block`}
+                style={{ boxShadow: "0 2px 14px rgba(0,0,0,.06)" }}
+              >
+                <span className="ind-icon material-symbols-outlined text-4xl mb-4 block transition-all duration-300 group-hover:scale-110">
+                  {industry.icon}
+                </span>
+                <p className="font-label-lg text-label-lg font-bold">
+                  {industry.label}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ WHY CHOOSE US ═══ */}
+      <section className="py-24 bg-on-background text-on-primary relative overflow-hidden">
+        <div
+          className="absolute top-0 left-0 w-80 h-80 rounded-full pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle,rgba(146,213,166,.07) 0%,transparent 70%)",
+            transform: "translate(-40%,-40%)",
+          }}
+        />
+        <div
+          className="absolute bottom-0 right-0 w-96 h-96 rounded-full pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle,rgba(146,213,166,.06) 0%,transparent 70%)",
+            transform: "translate(35%,35%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px)",
+            backgroundSize: "30px 30px",
+          }}
+        />
+
+        <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto relative">
+          <div className="text-center mb-14 reveal">
+            <span
+              className="section-eyebrow"
+              style={{ background: "rgba(173,242,193,.2)", color: "#92d5a6" }}
+            >
+              Why Giant Storage
+            </span>
+            <h2 className="font-headline-xl text-headline-xl mt-2">
+              Built on Excellence
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            {FEATURES.map((feature) => (
+              <div
+                key={feature.title}
+                className={`feature-block space-y-6 reveal ${feature.stagger}`}
+              >
+                <div className="feature-icon-ring">
+                  <span className="material-symbols-outlined text-3xl text-on-primary">
+                    {feature.icon}
+                  </span>
+                </div>
+                <h3 className="font-headline-md text-headline-md">
+                  {feature.title}
+                </h3>
+                <p className="text-surface-variant font-body-md text-body-md opacity-80">
+                  {feature.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ MANUFACTURING TEASER ═══ */}
+      <section className="py-24 bg-surface">
+        <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto reveal">
+          <div className="relative rounded-3xl overflow-hidden h-[520px] group">
+            <Image
+              src={MFG_TEASER_BG}
+              alt="Giant Storage production floor"
+              fill
+              className="object-cover transition-transform duration-1000 group-hover:scale-105"
+              sizes="(max-width: 1440px) 100vw, 1440px"
+            />
+            <div className="absolute inset-0 bg-on-background/45 flex flex-col justify-center items-center text-center p-8">
+              <h2 className="text-on-primary font-display-lg text-headline-xl mb-6">
+                Precision. Scale. Impact.
+              </h2>
+              <p className="text-on-primary max-w-xl font-body-lg text-body-lg mb-8">
+                Take a virtual tour of our state-of-the-art facility in Nasr
+                City and witness the future of industrial molding.
+              </p>
+              {/* TODO: link to the facility tour video when a URL exists (was a no-op button in the legacy site too). */}
+              <button
+                type="button"
+                aria-label="Play facility tour video"
+                className="bg-on-primary text-primary p-6 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-2xl relative group/play"
+              >
+                <span className="absolute inset-0 rounded-full border-2 border-white/40 scale-100 group-hover/play:scale-125 group-hover/play:opacity-0 transition-all duration-500" />
+                <span
+                  className="material-symbols-outlined text-4xl"
+                  style={{
+                    fontVariationSettings: "'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24",
+                  }}
+                >
+                  play_arrow
+                </span>
+              </button>
+            </div>
+            <div className="mfg-badge">
+              <span
+                className="material-symbols-outlined text-sm"
+                style={{
+                  fontVariationSettings: "'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24",
+                }}
+              >
+                location_on
+              </span>
+              Nasr City, Cairo, Egypt
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <SectionSeparator label="Quality Standards" bgClassName="bg-surface-container-low" />
+
+      {/* ═══ 7. CERTIFICATIONS ═══ */}
+      <section className="pb-24 bg-surface-container-low relative overflow-hidden">
+        <div
+          className="absolute top-0 right-0 w-72 h-72 dot-pattern-bg opacity-30 pointer-events-none"
+          style={{
+            maskImage: "radial-gradient(circle,#000 40%,transparent 80%)",
+            WebkitMaskImage: "radial-gradient(circle,#000 40%,transparent 80%)",
+          }}
+        />
+
+        <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto relative">
+          <div className="text-center mb-12 reveal">
+            <span className="section-eyebrow">Standards</span>
+            <h2 className="font-headline-xl text-headline-xl mb-4">
+              Our Certifications
+            </h2>
+            <p className="text-on-surface-variant max-w-2xl mx-auto">
+              Every product we manufacture is backed by internationally
+              recognized certifications, ensuring compliance and peace of mind
+              for our global clients.
+            </p>
+          </div>
+
+          <div className="cert-connector-wrap mb-2" aria-hidden="true">
+            <div className="cert-connector-node" />
+            <div className="cert-connector-line" />
+            <div className="cert-connector-node" />
+            <div className="cert-connector-line" />
+            <div className="cert-connector-node" />
+            <div className="cert-connector-line" />
+            <div className="cert-connector-node" />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {CERTIFICATIONS.map((cert) => (
+              <div key={cert.title} className={`cert-card reveal ${cert.stagger}`}>
+                <div className="cert-icon">
+                  <span className="material-symbols-outlined">{cert.icon}</span>
+                </div>
+                <h3 className="font-headline-md text-headline-md mb-2">
+                  {cert.title}
+                </h3>
+                <p className="text-on-surface-variant text-body-md">{cert.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
 }
