@@ -182,6 +182,27 @@ iframe {
   box-shadow: 0 0 0 4px rgba(1, 78, 42, 0.1);
 }
 
+/* Request-quote wizard (from legacy request qoute.html) */
+.step-inactive {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translateY(10px);
+  transition: all 0.4s ease;
+}
+.step-active {
+  opacity: 1;
+  pointer-events: auto;
+  position: relative;
+  transform: translateY(0);
+  transition: all 0.4s ease;
+}
+.glass-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(228, 226, 228, 0.5);
+}
+
 /* ═══════════════ SCROLL-REVEAL ═══════════════ */
 .reveal {
   opacity: 0;
