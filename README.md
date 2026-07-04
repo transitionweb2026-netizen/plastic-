@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Giant Storage — Integrated Industrial Solutions
 
-## Getting Started
+Marketing site for Giant Storage Integrated Solutions, built with Next.js
+(App Router, TypeScript, Tailwind CSS v4). Migrated from a static HTML site
+(preserved in `legacy-html-reference/` during the migration).
 
-First, run the development server:
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build
+npm start        # serve production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Configuration (required before going live)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copy `.env.local.example` to `.env.local` and fill in:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Purpose |
+|---|---|
+| `NEXT_PUBLIC_FORMSPREE_CONTACT_ID` | Contact page form ([formspree.io](https://formspree.io) form ID) |
+| `NEXT_PUBLIC_FORMSPREE_QUOTE_ID` | Request-quote wizard form ID |
+| `NEXT_PUBLIC_FORMSPREE_NEWSLETTER_ID` | Blog newsletter signup form ID |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Enables the floating WhatsApp button (e.g. `201025151199`) |
+| `NEXT_PUBLIC_SITE_URL` | Canonical origin used in sitemap/robots/OG/share links |
 
-## Learn More
+Forms show a friendly "not configured" message (with direct contact info)
+until their Formspree IDs are set. The WhatsApp button renders only when a
+number is configured.
 
-To learn more about Next.js, take a look at the following resources:
+## Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `app/` — routes: `/`, `/about`, `/products`, `/industries`, `/blog`,
+  `/blog/[slug]`, `/contact`, `/request-quote`, plus `sitemap.ts`/`robots.ts`
+- `components/layout/` — shared Header, Footer, MobileDrawer
+- `components/{home,products,industries,blog,forms,ui}/` — page components
+- `lib/` — content data (`products.ts`, `industries.ts`, `articles.ts`),
+  navigation/contact config (`nav.ts`), site constants (`site.ts`)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Remaining TODOs
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Social links**: fill real URLs in `lib/nav.ts` `SOCIAL_LINKS` — footer
+  icons and the home hero contact widget stay hidden until set.
+- **Video URLs**: home "Latest Videos" cards and the facility-tour play
+  button need real video links (were dead in the legacy site too).
+- **"Created by Transition" credit** (footer): plain text until an agency
+  URL is provided.
+- **Images**: all imagery is remote (`lh3.googleusercontent.com` — these
+  AI-studio URLs may expire — and `upload.wikimedia.org`). Consider
+  downloading to `public/images/` and updating the source constants.
+- **Privacy policy**: newsletter/contact reference a privacy policy that
+  doesn't exist as a page yet (legacy linked the About page).

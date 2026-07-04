@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
 import ArticleCounters from "@/components/blog/ArticleCounters";
 import { ARTICLES, getArticle } from "@/lib/articles";
+import { SITE_URL } from "@/lib/site";
 
 type Params = { slug: string };
 
@@ -22,11 +23,14 @@ export async function generateMetadata({
   return {
     title: article.title,
     description: article.description,
+    openGraph: {
+      type: "article",
+      title: article.title,
+      description: article.description,
+      images: [article.heroImg],
+    },
   };
 }
-
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.giantstorage.com";
 
 export default async function ArticlePage({
   params,
@@ -43,8 +47,27 @@ export default async function ArticlePage({
     encodeURIComponent(pageUrl)
   );
 
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.h1,
+    description: article.description,
+    image: article.heroImg,
+    datePublished: new Date(article.date).toISOString(),
+    url: pageUrl,
+    publisher: {
+      "@type": "Organization",
+      name: "Giant Storage Integrated Solutions",
+      url: SITE_URL,
+    },
+  };
+
   return (
     <div className="page-article">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <RevealObserver />
       {article.hasCounters && <ArticleCounters />}
 
