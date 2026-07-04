@@ -21,7 +21,9 @@ export default function RevealObserver() {
       },
       { threshold: 0.12 }
     );
-    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    document
+      .querySelectorAll(".reveal, .reveal-left, .reveal-right")
+      .forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
