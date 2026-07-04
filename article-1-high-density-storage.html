@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://lh3.googleusercontent.com https://upload.wikimedia.org; connect-src 'self' https://formspree.io; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io;">
+<title>High-Density Storage 2025 Roadmap | Giant Storage Blog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary":"#014e2a","on-primary":"#ffffff","secondary":"#32694c","secondary-container":"#b5f0cb","on-secondary-container":"#386f52","surface":"#fbf9fb","surface-container-low":"#f5f3f5","surface-container":"#efedef","surface-container-highest":"#e4e2e4","on-surface":"#1b1c1d","on-surface-variant":"#404941","outline":"#707971","outline-variant":"#c0c9bf","primary-container":"#246640","on-primary-container":"#9de1b1","surface-container-high":"#e9e7ea","background":"#fbf9fb","on-background":"#1b1c1d"}}}}
+</script>
+<style>
+html,body{overflow-x:hidden;}
+body{font-family:'Inter',sans-serif;min-height:100dvh;}
+img,video,iframe{max-width:100%;height:auto;}
+*,*::before,*::after{box-sizing:border-box;}
+button,a>button{min-height:44px;}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}.reveal{opacity:1!important;transform:none!important;}}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease-out,transform .65s ease-out;}
+.reveal.in-view{opacity:1;transform:none;}
+.d1{transition-delay:.08s!important}.d2{transition-delay:.16s!important}.d3{transition-delay:.24s!important}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.hero-animate{animation:fadeInUp .7s ease-out both;}
+.prose-content h2{font-size:1.55rem;font-weight:700;color:#014e2a;margin:2.5rem 0 1rem;letter-spacing:-.01em;line-height:1.3;}
+.prose-content h3{font-size:1.2rem;font-weight:700;color:#1b1c1d;margin:2rem 0 .75rem;}
+.prose-content p{font-size:1rem;line-height:1.8;color:#404941;margin-bottom:1.25rem;}
+.prose-content ul{list-style:none;padding:0;margin-bottom:1.25rem;}
+.prose-content ul li{padding:.35rem 0 .35rem 1.5rem;position:relative;font-size:.95rem;color:#404941;line-height:1.7;}
+.prose-content ul li::before{content:'';position:absolute;left:0;top:.75rem;width:6px;height:6px;background:#014e2a;border-radius:50%;}
+.prose-content blockquote{border-left:4px solid #014e2a;padding:1rem 1.5rem;background:#f5f3f5;border-radius:0 .5rem .5rem 0;margin:2rem 0;font-style:italic;color:#404941;}
+.prose-content .highlight-box{background:linear-gradient(135deg,#e8f5ee,#f5f3f5);border:1px solid rgba(1,78,42,.15);border-radius:1rem;padding:1.5rem 2rem;margin:2rem 0;}
+.share-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:.5rem;font-size:.78rem;font-weight:700;transition:all .2s;cursor:pointer;border:none;}
+.nav-lnk{position:relative;}.nav-lnk::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:#014e2a;transition:width .3s;}.nav-lnk:hover::after{width:100%;}
+.transition-credit{transition:color .3s,opacity .3s;font-family:'Lora',serif;font-style:italic;font-size:.72rem;opacity:.4;letter-spacing:.02em;}
+.transition-credit:hover{opacity:.75;color:#014e2a;}
+.art-related{background:#fff;border-radius:1rem;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.05);transition:transform .3s,box-shadow .3s;text-decoration:none;color:inherit;display:block;}
+.art-related:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(14,74,48,.12);}
+</style>
+</head>
+<body class="bg-background text-on-background">
+
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-surface/90 backdrop-blur-md border-b border-outline-variant/30">
+  <div class="flex justify-between items-center max-w-6xl mx-auto px-6 md:px-10 h-18 py-4">
+    <a href="home.html" class="font-black tracking-tight text-primary text-lg">GIANT STORAGE</a>
+    <nav class="hidden md:flex items-center gap-7">
+      <a href="home.html" class="nav-lnk text-on-surface-variant hover:text-primary transition-colors text-sm font-semibold">Home</a>
+      <a href="products.html" class="nav-lnk text-on-surface-variant hover:text-primary transition-colors text-sm font-semibold">Products</a>
+      <a href="indastries.html" class="nav-lnk text-on-surface-variant hover:text-primary transition-colors text-sm font-semibold">Industries</a>
+      <a href="blog.html" class="text-primary font-bold border-b-2 border-primary pb-0.5 text-sm">Blog</a>
+      <a href="about us.html" class="nav-lnk text-on-surface-variant hover:text-primary transition-colors text-sm font-semibold">About Us</a>
+      <a href="contact.html" class="nav-lnk text-on-surface-variant hover:text-primary transition-colors text-sm font-semibold">Contact</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="request qoute.html" class="hidden md:block"><button class="bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-secondary active:scale-95 transition-all" style="box-shadow:0 4px 14px rgba(1,78,42,.28)">Request Quote</button></a>
+      <button class="md:hidden p-2 text-primary rounded-lg hover:bg-surface-container-high transition-colors" onclick="toggleArtDrawer()" aria-label="Menu"><span class="material-symbols-outlined">menu</span></button>
+    </div>
+  </div>
+</header>
+<!-- Mobile Drawer -->
+<div class="fixed inset-0 bg-black/40 z-[55] opacity-0 pointer-events-none transition-opacity duration-300" id="art-overlay" onclick="toggleArtDrawer()"></div>
+<aside class="fixed left-0 top-0 h-full z-[60] flex flex-col pt-8 bg-surface w-72 max-w-[85vw] -translate-x-full transition-transform duration-300 shadow-xl" id="art-drawer">
+  <div class="px-6 mb-8 flex justify-between items-center">
+    <span class="font-black text-primary text-base">GIANT STORAGE</span>
+    <button onclick="toggleArtDrawer()" class="p-1 rounded-full hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-on-surface-variant">close</span></button>
+  </div>
+  <nav class="flex flex-col gap-1 px-3">
+    <a href="home.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors text-sm font-semibold"><span class="material-symbols-outlined" style="font-size:20px">home</span>Home</a>
+    <a href="products.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors text-sm font-semibold"><span class="material-symbols-outlined" style="font-size:20px">inventory_2</span>Products</a>
+    <a href="indastries.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors text-sm font-semibold"><span class="material-symbols-outlined" style="font-size:20px">factory</span>Industries</a>
+    <a href="blog.html" class="flex items-center gap-3 px-3 py-3 rounded-xl bg-secondary-container text-on-secondary-container text-sm font-bold"><span class="material-symbols-outlined" style="font-size:20px">article</span>Blog</a>
+    <a href="about us.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors text-sm font-semibold"><span class="material-symbols-outlined" style="font-size:20px">info</span>About Us</a>
+    <a href="contact.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors text-sm font-semibold"><span class="material-symbols-outlined" style="font-size:20px">mail</span>Contact</a>
+  </nav>
+  <div class="mt-auto px-6 pb-8"><a href="request qoute.html" class="block w-full bg-primary text-white text-center py-3.5 rounded-xl font-bold text-sm hover:bg-secondary transition-colors">Request Quote</a></div>
+</aside>
+
+<!-- Article Hero -->
+<section class="relative h-[500px] md:h-[580px] overflow-hidden">
+  <img class="w-full h-full object-cover" style="animation:heroZoom 18s ease-in-out alternate infinite" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcPMNwGE1bKWNaxncsX8vguDLGBzb6mHxljOIWBIQfY54ECIbO6Jr5uNXH_2cYqbiwkVxl8LoPWz01Sr4FEwQkdYOoyJzOmLbH-dust81lmyCbBv4ftAyfeXNbK4e4xe8Aeius_CZgI0p9_Ag61H4ylBWqi4CgwGF3e8EdSzKc-vOuSTDlQniT0Xw47wauaFbsPBm1hIrNjzf1r2SQ1NcDyukNsZlZSP5YgxEv5IE68RuFARFzROEtWG514_5N_Ii3Qe31tLoqhNQ" alt="Automated warehouse"/>
+  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10"></div>
+  <div class="absolute bottom-0 left-0 right-0 px-6 md:px-10 pb-12 max-w-4xl mx-auto">
+    <div class="hero-animate" style="animation-delay:.1s">
+      <span class="inline-block bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4">Product Innovations</span>
+    </div>
+    <h1 class="hero-animate font-black text-white leading-tight mb-4" style="font-size:clamp(1.6rem,4vw,2.75rem);letter-spacing:-.02em;animation-delay:.25s">The Evolution of High-Density Storage:<br/>2025 Industry Roadmap</h1>
+    <div class="hero-animate flex flex-wrap items-center gap-4 text-white/70 text-sm" style="animation-delay:.4s">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-white" style="font-size:14px">person</span></div>
+        <span class="font-semibold text-white">Dr. Marcus Vance</span>
+        <span>·</span><span>Chief Technical Officer</span>
+      </div>
+      <span>·</span><span>June 3, 2024</span><span>·</span><span>12 min read</span>
+    </div>
+  </div>
+</section>
+
+<!-- Article Body -->
+<main class="max-w-4xl mx-auto px-6 md:px-10 py-16">
+  <!-- Back + Share -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-12 pb-8 border-b border-outline-variant">
+    <a href="blog.html" class="flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all">
+      <span class="material-symbols-outlined" style="font-size:18px">arrow_back</span> Back to Blog
+    </a>
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="text-xs text-on-surface-variant font-semibold">Share:</span>
+      <button class="share-btn bg-[#1877f2] text-white">Facebook</button>
+      <button class="share-btn bg-[#0a66c2] text-white">LinkedIn</button>
+      <button class="share-btn bg-surface-container-high text-on-surface" onclick="navigator.clipboard.writeText(window.location.href).then(()=>{this.textContent='Copied!'})">Copy Link</button>
+    </div>
+  </div>
+
+  <div class="prose-content">
+    <h2>Introduction: The Storage Revolution Is Already Here</h2>
+    <p>The global logistics industry is undergoing a fundamental transformation. As e-commerce volumes continue their double-digit year-on-year growth and consumer expectations for same-day or next-day delivery tighten supply chain timelines, the pressure on warehousing infrastructure has never been greater. High-density storage — once a premium solution for only the largest multinational operations — has become a survival requirement for logistics operators of all scales.</p>
+    <p>At Giant Storage, our engineering teams have spent the past three years researching, testing, and deploying next-generation storage systems across 22 countries. In this comprehensive industry roadmap, we present our findings on the five defining trends that will shape the high-density storage landscape through 2025 and beyond.</p>
+
+    <div class="highlight-box reveal">
+      <p style="margin:0;font-style:italic;font-size:1.05rem"><strong>Key Insight:</strong> By 2025, warehouse operators who fail to adopt high-density vertical storage technologies face a 23% average cost-per-unit disadvantage versus early adopters, according to our 2024 Logistics Infrastructure Survey of 340 distribution centres.</p>
+    </div>
+
+    <h2>1. The Shift to Automated Vertical Storage</h2>
+    <p>The most significant structural change in warehouse design over the next 18 months will be the widespread adoption of automated vertical storage and retrieval systems (AS/RS). Unlike traditional horizontal racking layouts that consume vast floor areas, vertical AS/RS systems exploit building height — often underutilized in facilities built before 2010 — to multiply effective storage capacity without expanding the physical footprint.</p>
+    <p>Our analysis of 78 distribution centre retrofits in 2023 revealed that facilities installing AS/RS solutions achieved a median 3.4x increase in SKU density within the same floor plan. The capital expenditure, while significant, was recovered in an average of 2.8 years through reduced labour costs, lower real estate overheads, and improved order accuracy.</p>
+    <ul>
+      <li>Average height utilization improves from 42% to 91% in AS/RS-equipped facilities</li>
+      <li>Order picking error rates decline from 1.2% to under 0.08% in automated systems</li>
+      <li>Labour costs per order line drop by 34–61% depending on automation tier</li>
+      <li>System ROI periods of 2–4 years are now achievable at mid-market scale</li>
+    </ul>
+
+    <h2>2. AI and Data-Driven Space Optimization</h2>
+    <p>The second defining trend is the integration of artificial intelligence into warehouse management systems (WMS) to dynamically optimize storage slot assignments based on real-time demand patterns. Traditional static slotting — where products are assigned to fixed locations based on historical pick frequency — is being replaced by adaptive AI systems that continuously re-optimize the entire facility layout.</p>
+    <blockquote>
+      "The warehouses that win in 2025 will be those that treat space as a dynamic asset to be continuously optimized, not a fixed infrastructure element to be designed once and left unchanged for a decade." — Dr. Marcus Vance, CTO, Giant Storage
+    </blockquote>
+    <p>Giant Storage's partnership with three leading WMS providers in 2023 produced the first field-validated dataset demonstrating that AI-driven slotting reduces average travel distance per pick by 28% and increases throughput per operator hour by 19% in standard pallet racking environments.</p>
+
+    <h2>3. Material Science Advancements in Pallet Design</h2>
+    <p>The physical products at the heart of high-density storage — pallets, crates, and containers — are themselves undergoing a material evolution that enables new storage configurations. Traditional wooden pallets, while ubiquitous, impose significant limitations on automated systems: dimensional inconsistency, moisture absorption leading to warping, and incompatibility with robotic gripper systems.</p>
+    <p>Giant Storage's third-generation reinforced HDPE pallet platform, developed in collaboration with our materials science team and validated through 18 months of field trials across five distribution centres, addresses all three limitations while delivering a 15% weight reduction versus comparable timber pallets.</p>
+    <ul>
+      <li>±0.3mm dimensional tolerance across the full 1200×800mm profile</li>
+      <li>Zero moisture absorption eliminating seasonal dimensional variation</li>
+      <li>Embedded RFID antenna cavity supporting real-time inventory tracking</li>
+      <li>Robotic gripper alignment rails on all four sides for AS/RS compatibility</li>
+      <li>500+ trip cycle design life versus 8–15 trips for standard timber pallets</li>
+    </ul>
+
+    <h2>4. Sustainability as a Structural Design Principle</h2>
+    <p>The 2025 roadmap cannot be complete without addressing the growing regulatory and commercial pressure on logistics operators to decarbonize their supply chains. The EU Carbon Border Adjustment Mechanism (CBAM), now entering its transitional phase, will directly impact the cost of imported goods manufactured with high-carbon processes — creating a structural incentive for logistics operators to prioritize low-carbon packaging and storage materials.</p>
+    <p>Giant Storage's recycled-content product line, offering 30–40% post-consumer recycled polymer content across our standard pallet and crate ranges, provides customers with a verified carbon reduction of 38% per unit versus virgin-material equivalents. Critically, structural performance metrics are maintained at 100% of our standard product specifications — recycled content no longer means compromise.</p>
+
+    <h2>5. The Modular Infrastructure Model</h2>
+    <p>The final trend that will define the 2025 storage landscape is the shift from capital-intensive bespoke installations to modular, scalable infrastructure that can be deployed rapidly and expanded incrementally. The supply chain disruptions of 2020–2022 exposed the vulnerability of long-lead-time, custom-built storage infrastructure, driving logistics operators to demand systems that can be specified, delivered, and commissioned in weeks rather than months.</p>
+    <p>Giant Storage's modular shelving and racking system, launched in Q1 2024, reduces from-order-to-operational timelines from the industry average of 16 weeks to under 6 weeks for standard configurations, while maintaining full compatibility with automated material handling systems from the leading AS/RS providers.</p>
+
+    <h2>The 2025 Roadmap: Implementation Priorities</h2>
+    <p>Based on our analysis of industry trends and field data from 200+ installations, we recommend logistics operators prioritize the following implementation sequence for maximum competitive advantage through 2025:</p>
+    <ul>
+      <li><strong>Immediate (Q3–Q4 2024):</strong> Complete a floor-space efficiency audit using our complimentary assessment framework</li>
+      <li><strong>Near-term (H1 2025):</strong> Pilot a high-density plastic pallet system on your highest-throughput pick lanes</li>
+      <li><strong>Medium-term (H2 2025):</strong> Integrate WMS slotting optimization before committing to AS/RS capital expenditure</li>
+      <li><strong>Strategic (2025–2026):</strong> Develop a modular vertical storage roadmap aligned to your 5-year facility plans</li>
+    </ul>
+
+    <div class="highlight-box reveal d1">
+      <h3 style="margin-top:0">Ready to Optimize Your Storage Infrastructure?</h3>
+      <p style="margin-bottom:1rem">Our engineering consultants are available for a complimentary 60-minute storage efficiency assessment, covering floor-space utilization, product flow analysis, and technology roadmap alignment.</p>
+      <a href="contact.html" style="display:inline-flex;align-items:center;gap:.4rem;background:#014e2a;color:#fff;padding:.75rem 1.5rem;border-radius:.5rem;font-weight:700;font-size:.875rem;text-decoration:none;box-shadow:0 4px 14px rgba(1,78,42,.28)">Request an Assessment <span class="material-symbols-outlined" style="font-size:16px">arrow_forward</span></a>
+    </div>
+
+    <h2>Conclusion</h2>
+    <p>The high-density storage revolution is not approaching — it has arrived. The operators who will thrive in 2025 are those who move from reactive infrastructure management to proactive, technology-integrated storage strategy. The investment required is lower than ever before; the cost of inaction is higher than it has ever been.</p>
+    <p>Giant Storage remains committed to providing the physical infrastructure, technical expertise, and strategic guidance that enables our clients to stay ahead of this transformation. We invite you to explore our 2025 product roadmap and to connect with our engineering team to begin designing your facility's next chapter.</p>
+  </div>
+
+  <!-- Author Bio -->
+  <div class="mt-12 p-6 bg-surface-container-low rounded-2xl flex gap-5 items-start border border-outline-variant reveal">
+    <div class="w-16 h-16 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+      <span class="material-symbols-outlined text-white text-2xl">person</span>
+    </div>
+    <div>
+      <p class="font-bold text-on-surface mb-1">Dr. Marcus Vance</p>
+      <p class="text-primary text-xs font-bold uppercase tracking-wider mb-2">Chief Technical Officer, Giant Storage</p>
+      <p class="text-sm text-on-surface-variant leading-relaxed">Dr. Vance leads Giant Storage's technology strategy and innovation pipeline. With 20+ years in industrial logistics engineering, he has overseen the design and commissioning of storage infrastructure across 22 countries.</p>
+    </div>
+  </div>
+
+  <!-- Share again -->
+  <div class="mt-10 pt-8 border-t border-outline-variant flex flex-wrap gap-3 items-center reveal">
+    <span class="text-sm font-bold text-on-surface">Share this article:</span>
+    <button class="share-btn bg-[#1877f2] text-white">Facebook</button>
+    <button class="share-btn bg-[#0a66c2] text-white">LinkedIn</button>
+    <button class="share-btn bg-[#1da1f2] text-white">Twitter</button>
+    <button class="share-btn bg-surface-container-high text-on-surface" onclick="navigator.clipboard.writeText(window.location.href).then(()=>{this.textContent='Copied!'})">Copy Link</button>
+  </div>
+
+  <!-- Prev / Next -->
+  <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4 reveal">
+    <div class="p-5 bg-surface-container-low rounded-xl border border-outline-variant opacity-40 cursor-not-allowed">
+      <p class="text-xs text-on-surface-variant font-bold uppercase tracking-wider mb-1">← Previous Article</p>
+      <p class="text-sm font-semibold text-on-surface">No previous article</p>
+    </div>
+    <a href="article-2-net-zero-2030.html" class="p-5 bg-surface-container-low rounded-xl border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all text-right">
+      <p class="text-xs text-primary font-bold uppercase tracking-wider mb-1">Next Article →</p>
+      <p class="text-sm font-semibold text-on-surface">Sustainable Logistics: Our Net Zero 2030 Commitment</p>
+    </a>
+  </div>
+</main>
+
+<!-- Related Articles -->
+<section class="py-16 bg-surface-container-low">
+  <div class="max-w-4xl mx-auto px-6 md:px-10">
+    <h2 class="font-bold text-xl text-on-surface mb-8 reveal">Related Articles</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <a href="article-2-net-zero-2030.html" class="art-related reveal d1">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhOM_ZjQqp8NJDoi3TNAvcIdLUaAQ_ri_gcyBDD-xY0k2iO845ekZDNRcTLjA3ywaMyoXSbjseHsWl0wnoL6Llm5IU-w8Jse3BJ9ZmyTP-bkKvf2IlpIdJRciAU8R9XZKMvuVXIbECxOsCD4Dbft9KWCVkWGwJIXYkBEebjogwT646gqGWF9yJP1RGROkfOJa9U4Io-G751y7aB8lnVJ3c3IzrUAUjhXzH4nOOgUGBELGPEdR33mialt8zDm4fkln6tYm8-ZdpHfE" alt="" class="w-full h-36 object-cover"/>
+        <div class="p-4"><p class="text-primary text-xs font-bold uppercase mb-1">CSR</p><p class="font-semibold text-sm text-on-surface leading-snug">Our Net Zero 2030 Commitment</p></div>
+      </a>
+      <a href="article-3-urban-fulfillment.html" class="art-related reveal d2">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNPxQPmmNYVdxT76yKC5NKNvGeB48Yvcy0rl9G-sDkDPLCYXmAxU9F2gv1fxCj_fMW8cmA6Z7pR-9TamLGlTXv9lXR7AbYHpBAAzvs_DlYeXE3Qi6YX32FqBS1zKXAysb0VhryyE7uaMEyS5sN7JYozlOi2FeoMDJEfuk97fTNl8PpS0UoOHtEVzZRObvMx1n7h-nbdiDjHO6iDKTPbrwDXAxDrGePe0PAPtOXAEX4y_sjp1jFelUdDUEu0T2VkHr8SecHPxIXZGc" alt="" class="w-full h-36 object-cover"/>
+        <div class="p-4"><p class="text-primary text-xs font-bold uppercase mb-1">Logistics</p><p class="font-semibold text-sm text-on-surface leading-snug">Urban Fulfillment Centers</p></div>
+      </a>
+      <a href="article-4-southeast-asia.html" class="art-related reveal d3">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB33hTy7fYKCExhmtTn0k_-HKmx_UcrBf8Xwmv2i5rx3djejhVbzzsrQiDl5fegvJJYvCNKiYdSK14zuQ_dUDZ49TtEdA46-VBDErjJay49wo2wxSDCGC8krTJkV7xCOFbY06N3ir2O7av1SEGGOYS1YlvEEZ6vV-d-etUVv5Z6QmPJ6QcSyCfla4LsgBuPM_jcNX04psJfTi0RUiStiDNwEOHfrYn2n-ayFh6a6ueJOT1xeNaE_TLO018jWTFzwSV0WORcvkNUZQI" alt="" class="w-full h-36 object-cover"/>
+        <div class="p-4"><p class="text-primary text-xs font-bold uppercase mb-1">Global</p><p class="font-semibold text-sm text-on-surface leading-snug">Southeast Asia Expansion</p></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-surface-container-highest border-t border-outline-variant">
+  <div class="max-w-6xl mx-auto px-6 md:px-10 py-10">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+      <div><span class="font-black text-primary text-lg block mb-3">GIANT STORAGE</span><p class="text-xs text-on-surface-variant leading-relaxed">World-class storage solutions since 2004.</p></div>
+      <div><h5 class="font-bold text-xs uppercase tracking-wider text-on-surface mb-3">Pages</h5><ul class="space-y-2"><li><a href="home.html" class="text-xs text-on-surface-variant hover:text-primary transition-colors">Home</a></li><li><a href="products.html" class="text-xs text-on-surface-variant hover:text-primary transition-colors">Products</a></li><li><a href="blog.html" class="text-xs text-primary font-bold">Blog</a></li></ul></div>
+      <div><h5 class="font-bold text-xs uppercase tracking-wider text-on-surface mb-3">Company</h5><ul class="space-y-2"><li><a href="about us.html" class="text-xs text-on-surface-variant hover:text-primary transition-colors">About Us</a></li><li><a href="indastries.html" class="text-xs text-on-surface-variant hover:text-primary transition-colors">Industries</a></li></ul></div>
+      <div><h5 class="font-bold text-xs uppercase tracking-wider text-on-surface mb-3">Contact</h5><ul class="space-y-2"><li><a href="contact.html" class="text-xs text-on-surface-variant hover:text-primary transition-colors">Get in Touch</a></li><li><a href="request qoute.html" class="text-xs text-on-surface-variant hover:text-primary transition-colors">Request Quote</a></li></ul></div>
+    </div>
+    <div class="pt-6 border-t border-outline/10 flex flex-col items-center gap-1 text-center">
+      <p class="text-xs text-on-surface-variant opacity-70">© 2024 Giant Storage Integrated Solutions. All Rights Reserved.</p>
+      <a href="#" class="transition-credit">Created by Transition</a>
+    </div>
+  </div>
+</footer>
+<style>@keyframes heroZoom{from{transform:scale(1)}to{transform:scale(1.07)}}</style>
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.target.classList.add('in-view');obs.unobserve(el.target);}});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+function toggleArtDrawer(){
+  const d=document.getElementById('art-drawer');
+  const o=document.getElementById('art-overlay');
+  const open=d.classList.toggle('-translate-x-full');
+  o.classList.toggle('opacity-0',open);
+  o.classList.toggle('pointer-events-none',open);
+  document.body.style.overflow=open?'':'hidden';
+}
+</script>
+</body>
+</html>

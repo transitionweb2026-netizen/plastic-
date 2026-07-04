@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://lh3.googleusercontent.com https://upload.wikimedia.org; connect-src 'self' https://formspree.io; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io;">
+<title>Industrial Insights | Giant Storage</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital@1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode:"class",
+  theme:{
+    extend:{
+      colors:{
+        "on-secondary-fixed-variant":"#175036","on-error-container":"#93000a","on-primary":"#ffffff",
+        "error-container":"#ffdad6","primary-container":"#246640","on-error":"#ffffff",
+        "surface-variant":"#e4e2e4","primary":"#014e2a","surface-container-lowest":"#ffffff",
+        "error":"#ba1a1a","surface-container-high":"#e9e7ea","secondary-fixed":"#b5f0cb",
+        "on-tertiary":"#ffffff","secondary-container":"#b5f0cb","tertiary":"#6e2d37",
+        "tertiary-fixed-dim":"#ffb2ba","primary-fixed-dim":"#92d5a6","on-surface":"#1b1c1d",
+        "inverse-primary":"#92d5a6","on-secondary":"#ffffff","on-tertiary-container":"#ffc2c8",
+        "surface-dim":"#dbd9dc","surface":"#fbf9fb","secondary":"#32694c","surface-bright":"#fbf9fb",
+        "on-primary-container":"#9de1b1","surface-tint":"#296a44","on-primary-fixed-variant":"#08522e",
+        "secondary-fixed-dim":"#99d3b0","on-tertiary-fixed":"#3c0612","surface-container-highest":"#e4e2e4",
+        "surface-container":"#efedef","on-secondary-fixed":"#002112","on-background":"#1b1c1d",
+        "on-surface-variant":"#404941","outline":"#707971","inverse-on-surface":"#f2f0f2",
+        "tertiary-container":"#8b444e","inverse-surface":"#303032","primary-fixed":"#adf2c1",
+        "on-primary-fixed":"#00210f","outline-variant":"#c0c9bf","on-secondary-container":"#386f52",
+        "tertiary-fixed":"#ffd9dc","on-tertiary-fixed-variant":"#74313c",
+        "surface-container-low":"#f5f3f5","background":"#fbf9fb"
+      },
+      borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},
+      spacing:{
+        "unit":"8px","margin-mobile":"20px","container-max-width":"1440px",
+        "gutter":"32px","margin-desktop":"64px","margin-tablet":"32px"
+      },
+      fontFamily:{
+        "headline-lg-mobile":["Inter"],"display-lg":["Inter"],"headline-lg":["Inter"],
+        "label-sm":["Inter"],"body-md":["Inter"],"headline-xl":["Inter"],
+        "headline-md":["Inter"],"body-lg":["Inter"],"headline-xl-mobile":["Inter"],"label-lg":["Inter"]
+      },
+      fontSize:{
+        "headline-lg-mobile":["28px",{"lineHeight":"1.3","fontWeight":"600"}],
+        "display-lg":["64px",{"lineHeight":"1.1","letterSpacing":"-0.02em","fontWeight":"700"}],
+        "headline-lg":["32px",{"lineHeight":"1.3","fontWeight":"600"}],
+        "label-sm":["12px",{"lineHeight":"1.2","fontWeight":"500"}],
+        "body-md":["16px",{"lineHeight":"1.6","fontWeight":"400"}],
+        "headline-xl":["48px",{"lineHeight":"1.2","letterSpacing":"-0.01em","fontWeight":"600"}],
+        "headline-md":["24px",{"lineHeight":"1.4","fontWeight":"600"}],
+        "body-lg":["18px",{"lineHeight":"1.6","fontWeight":"400"}],
+        "headline-xl-mobile":["32px",{"lineHeight":"1.2","fontWeight":"600"}],
+        "label-lg":["14px",{"lineHeight":"1.2","letterSpacing":"0.05em","fontWeight":"600"}]
+      }
+    }
+  }
+}
+</script>
+<style>
+html { overflow-x:hidden; }
+body { font-family:'Inter',sans-serif; min-height:100dvh; overflow-x:hidden; }
+img, video, iframe { max-width:100%; height:auto; }
+*, *::before, *::after { box-sizing:border-box; }
+button, a > button { min-height:44px; }
+.material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; vertical-align:middle; display:inline-block; }
+
+/* ── Scroll reveal ── */
+.reveal { opacity:0; transform:translateY(28px); transition:opacity .7s ease-out,transform .7s ease-out; }
+.reveal-left { opacity:0; transform:translateX(-32px); transition:opacity .7s ease-out,transform .7s ease-out; }
+.reveal-right { opacity:0; transform:translateX(32px); transition:opacity .7s ease-out,transform .7s ease-out; }
+.reveal.in-view,.reveal-left.in-view,.reveal-right.in-view { opacity:1; transform:none; }
+.d1{transition-delay:.07s!important}.d2{transition-delay:.15s!important}
+.d3{transition-delay:.23s!important}.d4{transition-delay:.31s!important}
+
+/* ── Hero ── */
+@keyframes heroZoom { from{transform:scale(1)} to{transform:scale(1.08)} }
+@keyframes fadeInUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+@keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.hero-bg { animation:heroZoom 18s ease-in-out alternate infinite; }
+.hero-text-1 { animation:fadeInUp .7s ease-out .1s both; }
+.hero-text-2 { animation:fadeInUp .7s ease-out .3s both; }
+.hero-text-3 { animation:fadeInUp .7s ease-out .5s both; }
+.hero-text-4 { animation:fadeInUp .7s ease-out .7s both; }
+.float-el { animation:floatY 7s ease-in-out infinite; }
+
+/* ── Nav link underline ── */
+.nav-lnk { position:relative; }
+.nav-lnk::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:2px; background:#014e2a; transition:width .3s; }
+.nav-lnk:hover::after { width:100%; }
+
+/* ── Hero buttons ── */
+.btn-primary {
+  position:relative; overflow:hidden; display:inline-flex; align-items:center; gap:.5rem;
+  background:#014e2a; color:#fff; padding:.875rem 1.75rem; border-radius:.5rem;
+  font-weight:700; font-size:.875rem; letter-spacing:.04em; cursor:pointer; text-decoration:none;
+  box-shadow:0 6px 20px rgba(1,78,42,.32);
+  transition:transform .25s cubic-bezier(.4,0,.2,1),box-shadow .25s;
+}
+.btn-primary::before { content:''; position:absolute; inset:0; background:rgba(255,255,255,.12); transform:translateX(-110%); transition:transform .4s; }
+.btn-primary:hover::before { transform:translateX(110%); }
+.btn-primary:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 14px 34px rgba(1,78,42,.42); }
+.btn-primary:active { transform:scale(.97); }
+.btn-primary .arr { transition:transform .3s; }
+.btn-primary:hover .arr { transform:translateX(4px); }
+
+.btn-outline {
+  display:inline-flex; align-items:center; gap:.5rem;
+  background:transparent; color:#fff; padding:.875rem 1.75rem; border-radius:.5rem;
+  font-weight:700; font-size:.875rem; letter-spacing:.04em; cursor:pointer; text-decoration:none;
+  border:2px solid rgba(255,255,255,.5);
+  transition:background .25s,border-color .25s,transform .25s,box-shadow .25s;
+}
+.btn-outline:hover { background:rgba(255,255,255,.12); border-color:#fff; transform:translateY(-2px); }
+.btn-outline:active { transform:scale(.97); }
+.btn-outline .arr { transition:transform .3s; }
+.btn-outline:hover .arr { transform:translateX(4px); }
+
+/* ── Article cards ── */
+.art-card {
+  background:#fff; border-radius:1rem; overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,.05);
+  transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s;
+  cursor:pointer; display:flex; flex-direction:column;
+  text-decoration:none; color:inherit;
+}
+.art-card:hover { transform:translateY(-7px); box-shadow:0 20px 48px rgba(14,74,48,.14); }
+.art-card .card-img { transition:transform .6s cubic-bezier(.4,0,.2,1); }
+.art-card:hover .card-img { transform:scale(1.09); }
+.art-card h4 { transition:color .25s; }
+.art-card:hover h4 { color:#014e2a; }
+
+/* ── Featured card ── */
+.feat-card {
+  background:#fff; border-radius:1rem; overflow:hidden;
+  box-shadow:0 4px 24px rgba(0,0,0,.07);
+  transition:transform .35s,box-shadow .35s;
+  cursor:pointer; text-decoration:none; color:inherit;
+}
+.feat-card:hover { transform:translateY(-5px); box-shadow:0 24px 56px rgba(14,74,48,.14); }
+.feat-card .feat-img { transition:transform .6s cubic-bezier(.4,0,.2,1); }
+.feat-card:hover .feat-img { transform:scale(1.05); }
+.feat-card h2 { transition:color .25s; }
+.feat-card:hover h2 { color:#014e2a; }
+
+/* ── Newsletter input ── */
+.nl-input {
+  flex:1; padding:.875rem 1.25rem;
+  border-radius:.5rem .0rem .0rem .5rem;
+  border:2px solid rgba(255,255,255,.2); outline:none; font-size:.9rem; font-family:'Inter',sans-serif;
+  background:rgba(255,255,255,.1); color:#fff; min-height:44px;
+}
+.nl-input::placeholder { color:rgba(255,255,255,.5); }
+.nl-input:focus { border-color:rgba(255,255,255,.5); background:rgba(255,255,255,.15); }
+.nl-btn {
+  padding:.875rem 1.5rem; background:#fff; color:#014e2a; font-weight:700; font-size:.875rem;
+  border-radius:0 .5rem .5rem 0; border:none; cursor:pointer; white-space:nowrap;
+  transition:background .2s,transform .2s; min-height:44px;
+}
+.nl-btn:hover { background:#f5f3f5; transform:translateX(-1px); }
+/* Newsletter stacks on mobile with full border-radius */
+@media (max-width:639px) {
+  .nl-input { border-radius:.5rem; }
+  .nl-btn { border-radius:.5rem; }
+}
+
+/* ── Bookmark icon ── */
+.bookmark-btn { transition:color .2s,transform .2s; }
+.bookmark-btn:hover { color:#014e2a; transform:scale(1.2); }
+
+/* ── Dot pattern ── */
+.dot-bg {
+  background-image:radial-gradient(circle,rgba(1,78,42,.08) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+
+/* ── Footer transition ── */
+.footer-link { transition:color .2s; }
+.footer-link:hover { color:#014e2a; }
+.transition-credit { transition:color .3s,opacity .3s; font-family:'Lora',serif; font-style:italic; font-size:.72rem; opacity:.4; letter-spacing:.02em; }
+.transition-credit:hover { opacity:.75; color:#014e2a; }
+
+@media (prefers-reduced-motion:reduce) {
+  .reveal,.reveal-left,.reveal-right { opacity:1!important; transform:none!important; }
+  .hero-bg,.float-el { animation:none; }
+}
+</style>
+</head>
+<body class="bg-background text-on-background overflow-x-hidden">
+
+<!-- ── Mobile Drawer ── -->
+<div class="fixed inset-0 bg-black/40 z-[55] opacity-0 pointer-events-none transition-opacity duration-300" id="drawer-overlay" onclick="toggleDrawer()"></div>
+<aside class="fixed left-0 top-0 h-full z-[60] flex flex-col pt-8 bg-surface w-80 max-w-[85vw] -translate-x-full transition-transform duration-300 shadow-xl" id="drawer">
+  <div class="px-6 mb-8 flex justify-between items-center">
+    <span class="font-headline-md text-headline-md text-primary font-black tracking-tight">GIANT STORAGE</span>
+    <button onclick="toggleDrawer()" class="p-1 rounded-full hover:bg-surface-container-high transition-colors">
+      <span class="material-symbols-outlined text-on-surface-variant">close</span>
+    </button>
+  </div>
+  <nav class="flex flex-col">
+    <a href="home.html" class="m-2 px-4 py-3 flex items-center gap-4 text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-colors"><span class="material-symbols-outlined">home</span><span class="font-semibold text-sm">Home</span></a>
+    <a href="products.html" class="m-2 px-4 py-3 flex items-center gap-4 text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-colors"><span class="material-symbols-outlined">inventory_2</span><span class="font-semibold text-sm">Products</span></a>
+    <a href="indastries.html" class="m-2 px-4 py-3 flex items-center gap-4 text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-colors"><span class="material-symbols-outlined">factory</span><span class="font-semibold text-sm">Industries</span></a>
+    <a href="blog.html" class="m-2 px-4 py-3 flex items-center gap-4 bg-secondary-container text-on-secondary-container rounded-xl"><span class="material-symbols-outlined">article</span><span class="font-semibold text-sm">Blog</span></a>
+    <a href="about us.html" class="m-2 px-4 py-3 flex items-center gap-4 text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-colors"><span class="material-symbols-outlined">info</span><span class="font-semibold text-sm">About Us</span></a>
+    <a href="contact.html" class="m-2 px-4 py-3 flex items-center gap-4 text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-colors"><span class="material-symbols-outlined">mail</span><span class="font-semibold text-sm">Contact</span></a>
+  </nav>
+  <div class="mt-auto px-6 pb-8">
+    <a href="request qoute.html" class="block w-full bg-primary text-on-primary text-center py-3.5 rounded-xl font-bold text-sm hover:bg-secondary transition-colors" style="box-shadow:0 6px 20px rgba(1,78,42,.28)">Request Quote</a>
+  </div>
+</aside>
+
+<!-- ── Header ── -->
+<header class="sticky top-0 z-50 bg-surface/90 backdrop-blur-md border-b border-outline-variant/30">
+  <div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto h-20">
+    <div class="flex items-center gap-4">
+      <button onclick="toggleDrawer()" class="lg:hidden p-2 rounded-lg hover:bg-surface-container-high transition-colors active:scale-95 text-primary">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <a href="home.html" class="font-black tracking-tighter text-primary text-xl">GIANT STORAGE</a>
+    </div>
+    <nav class="hidden lg:flex items-center gap-8">
+      <a href="home.html" class="nav-lnk text-on-surface-variant hover:text-primary transition-colors font-semibold text-sm">Home</a>
+      <a href="products.html" class="nav-lnk text-on-surface-variant hover:text-primary transition-colors font-semibold text-sm">Products</a>
+      <a href="indastries.html" class="nav-lnk text-on-surface-variant hover:text-primary transition-colors font-semibold text-sm">Industries</a>
+      <a href="blog.html" class="text-primary font-bold border-b-2 border-primary pb-0.5 text-sm">Blog</a>
+      <a href="about us.html" class="nav-lnk text-on-surface-variant hover:text-primary transition-colors font-semibold text-sm">About Us</a>
+      <a href="contact.html" class="nav-lnk text-on-surface-variant hover:text-primary transition-colors font-semibold text-sm">Contact</a>
+    </nav>
+    <a href="request qoute.html">
+      <button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-bold text-sm hover:bg-secondary active:scale-95 transition-all" style="box-shadow:0 4px 14px rgba(1,78,42,.28)">Request Quote</button>
+    </a>
+  </div>
+</header>
+
+<!-- ══════════════════════ HERO ══════════════════════ -->
+<section class="relative min-h-[620px] flex items-center overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <img class="hero-bg w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcPMNwGE1bKWNaxncsX8vguDLGBzb6mHxljOIWBIQfY54ECIbO6Jr5uNXH_2cYqbiwkVxl8LoPWz01Sr4FEwQkdYOoyJzOmLbH-dust81lmyCbBv4ftAyfeXNbK4e4xe8Aeius_CZgI0p9_Ag61H4ylBWqi4CgwGF3e8EdSzKc-vOuSTDlQniT0Xw47wauaFbsPBm1hIrNjzf1r2SQ1NcDyukNsZlZSP5YgxEv5IE68RuFARFzROEtWG514_5N_Ii3Qe31tLoqhNQ" alt="Industrial warehouse"/>
+    <div class="absolute inset-0 bg-gradient-to-r from-black/75 via-black/55 to-black/20"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+  </div>
+  <!-- Decorative floating elements -->
+  <div class="absolute top-12 right-[8%] w-20 h-20 border-2 border-white/15 rounded-full float-el hidden lg:block"></div>
+  <div class="absolute bottom-16 right-[22%] w-12 h-12 border border-white/10 rounded-xl rotate-12 float-el hidden lg:block" style="animation-delay:2s"></div>
+  <!-- Dot grid overlay -->
+  <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle,#fff 1px,transparent 1px);background-size:36px 36px"></div>
+
+  <div class="relative z-10 w-full px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto py-24">
+    <div class="max-w-3xl">
+      <span class="hero-text-1 inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-6">
+        <span class="material-symbols-outlined" style="font-size:14px">auto_stories</span>
+        Giant Intelligence — Industrial Insights
+      </span>
+      <h1 class="hero-text-2 font-black text-white mb-6 leading-[1.08]" style="font-size:clamp(2rem,5vw,3.6rem);letter-spacing:-.02em">
+        Knowledge That Drives<br/>
+        <span style="color:#92d5a6">Industrial Excellence</span>
+      </h1>
+      <p class="hero-text-3 text-white/80 text-lg mb-10 max-w-2xl leading-relaxed">
+        Expert analysis on global logistics, warehouse technology, and corporate milestones driving the future of integrated storage solutions.
+      </p>
+      <div class="hero-text-4 flex flex-wrap gap-4">
+        <a href="#featured" class="btn-primary">
+          Read Latest Articles <span class="material-symbols-outlined arr" style="font-size:18px">arrow_downward</span>
+        </a>
+        <a href="#newsletter" class="btn-outline">
+          Subscribe <span class="material-symbols-outlined arr" style="font-size:18px">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ FEATURED ARTICLE ══════════════════════ -->
+<section class="py-20 bg-surface" id="featured">
+  <div class="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
+    <div class="flex items-center gap-4 mb-10 reveal">
+      <div class="h-px flex-1 bg-outline-variant"></div>
+      <span class="text-xs font-bold uppercase tracking-widest text-primary">Featured Article</span>
+      <div class="h-px flex-1 bg-outline-variant"></div>
+    </div>
+    <a href="article-1-high-density-storage.html" class="feat-card block md:grid md:grid-cols-2 reveal d1">
+      <div class="h-72 md:h-auto overflow-hidden">
+        <img class="feat-img w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcPMNwGE1bKWNaxncsX8vguDLGBzb6mHxljOIWBIQfY54ECIbO6Jr5uNXH_2cYqbiwkVxl8LoPWz01Sr4FEwQkdYOoyJzOmLbH-dust81lmyCbBv4ftAyfeXNbK4e4xe8Aeius_CZgI0p9_Ag61H4ylBWqi4CgwGF3e8EdSzKc-vOuSTDlQniT0Xw47wauaFbsPBm1hIrNjzf1r2SQ1NcDyukNsZlZSP5YgxEv5IE68RuFARFzROEtWG514_5N_Ii3Qe31tLoqhNQ" alt="Featured"/>
+      </div>
+      <div class="p-8 md:p-14 flex flex-col justify-center">
+        <div class="flex items-center gap-3 mb-5">
+          <span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Product Innovations</span>
+          <span class="text-on-surface-variant text-xs font-semibold">12 MIN READ</span>
+        </div>
+        <h2 class="font-headline-xl text-headline-lg md:text-headline-xl text-on-surface mb-5 leading-tight">The Evolution of High-Density Storage: 2025 Industry Roadmap</h2>
+        <p class="text-on-surface-variant text-base leading-relaxed mb-8 line-clamp-3">Discover how integrated AI and semi-automated shelving units are redefining throughput efficiency for global export hubs. Our latest analysis explores the convergence of structural engineering and digital logistics.</p>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-white" style="font-size:18px">person</span>
+            </div>
+            <div>
+              <p class="font-semibold text-sm text-on-surface">Dr. Marcus Vance</p>
+              <p class="text-xs text-on-surface-variant">Chief Technical Officer</p>
+            </div>
+          </div>
+          <span class="flex items-center gap-1 text-primary text-sm font-bold">Read Article <span class="material-symbols-outlined" style="font-size:16px">arrow_forward</span></span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ══════════════════════ LATEST UPDATES ══════════════════════ -->
+<section class="py-20 bg-surface-container-low dot-bg" id="updates">
+  <div class="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
+    <div class="flex justify-between items-end mb-12">
+      <div class="reveal">
+        <p class="text-xs font-bold uppercase tracking-widest text-primary mb-2">Latest Updates</p>
+        <h3 class="font-headline-lg text-headline-lg text-on-surface">Recent Articles</h3>
+        <div class="h-1 w-16 bg-primary rounded-full mt-3"></div>
+      </div>
+      <a href="#featured" class="hidden md:flex items-center gap-2 text-primary font-bold text-sm group reveal">
+        View All <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" style="font-size:18px">arrow_forward</span>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+      <!-- Card 1 -->
+      <a href="article-2-net-zero-2030.html" class="art-card reveal d1">
+        <div class="h-52 overflow-hidden">
+          <img class="card-img w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhOM_ZjQqp8NJDoi3TNAvcIdLUaAQ_ri_gcyBDD-xY0k2iO845ekZDNRcTLjA3ywaMyoXSbjseHsWl0wnoL6Llm5IU-w8Jse3BJ9ZmyTP-bkKvf2IlpIdJRciAU8R9XZKMvuVXIbECxOsCD4Dbft9KWCVkWGwJIXYkBEebjogwT646gqGWF9yJP1RGROkfOJa9U4Io-G751y7aB8lnVJ3c3IzrUAUjhXzH4nOOgUGBELGPEdR33mialt8zDm4fkln6tYm8-ZdpHfE" alt="Solar warehouse"/>
+        </div>
+        <div class="p-7 flex flex-col flex-grow">
+          <span class="text-primary text-xs font-bold uppercase tracking-wider mb-3 block">Corporate CSR</span>
+          <h4 class="font-headline-md text-headline-md text-on-surface mb-3 leading-snug flex-grow">Sustainable Logistics: Our Net Zero 2030 Commitment</h4>
+          <p class="text-on-surface-variant text-sm mb-5 line-clamp-2">Reducing carbon footprint through solar-integrated facility design and electrified transit solutions.</p>
+          <div class="flex justify-between items-center text-xs text-on-surface-variant mt-auto">
+            <span class="font-medium">May 24, 2024</span>
+            <div class="flex items-center gap-3">
+              <span class="bg-surface-container px-2.5 py-1 rounded-full font-semibold">8 min read</span>
+              <span class="material-symbols-outlined bookmark-btn cursor-pointer" style="font-size:20px">bookmark</span>
+            </div>
+          </div>
+        </div>
+      </a>
+      <!-- Card 2 -->
+      <a href="article-3-urban-fulfillment.html" class="art-card reveal d2">
+        <div class="h-52 overflow-hidden">
+          <img class="card-img w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNPxQPmmNYVdxT76yKC5NKNvGeB48Yvcy0rl9G-sDkDPLCYXmAxU9F2gv1fxCj_fMW8cmA6Z7pR-9TamLGlTXv9lXR7AbYHpBAAzvs_DlYeXE3Qi6YX32FqBS1zKXAysb0VhryyE7uaMEyS5sN7JYozlOi2FeoMDJEfuk97fTNl8PpS0UoOHtEVzZRObvMx1n7h-nbdiDjHO6iDKTPbrwDXAxDrGePe0PAPtOXAEX4y_sjp1jFelUdDUEu0T2VkHr8SecHPxIXZGc" alt="Racking system"/>
+        </div>
+        <div class="p-7 flex flex-col flex-grow">
+          <span class="text-primary text-xs font-bold uppercase tracking-wider mb-3 block">Logistics Trends</span>
+          <h4 class="font-headline-md text-headline-md text-on-surface mb-3 leading-snug flex-grow">Maximizing Floor Space in Urban Fulfillment Centers</h4>
+          <p class="text-on-surface-variant text-sm mb-5 line-clamp-2">How vertical racking systems are enabling next-day delivery in densely populated global metros.</p>
+          <div class="flex justify-between items-center text-xs text-on-surface-variant mt-auto">
+            <span class="font-medium">May 18, 2024</span>
+            <div class="flex items-center gap-3">
+              <span class="bg-surface-container px-2.5 py-1 rounded-full font-semibold">10 min read</span>
+              <span class="material-symbols-outlined bookmark-btn cursor-pointer" style="font-size:20px">bookmark</span>
+            </div>
+          </div>
+        </div>
+      </a>
+      <!-- Card 3 -->
+      <a href="article-4-southeast-asia.html" class="art-card reveal d3">
+        <div class="h-52 overflow-hidden">
+          <img class="card-img w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB33hTy7fYKCExhmtTn0k_-HKmx_UcrBf8Xwmv2i5rx3djejhVbzzsrQiDl5fegvJJYvCNKiYdSK14zuQ_dUDZ49TtEdA46-VBDErjJay49wo2wxSDCGC8krTJkV7xCOFbY06N3ir2O7av1SEGGOYS1YlvEEZ6vV-d-etUVv5Z6QmPJ6QcSyCfla4LsgBuPM_jcNX04psJfTi0RUiStiDNwEOHfrYn2n-ayFh6a6ueJOT1xeNaE_TLO018jWTFzwSV0WORcvkNUZQI" alt="Global network"/>
+        </div>
+        <div class="p-7 flex flex-col flex-grow">
+          <span class="text-primary text-xs font-bold uppercase tracking-wider mb-3 block">Global Export</span>
+          <h4 class="font-headline-md text-headline-md text-on-surface mb-3 leading-snug flex-grow">Expanding Our Reach: New Distribution Hubs in Southeast Asia</h4>
+          <p class="text-on-surface-variant text-sm mb-5 line-clamp-2">Giant Storage announces strategic partnerships to bolster storage infrastructure in emerging markets.</p>
+          <div class="flex justify-between items-center text-xs text-on-surface-variant mt-auto">
+            <span class="font-medium">May 12, 2024</span>
+            <div class="flex items-center gap-3">
+              <span class="bg-surface-container px-2.5 py-1 rounded-full font-semibold">7 min read</span>
+              <span class="material-symbols-outlined bookmark-btn cursor-pointer" style="font-size:20px">bookmark</span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ STAY AHEAD — NEWSLETTER ══════════════════════ -->
+<section class="py-24 bg-primary relative overflow-hidden" id="newsletter">
+  <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle at 15% 50%,rgba(255,255,255,.5) 0%,transparent 55%),radial-gradient(circle at 85% 50%,rgba(255,255,255,.3) 0%,transparent 55%)"></div>
+  <div class="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3" style="animation:floatY 10s ease-in-out infinite"></div>
+  <div class="absolute bottom-0 left-0 w-60 h-60 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/3 float-el" style="animation-delay:3s"></div>
+  <!-- Dot grid -->
+  <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle,#fff 1px,transparent 1px);background-size:32px 32px"></div>
+
+  <div class="relative z-10 max-w-container-max-width mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop text-center">
+    <span class="reveal inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-6">
+      <span class="material-symbols-outlined" style="font-size:14px">mail</span>
+      Industry Intelligence
+    </span>
+    <h2 class="reveal d1 font-black text-white mb-4 leading-tight" style="font-size:clamp(1.75rem,4vw,3rem);letter-spacing:-.02em">Stay Ahead of the Industry</h2>
+    <p class="reveal d2 text-white/75 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
+      Join 5,000+ logistics professionals receiving our monthly digest of industrial trends, engineering breakthroughs, and case studies.
+    </p>
+    <!-- Trust indicators -->
+    <div class="reveal d2 flex flex-wrap justify-center gap-6 mb-10">
+      <div class="flex items-center gap-2 text-white/70 text-sm"><span class="material-symbols-outlined text-white/50" style="font-size:16px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">check_circle</span>Monthly digest, no spam</div>
+      <div class="flex items-center gap-2 text-white/70 text-sm"><span class="material-symbols-outlined text-white/50" style="font-size:16px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">check_circle</span>5,000+ subscribers</div>
+      <div class="flex items-center gap-2 text-white/70 text-sm"><span class="material-symbols-outlined text-white/50" style="font-size:16px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">check_circle</span>Unsubscribe anytime</div>
+    </div>
+    <form class="reveal d3 flex flex-col sm:flex-row max-w-md mx-auto gap-2 sm:gap-0" onsubmit="handleSubscribe(event)">
+      <input class="nl-input" type="email" placeholder="your@company.com" required/>
+      <button type="submit" class="nl-btn sm:rounded-r-lg sm:rounded-l-none">Subscribe →</button>
+    </form>
+    <p class="reveal d4 text-white/40 text-xs mt-4">By subscribing, you agree to our <a href="about us.html" class="underline hover:text-white/70 transition-colors">Privacy Policy</a>.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════ FOOTER ══════════════════════ -->
+<footer class="bg-surface-container-highest border-t border-outline-variant">
+  <div class="w-full py-16 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-12">
+      <div>
+        <span class="font-black text-xl text-primary block mb-4">GIANT STORAGE</span>
+        <p class="text-sm text-on-surface-variant leading-relaxed mb-6">Providing world-class integrated storage solutions for global industries since 2004.</p>
+        <div class="flex gap-3">
+          <a href="contact.html" class="w-9 h-9 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all"><span class="material-symbols-outlined" style="font-size:18px">share</span></a>
+          <a href="contact.html" class="w-9 h-9 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all"><span class="material-symbols-outlined" style="font-size:18px">public</span></a>
+        </div>
+      </div>
+      <div>
+        <h5 class="font-bold text-xs uppercase tracking-widest text-on-surface mb-5">Products</h5>
+        <ul class="space-y-3">
+          <li><a href="products.html" class="footer-link text-sm text-on-surface-variant">Product Catalog</a></li>
+          <li><a href="indastries.html" class="footer-link text-sm text-on-surface-variant">Manufacturing Tech</a></li>
+          <li><a href="indastries.html#quality" class="footer-link text-sm text-on-surface-variant">Quality Control</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-bold text-xs uppercase tracking-widest text-on-surface mb-5">Resources</h5>
+        <ul class="space-y-3">
+          <li><a href="blog.html" class="footer-link text-sm text-primary font-bold">Industry Blog</a></li>
+          <li><a href="contact.html" class="footer-link text-sm text-on-surface-variant">Global Export</a></li>
+          <li><a href="about us.html" class="footer-link text-sm text-on-surface-variant">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-bold text-xs uppercase tracking-widest text-on-surface mb-5">Connect</h5>
+        <p class="text-sm text-on-surface-variant mb-2">Cairo Free Zone, Egypt</p>
+        <a href="contact.html" class="footer-link text-sm text-on-surface-variant block mb-4">+20 (2) 555-0123</a>
+        <a href="contact.html" class="inline-flex items-center gap-2 bg-primary text-on-primary text-xs font-bold px-4 py-2.5 rounded-lg hover:bg-secondary active:scale-95 transition-all">
+          <span class="material-symbols-outlined" style="font-size:16px">mail</span>Send Inquiry
+        </a>
+      </div>
+    </div>
+    <div class="pt-6 border-t border-outline/10 flex flex-col items-center gap-2 text-center">
+      <div class="flex flex-col md:flex-row justify-between items-center w-full gap-4">
+        <p class="text-xs text-on-surface-variant opacity-70">© 2024 Giant Storage Integrated Solutions. All Rights Reserved.</p>
+        <div class="flex gap-6">
+          <a href="about us.html" class="text-xs text-on-surface-variant hover:text-primary transition-colors">Privacy Policy</a>
+          <a href="about us.html" class="text-xs text-on-surface-variant hover:text-primary transition-colors">Terms of Service</a>
+        </div>
+      </div>
+      <a href="#" class="transition-credit">Created by Transition</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleDrawer() {
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('drawer-overlay');
+  const open = drawer.classList.contains('translate-x-0');
+  drawer.classList.toggle('translate-x-0', !open);
+  drawer.classList.toggle('-translate-x-full', open);
+  overlay.classList.toggle('opacity-100', !open);
+  overlay.classList.toggle('opacity-0', open);
+  overlay.classList.toggle('pointer-events-none', open);
+}
+
+// Newsletter — submits to Formspree
+// SETUP: go to https://formspree.io, create a free account, create a new form,
+// then replace YOUR_FORMSPREE_NEWSLETTER_ID below with your actual form ID (e.g. "mwkgpqno").
+const NEWSLETTER_ENDPOINT = 'https://formspree.io/f/YOUR_FORMSPREE_NEWSLETTER_ID';
+
+async function handleSubscribe(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button');
+  const email = e.target.querySelector('input[type="email"]').value;
+  const orig = btn.textContent;
+  btn.textContent = 'Subscribing…';
+  btn.disabled = true;
+  try {
+    const res = await fetch(NEWSLETTER_ENDPOINT, {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+    });
+    if (res.ok) {
+      btn.textContent = '✓ Subscribed!';
+      btn.style.background = '#014e2a';
+      btn.style.color = '#fff';
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.disabled = false;
+        e.target.reset();
+      }, 3000);
+    } else {
+      throw new Error('server error');
+    }
+  } catch {
+    btn.textContent = orig;
+    btn.disabled = false;
+    alert('Could not subscribe. Please try again later.');
+  }
+}
+
+// Scroll reveal
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); revObs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => revObs.observe(el));
+
+// Header shadow on scroll
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('header');
+  header.style.boxShadow = window.scrollY > 40 ? '0 4px 24px rgba(0,0,0,.1)' : '';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://lh3.googleusercontent.com https://upload.wikimedia.org; connect-src 'self' https://formspree.io; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io;">
+<title>Request a Quote | GIANT STORAGE</title>
+<meta content="Custom Industrial Quote Request for high-scale storage solutions." name="description"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#175036",
+                    "on-error-container": "#93000a",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#246640",
+                    "on-error": "#ffffff",
+                    "surface-variant": "#e4e2e4",
+                    "primary": "#014e2a",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#ba1a1a",
+                    "surface-container-high": "#e9e7ea",
+                    "secondary-fixed": "#b5f0cb",
+                    "on-tertiary": "#ffffff",
+                    "secondary-container": "#b5f0cb",
+                    "tertiary": "#6e2d37",
+                    "tertiary-fixed-dim": "#ffb2ba",
+                    "primary-fixed-dim": "#92d5a6",
+                    "on-surface": "#1b1c1d",
+                    "inverse-primary": "#92d5a6",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-container": "#ffc2c8",
+                    "surface-dim": "#dbd9dc",
+                    "surface": "#fbf9fb",
+                    "secondary": "#32694c",
+                    "surface-bright": "#fbf9fb",
+                    "on-primary-container": "#9de1b1",
+                    "surface-tint": "#296a44",
+                    "on-primary-fixed-variant": "#08522e",
+                    "secondary-fixed-dim": "#99d3b0",
+                    "on-tertiary-fixed": "#3c0612",
+                    "surface-container-highest": "#e4e2e4",
+                    "surface-container": "#efedef",
+                    "on-secondary-fixed": "#002112",
+                    "on-background": "#1b1c1d",
+                    "on-surface-variant": "#404941",
+                    "outline": "#707971",
+                    "inverse-on-surface": "#f2f0f2",
+                    "tertiary-container": "#8b444e",
+                    "inverse-surface": "#303032",
+                    "primary-fixed": "#adf2c1",
+                    "on-primary-fixed": "#00210f",
+                    "outline-variant": "#c0c9bf",
+                    "on-secondary-container": "#386f52",
+                    "tertiary-fixed": "#ffd9dc",
+                    "on-tertiary-fixed-variant": "#74313c",
+                    "surface-container-low": "#f5f3f5",
+                    "background": "#fbf9fb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "margin-mobile": "20px",
+                    "container-max-width": "1440px",
+                    "gutter": "32px",
+                    "margin-desktop": "64px",
+                    "margin-tablet": "32px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-xl": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-xl-mobile": ["Inter"],
+                    "label-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-xl-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "label-lg": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-inactive { opacity: 0; pointer-events: none; position: absolute; transform: translateY(10px); transition: all 0.4s ease; }
+        .step-active { opacity: 1; pointer-events: auto; position: relative; transform: translateY(0); transition: all 0.4s ease; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(228, 226, 228, 0.5);
+        }
+    </style>
+<style>
+    body {
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+    html { overflow-x: hidden; }
+    img, video, iframe { max-width: 100%; height: auto; }
+    *, *::before, *::after { box-sizing: border-box; }
+    button { min-height: 44px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+    /* Step button rows on mobile */
+    @media (max-width: 639px) {
+      .pt-4.flex.gap-4 { flex-direction: column; }
+      .pt-4.flex.gap-4 button, .pt-4.flex.gap-4 .flex-1 { width: 100% !important; flex: none !important; }
+      .grid-cols-2 { grid-template-columns: repeat(1, 1fr) !important; }
+    }
+    /* Mobile drawer */
+    #rq-drawer { position:fixed;left:0;top:0;height:100%;z-index:60;display:flex;flex-direction:column;padding-top:2rem;background:#fbf9fb;width:20rem;max-width:85vw;transform:translateX(-100%);transition:transform .3s ease;box-shadow:4px 0 20px rgba(0,0,0,.1); }
+    #rq-overlay { position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:55;opacity:0;pointer-events:none;transition:opacity .3s; }
+    #rq-drawer.open { transform:translateX(0); }
+    #rq-overlay.open { opacity:1;pointer-events:all; }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed-dim selection:text-on-primary-fixed">
+<!-- Mobile Drawer -->
+<div id="rq-overlay" onclick="toggleRqDrawer()"></div>
+<div id="rq-drawer">
+  <div style="padding:0 1.5rem 2rem;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-weight:800;font-size:1rem;color:#014e2a">Giant Storage</span>
+    <button onclick="toggleRqDrawer()" style="background:none;border:none;cursor:pointer;padding:4px"><span class="material-symbols-outlined" style="color:#404941">close</span></button>
+  </div>
+  <nav style="display:flex;flex-direction:column;gap:2px;padding:0 .5rem">
+    <a href="home.html" style="display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;border-radius:.75rem;text-decoration:none;color:#404941;font-size:.875rem;font-weight:600"><span class="material-symbols-outlined">home</span>Home</a>
+    <a href="products.html" style="display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;border-radius:.75rem;text-decoration:none;color:#404941;font-size:.875rem;font-weight:600"><span class="material-symbols-outlined">inventory_2</span>Products</a>
+    <a href="indastries.html" style="display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;border-radius:.75rem;text-decoration:none;color:#404941;font-size:.875rem;font-weight:600"><span class="material-symbols-outlined">factory</span>Industries</a>
+    <a href="blog.html" style="display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;border-radius:.75rem;text-decoration:none;color:#404941;font-size:.875rem;font-weight:600"><span class="material-symbols-outlined">article</span>Blog</a>
+    <a href="about us.html" style="display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;border-radius:.75rem;text-decoration:none;color:#404941;font-size:.875rem;font-weight:600"><span class="material-symbols-outlined">info</span>About Us</a>
+    <a href="contact.html" style="display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;border-radius:.75rem;text-decoration:none;color:#404941;font-size:.875rem;font-weight:600"><span class="material-symbols-outlined">mail</span>Contact</a>
+    <a href="request qoute.html" style="display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;border-radius:.75rem;text-decoration:none;background:#b5f0cb;color:#014e2a;font-size:.875rem;font-weight:700"><span class="material-symbols-outlined">request_quote</span>Request Quote</a>
+  </nav>
+</div>
+<!-- TopAppBar -->
+<header class="bg-surface/80 dark:bg-surface-container/80 backdrop-blur-md text-primary dark:text-primary-fixed docked full-width top-0 sticky z-50 border-b border-outline-variant/30 dark:border-outline/20">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto h-20">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary cursor-pointer lg:hidden bg-transparent border-none p-1" onclick="toggleRqDrawer()" aria-label="Menu" style="background:none;border:none;min-height:44px;display:flex;align-items:center">menu</button>
+<a class="font-headline-md text-headline-md font-bold tracking-tighter text-primary dark:text-primary-fixed" href="#">GIANT STORAGE</a>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-label-lg text-label-lg text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="home.html">Home</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="products.html">Products</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="indastries.html">Industries</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="blog.html">Blog</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="about us.html">About Us</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="contact.html">Contact</a>
+<a class="font-label-lg text-label-lg text-primary dark:text-primary-fixed font-bold border-b-2 border-primary" href="request qoute.html">Request Quote</a>
+</nav>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-label-lg text-label-lg hover:bg-primary-container transition-all active:scale-95">
+                Contact Sales
+            </button>
+</div>
+</header>
+<main class="min-h-screen">
+<!-- Hero Section -->
+<section class="relative pt-16 pb-8 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
+<div class="max-w-3xl">
+<h1 class="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-primary mb-4">
+                    Custom Industrial Quote Request
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                    Tailored logistics solutions for global infrastructure. Provide your project specifications below to receive a comprehensive technical proposal within 24 hours.
+                </p>
+</div>
+</section>
+<!-- Form Section -->
+<section class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto pb-32">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left: Form Canvas -->
+<div class="lg:col-span-8">
+<div class="glass-card rounded-xl p-8 md:p-12 shadow-[0px_4px_20px_rgba(0,0,0,0.05)]">
+<!-- Stepper Visual -->
+<div class="flex items-center gap-4 mb-12">
+<div class="flex items-center gap-2 text-primary font-bold" id="step-indicator-1">
+<span class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center text-label-sm">1</span>
+<span class="font-label-lg text-label-lg hidden md:block">Project Details</span>
+</div>
+<div class="h-px bg-outline-variant flex-1"></div>
+<div class="flex items-center gap-2 text-on-surface-variant" id="step-indicator-2">
+<span class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center text-label-sm">2</span>
+<span class="font-label-lg text-label-lg hidden md:block">Logistics</span>
+</div>
+<div class="h-px bg-outline-variant flex-1"></div>
+<div class="flex items-center gap-2 text-on-surface-variant" id="step-indicator-3">
+<span class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center text-label-sm">3</span>
+<span class="font-label-lg text-label-lg hidden md:block">Company Info</span>
+</div>
+</div>
+<form id="quote-form">
+<!-- Step 1: Project Details -->
+<div class="step-active space-y-8" id="step-1">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-2">
+<label class="font-label-lg text-label-lg text-on-surface">Product Types</label>
+<select class="w-full bg-transparent border border-outline rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+<option>Automated Racking Systems</option>
+<option>Heavy-Duty Mezzanines</option>
+<option>Industrial Shelving</option>
+<option>Custom Warehouse Integration</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="font-label-lg text-label-lg text-on-surface">Estimated Quantity</label>
+<input class="w-full bg-transparent border border-outline rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="e.g. 500 units" type="number"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-lg text-label-lg text-on-surface">Storage Environment</label>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<button class="border border-primary bg-primary-fixed-dim/20 text-primary px-4 py-3 rounded-lg text-label-lg transition-all hover:bg-primary-fixed-dim/40" type="button">Cold Storage</button>
+<button class="border border-outline text-on-surface-variant px-4 py-3 rounded-lg text-label-lg transition-all hover:border-primary" type="button">Ambient</button>
+<button class="border border-outline text-on-surface-variant px-4 py-3 rounded-lg text-label-lg transition-all hover:border-primary" type="button">Hazardous</button>
+<button class="border border-outline text-on-surface-variant px-4 py-3 rounded-lg text-label-lg transition-all hover:border-primary" type="button">High-Humidity</button>
+</div>
+</div>
+<div class="pt-4">
+<button class="w-full md:w-auto bg-primary text-on-primary px-10 py-4 rounded-lg font-label-lg text-label-lg hover:bg-primary-container transition-all shadow-lg shadow-primary/10" onclick="goToStep(2)" type="button">
+                                        Next: Logistics Requirements
+                                    </button>
+</div>
+</div>
+<!-- Step 2: Logistics Requirements -->
+<div class="step-inactive space-y-8" id="step-2">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-2">
+<label class="font-label-lg text-label-lg text-on-surface">Destination Port/City</label>
+<input class="w-full bg-transparent border border-outline rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="e.g. Rotterdam, NL" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-lg text-label-lg text-on-surface">Lead Time Preference</label>
+<select class="w-full bg-transparent border border-outline rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+<option>Urgent (30 Days)</option>
+<option>Standard (60-90 Days)</option>
+<option>Future Planning (6+ Months)</option>
+</select>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-lg text-label-lg text-on-surface">Installation Services</label>
+<div class="flex items-center gap-4">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline text-primary focus:ring-primary transition-all" type="checkbox"/>
+<span class="text-on-surface-variant group-hover:text-primary transition-colors">On-site Assembly Required</span>
+</label>
+</div>
+</div>
+<div class="pt-4 flex gap-4">
+<button class="border-2 border-primary text-primary px-8 py-4 rounded-lg font-label-lg text-label-lg hover:bg-primary/5 transition-all" onclick="goToStep(1)" type="button">
+                                        Back
+                                    </button>
+<button class="flex-1 md:flex-none bg-primary text-on-primary px-10 py-4 rounded-lg font-label-lg text-label-lg hover:bg-primary-container transition-all" onclick="goToStep(3)" type="button">
+                                        Next: Company Information
+                                    </button>
+</div>
+</div>
+<!-- Step 3: Company Information -->
+<div class="step-inactive space-y-8" id="step-3">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-2">
+<label class="font-label-lg text-label-lg text-on-surface">Company Name</label>
+<input class="w-full bg-transparent border border-outline rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Global Logistics Corp" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-lg text-label-lg text-on-surface">Business Email</label>
+<input class="w-full bg-transparent border border-outline rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="procurement@company.com" type="email"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-lg text-label-lg text-on-surface">Industry Sector</label>
+<input class="w-full bg-transparent border border-outline rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="e.g. E-commerce, Manufacturing" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-lg text-label-lg text-on-surface">Phone Number</label>
+<input class="w-full bg-transparent border border-outline rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="+1 (555) 000-0000" type="tel"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-lg text-label-lg text-on-surface">Project Brief / Special Instructions</label>
+<textarea class="w-full bg-transparent border border-outline rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Briefly describe your project scope..." rows="4"></textarea>
+</div>
+<div class="pt-4 flex gap-4">
+<button class="border-2 border-primary text-primary px-8 py-4 rounded-lg font-label-lg text-label-lg hover:bg-primary/5 transition-all" onclick="goToStep(2)" type="button">
+                                        Back
+                                    </button>
+<button class="flex-1 md:flex-none bg-primary text-on-primary px-12 py-4 rounded-lg font-label-lg text-label-lg hover:bg-primary-container transition-all shadow-xl shadow-primary/20 uppercase tracking-widest" type="submit">
+                                        Direct Inquiry
+                                    </button>
+</div>
+</div>
+</form>
+</div>
+</div>
+<!-- Right: Content & Social Proof -->
+<aside class="lg:col-span-4 space-y-gutter">
+<div class="bg-surface-container-low rounded-xl p-8 space-y-6">
+<h3 class="font-headline-md text-headline-md text-primary">Why Giant Storage?</h3>
+<ul class="space-y-4">
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-secondary shrink-0">verified</span>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">ISO 9001 Certified</p>
+<p class="text-on-surface-variant text-sm">Highest manufacturing standards for seismic and heavy-duty load capacities.</p>
+</div>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-secondary shrink-0">public</span>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">Global Distribution</p>
+<p class="text-on-surface-variant text-sm">Strategic manufacturing hubs in 4 continents ensuring rapid deployment.</p>
+</div>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-secondary shrink-0">engineering</span>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">Expert Consultation</p>
+<p class="text-on-surface-variant text-sm">Free CAD design and facility optimization analysis included with every quote.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="relative rounded-xl overflow-hidden aspect-video group">
+<div class="absolute inset-0 bg-primary/20 group-hover:bg-primary/10 transition-all"></div>
+<img class="w-full h-full object-cover" data-alt="A wide-angle professional photograph of a massive, modern industrial warehouse interior. The space is filled with high-tech automated shelving systems and precision steel racking reaching towards a high ceiling. Bright, diffused daylight pours in through skylights, reflecting off the polished concrete floor. The color palette consists of cool greys and deep forest greens, evoking a sense of scale, reliability, and precision engineering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCu-r1AtSl49qnI-a6NpF3tIMe9S-lR-_cjAB-1B1UFjSmtwMjuChO8r_vHNeznJ12flZiGZ4SxWZ8hD6TGOulSfBizqWR9qxtIJY52SlcUX1Mbk_7JJGm5n7rwbflv7mWhPhh6LBAqkdIc70TCCcuCPfd_hvvH2WiPZLU-qSWh2krADab1dLpe8oZl16qEn98rf1MTStEiM_YPxBIJSdPGtm31NnmvEbgU0j7AymSOMtp4_TySD5AhRTnoUwHxZpWeQNr9Ri9ZfAg"/>
+<div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm p-4 rounded-lg">
+<p class="text-label-sm font-bold text-primary mb-1">PROJECT SPOTLIGHT</p>
+<p class="text-sm font-medium">1.2M Sq Ft Logistic Hub, Singapore</p>
+</div>
+</div>
+<div class="border-l-4 border-primary p-6 bg-surface-container-high/50 italic text-on-surface-variant">
+                        "The technical precision provided in the initial quote phase was the deciding factor. Giant Storage understood our unique seismic requirements for our Tokyo facility better than anyone else."
+                        <p class="not-italic font-bold text-on-surface mt-4 text-sm">— Director of Operations, TechLogistics APAC</p>
+</div>
+</aside>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest dark:bg-surface-container-lowest full-width border-t border-outline-variant dark:border-outline">
+<div class="w-full py-16 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="md:col-span-1 space-y-4">
+<a class="font-headline-md text-headline-md font-black text-primary dark:text-primary-fixed-dim" href="#">GIANT STORAGE</a>
+<p class="text-on-surface-variant font-body-md text-body-md">Integrated industrial solutions for the modern supply chain.</p>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-lg text-label-lg text-primary uppercase tracking-widest">Solutions</h4>
+<ul class="space-y-2">
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Product Catalog</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Manufacturing Tech</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Quality Control</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-lg text-label-lg text-primary uppercase tracking-widest">Company</h4>
+<ul class="space-y-2">
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Global Export</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Sustainability</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-lg text-label-lg text-primary uppercase tracking-widest">Newsletter</h4>
+<div class="flex gap-2">
+<input class="bg-surface border border-outline rounded-lg px-3 py-2 text-sm w-full focus:outline-primary" placeholder="Email address" type="email"/>
+<button class="bg-primary text-on-primary p-2 rounded-lg material-symbols-outlined">send</button>
+</div>
+</div>
+</div>
+<div class="w-full py-8 px-margin-mobile border-t border-outline-variant/30 text-center flex flex-col items-center gap-1">
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-70">© 2024 Giant Storage Integrated Solutions. All Rights Reserved.</p>
+<a href="#" style="font-family:'Lora',serif;font-style:italic;font-size:.72rem;opacity:.4;letter-spacing:.02em;transition:color .3s,opacity .3s;text-decoration:none;color:inherit" onmouseover="this.style.opacity='.75';this.style.color='#014e2a'" onmouseout="this.style.opacity='.4';this.style.color='inherit'">Created by Transition</a>
+</div>
+</footer>
+<script>
+        function toggleRqDrawer(){
+          const d=document.getElementById('rq-drawer');
+          const o=document.getElementById('rq-overlay');
+          const open=d.classList.toggle('open');
+          o.classList.toggle('open',open);
+          document.body.style.overflow=open?'hidden':'';
+        }
+        function goToStep(stepNumber) {
+            const steps = [1, 2, 3];
+            steps.forEach(s => {
+                const stepEl = document.getElementById(`step-${s}`);
+                const indicatorEl = document.getElementById(`step-indicator-${s}`);
+                
+                if (s === stepNumber) {
+                    stepEl.classList.remove('step-inactive');
+                    stepEl.classList.add('step-active');
+                    
+                    // Update indicator styles
+                    indicatorEl.classList.add('text-primary', 'font-bold');
+                    indicatorEl.classList.remove('text-on-surface-variant');
+                    indicatorEl.querySelector('span:first-child').classList.add('bg-primary', 'text-on-primary');
+                    indicatorEl.querySelector('span:first-child').classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+                } else {
+                    stepEl.classList.remove('step-active');
+                    stepEl.classList.add('step-inactive');
+                    
+                    // Keep indicator logic if needed for "completed" look, 
+                    // or reset for "future" look. Here we just set current/inactive.
+                    if (s < stepNumber) {
+                        indicatorEl.classList.add('text-on-surface-variant');
+                        indicatorEl.querySelector('span:first-child').classList.replace('bg-primary', 'bg-secondary-container');
+                        indicatorEl.querySelector('span:first-child').innerHTML = 'check';
+                        indicatorEl.querySelector('span:first-child').classList.add('material-symbols-outlined');
+                    } else {
+                        indicatorEl.classList.remove('text-primary', 'font-bold');
+                        indicatorEl.classList.add('text-on-surface-variant');
+                        indicatorEl.querySelector('span:first-child').classList.remove('bg-primary', 'text-on-primary');
+                        indicatorEl.querySelector('span:first-child').classList.add('bg-surface-container-high', 'text-on-surface-variant');
+                        indicatorEl.querySelector('span:first-child').classList.remove('material-symbols-outlined');
+                        indicatorEl.querySelector('span:first-child').innerHTML = s;
+                    }
+                }
+            });
+            window.scrollTo({ top: 100, behavior: 'smooth' });
+        }
+
+        // Quote form — submits to Formspree
+        // SETUP: go to https://formspree.io, create a free account, create a new form,
+        // then replace YOUR_FORMSPREE_FORM_ID below with your actual form ID (e.g. "xbjnkrvo").
+        const QUOTE_FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORMSPREE_FORM_ID';
+
+        document.getElementById('quote-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('button[type="submit"]');
+            const origText = btn ? btn.innerHTML : '';
+            if (btn) { btn.disabled = true; btn.innerHTML = 'Submitting…'; }
+
+            try {
+                const res = await fetch(QUOTE_FORM_ENDPOINT, {
+                    method: 'POST',
+                    body: new FormData(this),
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (res.ok) {
+                    if (btn) btn.innerHTML = '✓ Request Submitted';
+                    setTimeout(() => {
+                        if (btn) { btn.innerHTML = origText; btn.disabled = false; }
+                        this.reset();
+                        goToStep(1);
+                    }, 3000);
+                } else {
+                    throw new Error('server error');
+                }
+            } catch {
+                if (btn) { btn.innerHTML = origText; btn.disabled = false; }
+                alert('Unable to submit your request right now. Please email us directly at info@giantstorage.com or call +20 102 515 1199.');
+            }
+        });
+    </script>
+</body></html>

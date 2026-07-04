@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://lh3.googleusercontent.com https://upload.wikimedia.org; connect-src 'self' https://formspree.io; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io;">
+<title>Giant Storage | Integrated Industrial Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "on-secondary-fixed-variant": "#175036","on-error-container": "#93000a","on-primary": "#ffffff",
+          "error-container": "#ffdad6","primary-container": "#246640","on-error": "#ffffff",
+          "surface-variant": "#e4e2e4","primary": "#014e2a","surface-container-lowest": "#ffffff",
+          "error": "#ba1a1a","surface-container-high": "#e9e7ea","secondary-fixed": "#b5f0cb",
+          "on-tertiary": "#ffffff","secondary-container": "#b5f0cb","tertiary": "#6e2d37",
+          "tertiary-fixed-dim": "#ffb2ba","primary-fixed-dim": "#92d5a6","on-surface": "#1b1c1d",
+          "inverse-primary": "#92d5a6","on-secondary": "#ffffff","on-tertiary-container": "#ffc2c8",
+          "surface-dim": "#dbd9dc","surface": "#fbf9fb","secondary": "#32694c","surface-bright": "#fbf9fb",
+          "on-primary-container": "#9de1b1","surface-tint": "#296a44","on-primary-fixed-variant": "#08522e",
+          "secondary-fixed-dim": "#99d3b0","on-tertiary-fixed": "#3c0612","surface-container-highest": "#e4e2e4",
+          "surface-container": "#efedef","on-secondary-fixed": "#002112","on-background": "#1b1c1d",
+          "on-surface-variant": "#404941","outline": "#707971","inverse-on-surface": "#f2f0f2",
+          "tertiary-container": "#8b444e","inverse-surface": "#303032","primary-fixed": "#adf2c1",
+          "on-primary-fixed": "#00210f","outline-variant": "#c0c9bf","on-secondary-container": "#386f52",
+          "tertiary-fixed": "#ffd9dc","on-tertiary-fixed-variant": "#74313c","surface-container-low": "#f5f3f5",
+          "background": "#fbf9fb"
+        },
+        "borderRadius": {"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},
+        "spacing": {"unit":"8px","margin-mobile":"20px","container-max-width":"1440px","gutter":"32px","margin-desktop":"64px","margin-tablet":"32px"},
+        "fontFamily": {"headline-lg-mobile":["Inter"],"display-lg":["Inter"],"headline-lg":["Inter"],"label-sm":["Inter"],"body-md":["Inter"],"headline-xl":["Inter"],"headline-md":["Inter"],"body-lg":["Inter"],"headline-xl-mobile":["Inter"],"label-lg":["Inter"]},
+        "fontSize": {
+          "headline-lg-mobile":["28px",{"lineHeight":"1.3","fontWeight":"600"}],
+          "display-lg":["64px",{"lineHeight":"1.1","letterSpacing":"-0.02em","fontWeight":"700"}],
+          "headline-lg":["32px",{"lineHeight":"1.3","fontWeight":"600"}],
+          "label-sm":["12px",{"lineHeight":"1.2","fontWeight":"500"}],
+          "body-md":["16px",{"lineHeight":"1.6","fontWeight":"400"}],
+          "headline-xl":["48px",{"lineHeight":"1.2","letterSpacing":"-0.01em","fontWeight":"600"}],
+          "headline-md":["24px",{"lineHeight":"1.4","fontWeight":"600"}],
+          "body-lg":["18px",{"lineHeight":"1.6","fontWeight":"400"}],
+          "headline-xl-mobile":["32px",{"lineHeight":"1.2","fontWeight":"600"}],
+          "label-lg":["14px",{"lineHeight":"1.2","letterSpacing":"0.05em","fontWeight":"600"}]
+        }
+      }
+    }
+  }
+</script>
+<style>
+/* ═══════════════ BASE ═══════════════ */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block; line-height: 1;
+}
+.premium-shadow { box-shadow: 0 4px 20px rgba(0,0,0,.05); }
+
+/* ═══════════════ CURSOR GLOW ═══════════════ */
+#cursor-glow {
+  position: fixed; width: 480px; height: 480px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(1,78,42,.055) 0%, transparent 65%);
+  pointer-events: none; z-index: 1; will-change: transform;
+  transition: opacity .4s; opacity: 0;
+  transform: translate(-50%,-50%);
+}
+
+/* ═══════════════ SCROLL PROGRESS BAR ═══════════════ */
+#scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0;
+  background: linear-gradient(90deg, #014e2a, #92d5a6);
+  z-index: 9999; transition: width .1s linear;
+}
+
+/* ═══════════════ SCROLL-REVEAL ═══════════════ */
+.reveal {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity .7s ease-out, transform .7s ease-out;
+}
+.reveal.reveal-left  { transform: translateX(-44px); }
+.reveal.reveal-right { transform: translateX(44px); }
+.reveal.reveal-zoom  { transform: scale(.9); }
+.reveal.in-view { opacity: 1; transform: none; }
+.stagger-1 { transition-delay: .05s !important; }
+.stagger-2 { transition-delay: .15s !important; }
+.stagger-3 { transition-delay: .25s !important; }
+.stagger-4 { transition-delay: .35s !important; }
+
+/* ═══════════════ NAV LINK UNDERLINE ═══════════════ */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 2px; background: #014e2a;
+  transition: width .3s cubic-bezier(.4,0,.2,1);
+  border-radius: 99px;
+}
+.nav-link:hover::after { width: 100%; }
+.nav-link-active::after { width: 100%; }
+
+/* ═══════════════ HERO ANIMATIONS ═══════════════ */
+@keyframes heroFadeUp { from{opacity:0;transform:translateY(44px)} to{opacity:1;transform:none} }
+@keyframes heroZoom   { from{transform:scale(1)} to{transform:scale(1.08)} }
+@keyframes slideInRight { from{opacity:0;transform:translateX(44px)} to{opacity:1;transform:none} }
+@keyframes floatY     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+@keyframes floatImg   { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-8px) scale(1.01)} }
+@keyframes scrollBounce { 0%,100%{transform:translateY(0) translateX(-50%)} 50%{transform:translateY(8px) translateX(-50%)} }
+@keyframes badgeFloat1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+@keyframes badgeFloat2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+@keyframes badgeFloat3 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes pulseRing  { 0%{transform:scale(1);opacity:.7} 100%{transform:scale(1.7);opacity:0} }
+
+.hero-bg       { animation: heroZoom 16s ease-in-out infinite alternate; }
+.hero-title    { animation: heroFadeUp .9s ease-out .2s both; }
+.hero-para     { animation: heroFadeUp .9s ease-out .5s both; }
+.hero-btn-1    { animation: heroFadeUp .9s ease-out .75s both; }
+.hero-btn-2    { animation: heroFadeUp .9s ease-out .95s both; }
+.contact-widget { animation: slideInRight .9s ease-out 1.1s both; }
+
+/* ─ Scroll indicator ─ */
+.scroll-indicator {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: .35rem;
+  z-index: 20; animation: scrollBounce 2s ease-in-out infinite;
+  opacity: 0; animation: heroFadeUp .9s ease-out 1.5s both, scrollBounce 2s ease-in-out 2.5s infinite;
+}
+.scroll-indicator span { color: rgba(255,255,255,.65); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.scroll-indicator .arrow { width: 24px; height: 24px; border-right: 2px solid rgba(255,255,255,.5); border-bottom: 2px solid rgba(255,255,255,.5); transform: rotate(45deg); border-radius: 2px; }
+
+/* ─ Hero floating badges ─ */
+.hero-badge {
+  position: absolute; z-index: 15;
+  background: rgba(255,255,255,.13); backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 9999px; padding: .45rem 1rem;
+  display: flex; align-items: center; gap: .45rem;
+  color: #fff; font-size: .78rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  box-shadow: 0 4px 20px rgba(0,0,0,.2);
+  opacity: 0;
+}
+.hero-badge-1 { top: 22%; left: 4%; animation: heroFadeUp .9s ease-out 1.6s both, badgeFloat1 5s ease-in-out 2.6s infinite; }
+.hero-badge-2 { top: 35%; left: 4%; animation: heroFadeUp .9s ease-out 1.8s both, badgeFloat2 6s ease-in-out 2.8s infinite; }
+.hero-badge-3 { bottom: 24%; left: 4%; animation: heroFadeUp .9s ease-out 2.0s both, badgeFloat3 7s ease-in-out 3.0s infinite; }
+.hero-badge .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #92d5a6; flex-shrink: 0; }
+
+/* ─ Hero geometric decorations ─ */
+.hero-geo {
+  position: absolute; border-radius: 50%; pointer-events: none; z-index: 1;
+}
+.hero-geo-1 {
+  width: 480px; height: 480px; right: -80px; top: -80px;
+  border: 1px solid rgba(255,255,255,.06);
+  animation: floatY 12s ease-in-out infinite;
+}
+.hero-geo-2 {
+  width: 300px; height: 300px; right: 80px; top: 40px;
+  border: 1px solid rgba(255,255,255,.04);
+  animation: floatY 9s ease-in-out 2s infinite;
+}
+.hero-geo-3 {
+  width: 180px; height: 180px; right: 140px; top: 100px;
+  background: rgba(146,213,166,.04);
+  animation: floatY 7s ease-in-out 1s infinite;
+}
+
+/* ─ Dot grid pattern utility ─ */
+.dot-pattern-bg {
+  background-image: radial-gradient(circle, rgba(1,78,42,.1) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.dot-pattern-light {
+  background-image: radial-gradient(circle, rgba(1,78,42,.06) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* ─ Section separator ─ */
+.sep-line {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 3rem 0; max-width: 1440px; margin: 0 auto;
+}
+.sep-line-track {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, #c0c9bf 40%, #c0c9bf 60%, transparent);
+}
+.sep-diamond {
+  width: 10px; height: 10px; border: 2px solid #014e2a;
+  transform: rotate(45deg); flex-shrink: 0;
+  animation: floatY 3s ease-in-out infinite;
+}
+.sep-text {
+  font-size: .68rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: #707971; white-space: nowrap;
+}
+
+/* ─ Floating contact widget ─ */
+.contact-widget-inner {
+  background: rgba(255,255,255,.12); backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,.25);
+  box-shadow: 0 8px 32px rgba(0,0,0,.28);
+  animation: floatY 5s ease-in-out infinite;
+}
+.contact-widget-inner a {
+  display: flex; align-items: center; gap: .5rem;
+  color: #fff; font-size: .9rem; font-weight: 500;
+  padding: .45rem .5rem; border-radius: .5rem;
+  transition: background .2s, transform .2s; text-decoration: none;
+}
+.contact-widget-inner a:hover { background: rgba(255,255,255,.18); transform: scale(1.05); }
+.contact-widget-inner .icon-wrap {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,.2); flex-shrink: 0;
+  transition: transform .2s, background .2s;
+}
+.contact-widget-inner a:hover .icon-wrap { transform: rotate(-8deg) scale(1.15); background: rgba(255,255,255,.3); }
+.contact-widget-inner svg { width: 18px; height: 18px; fill: #fff; }
+
+/* ═══════════════ PRIMARY BUTTON ═══════════════ */
+.btn-primary {
+  position: relative; overflow: hidden;
+  background: #014e2a; color: #fff;
+  padding: .85rem 2rem; border-radius: 9999px;
+  font-weight: 700; font-size: .9rem; letter-spacing: .05em;
+  display: inline-flex; align-items: center; gap: .5rem;
+  box-shadow: 0 6px 24px rgba(1,78,42,.35);
+  transition: transform .25s, box-shadow .25s, background .25s;
+  text-decoration: none; border: none; cursor: pointer;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(1,78,42,.42); background: #08522e; }
+.btn-primary::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,.3) 0%, transparent 70%);
+  opacity: 0; transition: opacity .3s;
+}
+.btn-primary:hover::after { opacity: 1; }
+.btn-primary:active { transform: scale(.97); }
+
+/* ═══════════════ ABOUT SECTION ═══════════════ */
+.about-img-wrap { animation: floatImg 6s ease-in-out infinite; }
+.about-img-wrap:hover img { transform: scale(1.04); }
+.about-img-wrap img { transition: transform .6s ease; }
+
+/* About corner decorations */
+.about-corner-tl, .about-corner-br {
+  position: absolute; width: 80px; height: 80px; pointer-events: none;
+}
+.about-corner-tl { top: -12px; right: -12px; border-top: 3px solid rgba(1,78,42,.25); border-right: 3px solid rgba(1,78,42,.25); border-radius: 0 12px 0 0; }
+.about-corner-br { bottom: 20px; left: -12px; border-bottom: 3px solid rgba(1,78,42,.25); border-left: 3px solid rgba(1,78,42,.25); border-radius: 0 0 0 12px; }
+
+/* mini stat card hover */
+.mini-stat { transition: transform .25s, box-shadow .25s; }
+.mini-stat:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(1,78,42,.12); }
+
+/* ═══════════════ LOGOS ═══════════════ */
+.logo-track-wrap {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%);
+}
+.logo-track {
+  display: flex; gap: 2.5rem; width: max-content;
+  animation: scrollLogos 30s linear infinite;
+}
+.logo-track:hover { animation-play-state: paused; }
+@keyframes scrollLogos { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.logo-item {
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  padding: 1rem 1.75rem; border-radius: .875rem; background: #fff;
+  box-shadow: 0 2px 14px rgba(0,0,0,.07);
+  transition: transform .3s, box-shadow .3s;
+}
+.logo-item:hover { transform: translateY(-4px) scale(1.04); box-shadow: 0 8px 24px rgba(0,0,0,.13); }
+.logo-item img {
+  height: 40px; width: auto; object-fit: contain;
+  filter: grayscale(1) opacity(.65); transition: filter .35s;
+}
+.logo-item:hover img { filter: none; }
+
+/* ═══════════════ PRODUCT CARDS ═══════════════ */
+.product-card {
+  border-radius: 1rem; overflow: hidden; background: #fff;
+  box-shadow: 0 4px 20px rgba(0,0,0,.07);
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 52px rgba(0,0,0,.15), 0 0 0 1px rgba(1,78,42,.08);
+}
+.product-card:hover .prod-img { transform: scale(1.08); }
+.prod-img { transition: transform .65s ease; width: 100%; height: 100%; object-fit: cover; }
+.card-btn { display: inline-block; transition: transform .2s, box-shadow .2s; }
+.product-card:hover .card-btn { transform: translateY(-2px); }
+
+/* ═══════════════ STATS SECTION ═══════════════ */
+.stat-num { font-variant-numeric: tabular-nums; }
+@keyframes statPulse { 0%{transform:scale(1)} 40%{transform:scale(1.06)} 100%{transform:scale(1)} }
+.stat-pulse { animation: statPulse .55s ease-in-out; }
+
+/* Stats decorative orbs */
+.stats-orb {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(146,213,166,.18) 0%, transparent 70%);
+}
+@keyframes orbFloat { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-16px) scale(1.05)} }
+
+/* ═══════════════ VIDEO CARDS ═══════════════ */
+.video-card {
+  border-radius: 1rem; overflow: hidden; background: #fff;
+  box-shadow: 0 4px 24px rgba(0,0,0,.08);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.video-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(0,0,0,.14), 0 0 0 1px rgba(1,78,42,.1), 0 0 28px rgba(1,78,42,.07);
+}
+.video-card .thumb-wrap { position: relative; overflow: hidden; aspect-ratio: 16/9; }
+.video-card .thumb-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .55s ease; }
+.video-card:hover .thumb-wrap img { transform: scale(1.06); }
+.play-btn {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.22); transition: background .3s;
+}
+.video-card:hover .play-btn { background: rgba(1,78,42,.48); }
+.play-btn-inner {
+  width: 58px; height: 58px; border-radius: 50%;
+  background: rgba(255,255,255,.92); display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 18px rgba(0,0,0,.28); transition: transform .28s;
+  position: relative;
+}
+.play-btn-inner::before {
+  content: ''; position: absolute; inset: -4px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.5);
+  animation: pulseRing 2s ease-out infinite;
+}
+.video-card:hover .play-btn-inner { transform: scale(1.14); }
+.play-btn-inner .material-symbols-outlined {
+  color: #014e2a; font-size: 28px;
+  font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
+}
+@keyframes pulseRing { 0%{transform:scale(1);opacity:.6} 100%{transform:scale(1.75);opacity:0} }
+
+/* Video card link hover underline */
+.video-card-link {
+  position: relative; display: inline-block;
+  font-weight: 600; color: #014e2a; font-size: .82rem;
+  letter-spacing: .06em; text-transform: uppercase; text-decoration: none;
+}
+.video-card-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 0;
+  width: 0; height: 1.5px; background: #014e2a;
+  transition: width .3s ease;
+}
+.video-card:hover .video-card-link::after { width: 100%; }
+
+/* Mobile carousel */
+.video-carousel { position: relative; overflow: hidden; }
+.video-slides { display: flex; transition: transform .45s cubic-bezier(.4,0,.2,1); }
+.video-slide { flex: 0 0 100%; padding: 0 .5rem; }
+.carousel-btn {
+  position: absolute; top: 42%; transform: translateY(-50%);
+  width: 44px; height: 44px; border-radius: 50%;
+  background: #014e2a; color: #fff; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,.22); transition: background .2s, transform .2s; z-index: 10;
+}
+.carousel-btn:hover { background: #08522e; transform: translateY(-50%) scale(1.1); }
+.carousel-btn-prev { left: -2px; }
+.carousel-btn-next { right: -2px; }
+
+/* ═══════════════ WHY CHOOSE US ═══════════════ */
+.feature-block { position: relative; }
+.feature-icon-ring {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, #246640, #014e2a);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; transition: transform .35s;
+}
+.feature-block:hover .feature-icon-ring { transform: rotate(-6deg) scale(1.1); }
+.feature-icon-ring::after {
+  content: ''; position: absolute; inset: -6px; border-radius: 50%;
+  border: 2px solid rgba(173,242,193,.3);
+  transition: inset .35s, opacity .35s; opacity: 0;
+}
+.feature-block:hover .feature-icon-ring::after { inset: -10px; opacity: 1; }
+
+/* ═══════════════ CERT CARDS ═══════════════ */
+.cert-card {
+  border: 1px solid #c0c9bf; border-radius: 1.1rem; padding: 2.25rem 1.5rem;
+  background: #fff; text-align: center;
+  transition: transform .3s, box-shadow .3s, border-color .3s;
+  position: relative; overflow: hidden;
+}
+.cert-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(173,242,193,.18) 0%, transparent 65%);
+  opacity: 0; transition: opacity .35s;
+}
+.cert-card:hover { transform: translateY(-7px); box-shadow: 0 20px 48px rgba(1,78,42,.13); border-color: #014e2a; }
+.cert-card:hover::before { opacity: 1; }
+.cert-icon {
+  width: 68px; height: 68px; border-radius: 50%;
+  background: linear-gradient(135deg, #adf2c1, #b5f0cb);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1.35rem; transition: transform .35s;
+  box-shadow: 0 4px 16px rgba(1,78,42,.14);
+}
+.cert-card:hover .cert-icon { transform: rotate(10deg) scale(1.12); }
+.cert-icon .material-symbols-outlined { color: #014e2a; font-size: 32px; }
+
+/* ─ Cert connector line ─ */
+.cert-connector-wrap {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .cert-connector-wrap {
+    display: flex; align-items: center; justify-content: center;
+    position: relative; height: 2px; margin-bottom: 2rem; overflow: visible;
+  }
+  .cert-connector-line {
+    height: 1px; background: linear-gradient(90deg, transparent, rgba(1,78,42,.2) 20%, rgba(1,78,42,.2) 80%, transparent);
+    flex: 1;
+  }
+  .cert-connector-node {
+    width: 8px; height: 8px; border-radius: 50%; background: #014e2a; flex-shrink: 0;
+    opacity: .5;
+  }
+}
+
+/* ═══════════════ SECTION EYEBROW ═══════════════ */
+.section-eyebrow {
+  display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: #014e2a;
+  background: #adf2c1; padding: .32rem .95rem; border-radius: 9999px;
+  margin-bottom: 1rem;
+}
+
+/* ═══════════════ FOOTER SOCIAL HOVER ═══════════════ */
+.footer-social { transition: transform .25s, background .25s, color .25s !important; }
+.footer-social:hover { transform: rotate(12deg) scale(1.15) !important; }
+
+/* ═══════════════ MOBILE NAV ═══════════════ */
+#mobile-menu {
+  display: none; flex-direction: column; gap: 1rem;
+  padding: 1.5rem 1.25rem; background: rgba(251,249,251,.97);
+  backdrop-filter: blur(12px); border-bottom: 1px solid #c0c9bf;
+}
+#mobile-menu.open { display: flex; }
+
+/* ═══════════════ MANUFACTURING BADGE ═══════════════ */
+.mfg-badge {
+  position: absolute; top: 1.5rem; left: 1.5rem; z-index: 10;
+  background: rgba(255,255,255,.13); backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 9999px; padding: .5rem 1.1rem;
+  display: flex; align-items: center; gap: .5rem;
+  color: #fff; font-size: .78rem; font-weight: 700;
+  letter-spacing: .07em; box-shadow: 0 4px 16px rgba(0,0,0,.2);
+}
+
+/* ═══════════════ INDUSTRIES HOVER ═══════════════ */
+@keyframes iconBounce { 0%,100%{transform:translateY(0)} 35%{transform:translateY(-5px)} 65%{transform:translateY(-2px)} }
+.industry-card:hover .ind-icon { animation: iconBounce .5s ease; }
+
+/* ═══════════════ REDUCED MOTION ═══════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  #cursor-glow { display: none; }
+}
+
+/* ═══════════════ RESPONSIVE FIXES ═══════════════ */
+html, body { overflow-x: hidden; }
+img, video, iframe { max-width: 100%; height: auto; }
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Hide contact widget on very small screens */
+@media (max-width: 479px) {
+  .contact-widget { display: none !important; }
+  .hero-badge { display: none !important; }
+}
+
+/* Drawer max width on very narrow screens */
+#drawer { max-width: 85vw; }
+
+/* Hero text clamped on mobile */
+@media (max-width: 639px) {
+  .font-display-lg.text-headline-xl-mobile { font-size: clamp(1.6rem, 7vw, 2rem) !important; }
+  .font-headline-xl { font-size: clamp(1.5rem, 6.5vw, 2rem) !important; }
+}
+
+/* Ensure footer stacks correctly */
+@media (max-width: 767px) {
+  footer { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
+}
+
+/* Mobile performance: reduce heavy animations */
+@media (max-width: 767px) {
+  .hero-bg { animation-duration: 32s !important; }
+  .logo-track { animation-duration: 50s !important; }
+  .stats-orb { display: none !important; }
+  #cursor-glow { display: none !important; }
+}
+
+/* Ensure buttons are minimum 44px tall for touch */
+button, a[role="button"], .btn-primary, .btn-outline { min-height: 44px; }
+</style>
+</head>
+<body class="bg-background text-on-background font-body-md">
+
+<!-- Cursor glow -->
+<div id="cursor-glow"></div>
+<!-- Scroll progress bar -->
+<div id="scroll-progress"></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════════════════════ -->
+<header id="site-header" class="bg-surface/80 backdrop-blur-md text-primary border-b border-outline-variant/30 top-0 sticky z-50 transition-shadow duration-300">
+  <div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto h-20">
+    <div class="flex items-center gap-4">
+      <img alt="Giant Storage Logo" class="h-12 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCj4u6eML-VML6aKQcXtxb0-jOV3u1iXfJNa-EvWgzCrnMxbfQ-Oyp6AIhgn7skN7e1VBFT0m1_y25J_achw8C8VGwu2hYIRkj_-Z4tGVsicyfHfp2eUuL7b85R42Z6SN2SSXBK32LZwn2Kto6kBpvRQQLvCWNQvjmgi4jvkNoF8ENyzA-IYJy5VUL8fHiqC0JMLa2QE8gj4OTzL5WBaa--marZfs7hzEMDSHM_kkw1KNUoOq4uZo-jPdB1RofpF5i1CSO3W96uTys"/>
+      <span class="font-headline-md text-headline-md font-bold tracking-tighter text-primary uppercase">GIANT STORAGE</span>
+    </div>
+    <nav class="hidden md:flex items-center gap-8">
+      <a class="text-primary font-bold font-label-lg text-label-lg nav-link nav-link-active" href="home.html">Home</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors font-label-lg text-label-lg nav-link" href="products.html">Products</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors font-label-lg text-label-lg nav-link" href="indastries.html">Industries</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors font-label-lg text-label-lg nav-link" href="blog.html">Blog</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors font-label-lg text-label-lg nav-link" href="about us.html">About Us</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors font-label-lg text-label-lg nav-link" href="contact.html">Contact</a>
+    </nav>
+    <div class="flex items-center gap-4">
+      <a href="request qoute.html">
+        <button class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-lg text-label-lg hover:bg-secondary active:scale-95 transition-all premium-shadow hidden md:block" style="box-shadow:0 4px 18px rgba(1,78,42,.3)">Request Quote</button>
+      </a>
+      <button id="mobile-toggle" class="md:hidden text-primary hover:scale-110 transition-transform" aria-label="Open menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu">
+    <a class="text-primary font-bold font-label-lg text-label-lg" href="home.html">Home</a>
+    <a class="text-on-surface-variant hover:text-primary transition-colors font-label-lg text-label-lg" href="products.html">Products</a>
+    <a class="text-on-surface-variant hover:text-primary transition-colors font-label-lg text-label-lg" href="indastries.html">Industries</a>
+    <a class="text-on-surface-variant hover:text-primary transition-colors font-label-lg text-label-lg" href="blog.html">Blog</a>
+    <a class="text-on-surface-variant hover:text-primary transition-colors font-label-lg text-label-lg" href="about us.html">About Us</a>
+    <a class="text-on-surface-variant hover:text-primary transition-colors font-label-lg text-label-lg" href="contact.html">Contact</a>
+    <a href="request qoute.html" class="btn-primary w-fit mt-2">Request Quote</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════════════
+     1. HERO
+════════════════════════════════════════════════════════ -->
+<section class="relative h-[90vh] min-h-[600px] flex items-center overflow-hidden">
+
+  <!-- BG -->
+  <div class="absolute inset-0 z-0">
+    <div class="hero-bg w-full h-full bg-cover bg-center" style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuCvUppSIUhiLWIyyd-8B9t1tvTbccTRdXY9Nl-ZoAMQrVOWoSEOBUPOzR4MChZDQSGPBzoURAW5wiRz03UypGYnBhWRbL2bHFzLdP4oa__H5VSKHFILgRqm0OOjKI_7w5MoM1iXx21UsvZl9WUzk4UcYgTUkk9G0PPt690qiXU3pWB6FeHpoaWkfiQZQFt4WubDwOjG6SAiXOfUv6idi7QaGe3ZpmEqEMdT0z2YUXQlyT0Jtm9qCq9LAAc0s580PKk41Bbw42nyesw')"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-on-background/88 via-on-background/55 to-transparent"></div>
+  </div>
+
+  <!-- Geometric decorations (right side, very subtle) -->
+  <div class="hero-geo hero-geo-1 hidden lg:block"></div>
+  <div class="hero-geo hero-geo-2 hidden lg:block"></div>
+  <div class="hero-geo hero-geo-3 hidden lg:block"></div>
+
+  <!-- Floating brand badges (left edge) -->
+  
+  
+  
+
+  <!-- Hero text -->
+  <div class="relative z-10 w-full px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
+    <div class="max-w-2xl text-on-primary">
+      <h1 class="hero-title font-display-lg text-headline-xl-mobile md:text-display-lg mb-6 leading-tight">
+        Leading Egyptian Industrial Plastic Solutions
+      </h1>
+      <p class="hero-para font-body-lg text-body-lg mb-10 opacity-90 max-w-xl">
+        Pioneering precision-engineered storage and logistics assets for global industries. Scaling your operations with reliability and Egyptian craftsmanship.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <button class="hero-btn-1 btn-primary" onclick="window.location.href='products.html'">
+          <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">inventory_2</span>
+          Explore Products
+        </button>
+        <button class="hero-btn-2 border-2 border-on-primary text-on-primary px-8 py-4 rounded-full font-label-lg text-label-lg hover:bg-on-primary hover:text-primary transition-all" onclick="window.location.href='contact.html'">
+          Contact Us
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Contact Widget -->
+  <div class="contact-widget absolute bottom-8 right-6 md:right-12 z-20">
+    <div class="contact-widget-inner rounded-2xl p-4 flex flex-col gap-2 min-w-[190px]">
+      <p class="text-white/60 text-xs font-semibold uppercase tracking-widest mb-1 px-1">Connect With Us</p>
+      <a href="#" aria-label="Instagram">
+        <span class="icon-wrap">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </span>Instagram
+      </a>
+      <a href="#" aria-label="Facebook">
+        <span class="icon-wrap">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </span>Facebook
+      </a>
+      <a href="#" aria-label="TikTok">
+        <span class="icon-wrap">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+        </span>TikTok
+      </a>
+      <a href="tel:+20224010000" aria-label="Call us">
+        <span class="icon-wrap">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        </span>+20 2 2401 0000
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-indicator hidden md:flex">
+    <span>Scroll</span>
+    <div class="arrow"></div>
+  </div>
+</section>
+
+<!-- ── Section separator ── -->
+<div class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop bg-surface">
+  <div class="sep-line">
+    <div class="sep-line-track"></div>
+    <div class="sep-diamond"></div>
+    <span class="sep-text">About Us</span>
+    <div class="sep-diamond"></div>
+    <div class="sep-line-track"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     2. ABOUT US
+════════════════════════════════════════════════════════ -->
+<section class="pb-28 bg-surface overflow-hidden relative" id="about">
+  <!-- Dot pattern decoration (top right area) -->
+  <div class="absolute top-0 right-0 w-64 h-64 dot-pattern-bg opacity-40 pointer-events-none" style="mask-image:radial-gradient(circle,#000 40%,transparent 80%);-webkit-mask-image:radial-gradient(circle,#000 40%,transparent 80%)"></div>
+
+  <div class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Text column -->
+      <div class="reveal">
+        <span class="section-eyebrow">Who We Are</span>
+        <h2 class="font-headline-xl text-headline-xl mb-6 leading-tight">Integrated Storage<br/>Excellence</h2>
+        <p class="text-on-surface-variant font-body-lg text-body-lg mb-5">
+          Giant Storage Integrated Solutions stands at the forefront of the Egyptian manufacturing sector. We specialize in high-density polyethylene (HDPE) solutions designed to survive the rigors of heavy-duty industrial cycles.
+        </p>
+        <p class="text-on-surface-variant font-body-lg text-body-lg mb-8">
+          From the heart of Cairo to the global market, our commitment to quality control and sustainable manufacturing processes ensures that every pallet and crate meets international standards for durability and safety.
+        </p>
+        <div class="grid grid-cols-2 gap-6 mb-10">
+          <div class="mini-stat p-5 bg-surface-container-low rounded-xl cursor-default">
+            <h3 class="font-headline-md text-headline-md text-primary mb-1">20+</h3>
+            <p class="font-label-sm text-label-sm opacity-70">Years of Excellence</p>
+          </div>
+          <div class="mini-stat p-5 bg-surface-container-low rounded-xl cursor-default">
+            <h3 class="font-headline-md text-headline-md text-primary mb-1">50k+</h3>
+            <p class="font-label-sm text-label-sm opacity-70">Monthly Capacity</p>
+          </div>
+        </div>
+        <a href="about us.html" class="btn-primary">
+          About Us
+          <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24">arrow_forward</span>
+        </a>
+      </div>
+
+      <!-- Image column -->
+      <div class="reveal reveal-right relative">
+        <div class="about-img-wrap relative rounded-2xl overflow-hidden" id="about-img-parallax" style="box-shadow:0 24px 64px rgba(1,78,42,.18)">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1kpyOH_iWnAUZX8-RTg76vb4zbqZ4iP47eRO4mAHmjwp8dQT9IjGWzmq3jAk1XItktWoHE2kkRymnoB8jRwEF4INzD_7Y2_PS0wkkt2233pj6Cz9JkXj3BxSe5K8ACtSTQmkDyuSITv8x1zJU36sRXWuIra4y1GQvE65kh5Gl3-t_Jexsy5tuaIfv6WV1mPWHSubrOuhaDGrJogMrTJo1DbZUIwZkcslAGl68yoW_YUy4dDTlqTz7nBcucm11d95hnYR5zJFHvz8" alt="Giant Storage manufacturing facility" class="w-full h-[500px] object-cover"/>
+        </div>
+        <!-- Corner accents -->
+        <div class="about-corner-tl"></div>
+        <div class="about-corner-br"></div>
+        <!-- ISO badge -->
+        <div class="absolute -bottom-6 -left-6 bg-primary p-6 rounded-xl text-on-primary hidden md:flex items-center gap-4 shadow-xl">
+          <span class="material-symbols-outlined text-4xl" style="font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">verified</span>
+          <div>
+            <p class="font-headline-md text-headline-md leading-tight">ISO 9001:2015</p>
+            <p class="font-label-sm text-label-sm opacity-80">Certified Quality</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Section separator ── -->
+<div class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop bg-surface-container-low">
+  <div class="sep-line">
+    <div class="sep-line-track"></div>
+    <div class="sep-diamond"></div>
+    <span class="sep-text">Trusted Partners</span>
+    <div class="sep-diamond"></div>
+    <div class="sep-line-track"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     3. TRUSTED BY
+════════════════════════════════════════════════════════ -->
+<section class="pb-20 bg-surface-container-low overflow-hidden relative">
+  <!-- Subtle mesh background -->
+  <div class="absolute inset-0 dot-pattern-light opacity-60 pointer-events-none"></div>
+
+  <div class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto relative">
+    <div class="text-center mb-12 reveal">
+      <span class="section-eyebrow">Trusted By</span>
+      <h2 class="font-headline-xl text-headline-xl">Companies That Trust Us</h2>
+    </div>
+
+    <!-- Desktop infinite scroll -->
+    <div class="hidden md:block logo-track-wrap">
+      <div class="logo-track" id="logo-track">
+        <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon"/></div>
+        <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Carrefour_logo.svg" alt="Carrefour"/></div>
+        <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/7/76/Lidl-Logo.svg" alt="Lidl"/></div>
+        <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Dell_Logo.svg" alt="Dell"/></div>
+        <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Airbus_logo_2017.png" alt="Airbus"/></div>
+        <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Nestl%C3%A9_textlogo_blue.svg/512px-Nestl%C3%A9_textlogo_blue.svg.png" alt="Nestlé"/></div>
+        <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Unilever.svg/512px-Unilever.svg.png" alt="Unilever"/></div>
+        <!-- duplicate for loop -->
+        <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon"/></div>
+        <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Carrefour_logo.svg" alt="Carrefour"/></div>
+        <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/7/76/Lidl-Logo.svg" alt="Lidl"/></div>
+        <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Dell_Logo.svg" alt="Dell"/></div>
+        <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Airbus_logo_2017.png" alt="Airbus"/></div>
+        <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Nestl%C3%A9_textlogo_blue.svg/512px-Nestl%C3%A9_textlogo_blue.svg.png" alt="Nestlé"/></div>
+        <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Unilever.svg/512px-Unilever.svg.png" alt="Unilever"/></div>
+      </div>
+    </div>
+    <!-- Mobile grid -->
+    <div class="grid grid-cols-3 gap-4 md:hidden">
+      <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon"/></div>
+      <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Carrefour_logo.svg" alt="Carrefour"/></div>
+      <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/7/76/Lidl-Logo.svg" alt="Lidl"/></div>
+      <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Dell_Logo.svg" alt="Dell"/></div>
+      <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Airbus_logo_2017.png" alt="Airbus"/></div>
+      <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Nestl%C3%A9_textlogo_blue.svg/512px-Nestl%C3%A9_textlogo_blue.svg.png" alt="Nestlé"/></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Separator ── -->
+<div class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop bg-surface-container-low">
+  <div class="sep-line">
+    <div class="sep-line-track"></div>
+    <div class="sep-diamond"></div>
+    <span class="sep-text">Our Products</span>
+    <div class="sep-diamond"></div>
+    <div class="sep-line-track"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     4. PRODUCT CATEGORIES
+════════════════════════════════════════════════════════ -->
+<section class="pb-24 bg-surface-container-low relative overflow-hidden">
+  <!-- Subtle grid overlay -->
+  <div class="absolute inset-0 pointer-events-none" style="background-image:linear-gradient(rgba(1,78,42,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(1,78,42,.03) 1px,transparent 1px);background-size:40px 40px"></div>
+
+  <div class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto relative">
+    <div class="text-center mb-16 reveal">
+      <span class="section-eyebrow">Products</span>
+      <h2 class="font-headline-xl text-headline-xl mb-4">Core Product Categories</h2>
+      <p class="text-on-surface-variant max-w-2xl mx-auto">Precision engineered solutions for every logistics challenge.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[320px]">
+      <div class="md:col-span-7 product-card reveal stagger-1">
+        <div class="relative h-full overflow-hidden">
+          <img class="prod-img absolute inset-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAF7K_7bxI6zZEwCDg0qwrfYNZTQ6cd4O6D1ZlTJErRG9xY4mE0_JUMGJVBZapnc1bGbgWKyN_gYKtmM7IjTLqPKHTuj81b4SV72jPsX1pUfu7Nw5pFvkzRLcGBwOHx67pmEtiOGBNCK4tyebHi3mk9cEQsvSkqoBi2o7Q35EQ5WdF8v92AYzQprZKNQ0ZA2xrcQS5caPRGT_JOgy6CVsfmYf1m6aoVB5_ODkjHhYhIrAz96Su8peHEkWLB_KXyT-NBw-Gg8CVQYug" alt="Plastic Pallets"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-on-background/82 via-transparent to-transparent"></div>
+          <div class="absolute bottom-0 p-8">
+            <h3 class="text-on-primary font-headline-lg text-headline-lg mb-2">Plastic Pallets</h3>
+            <p class="text-on-primary/80 font-body-md text-body-md mb-5 max-w-md">Ultra-durable, hygienic, and rackable solutions for heavy-load logistics and export.</p>
+            <button class="card-btn bg-on-primary text-primary px-6 py-2 rounded-lg font-label-lg text-label-lg hover:bg-primary hover:text-on-primary transition-all">Explore Series</button>
+          </div>
+        </div>
+      </div>
+      <div class="md:col-span-5 product-card reveal stagger-2">
+        <div class="relative h-full overflow-hidden">
+          <img class="prod-img absolute inset-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBq5RaPEnQ-nVljl3gMJjyk9Ci9IB2ANDnUZlM8YoMBkLBrWL1jAa3576FGEca3sFj68a1EXm6xqzhc2K62Oti6UOMG_rYwJ00rvrOgWSgHqo0WUYE7lAwAPfJEcChweyaHmU-juKmHArlQl51D7ioeazXCnItYwd6Rha06-AM0WdGdNPgBR6UDYS0VgBtUs6U9t5OQ8t62lXf0O9DkPVHr0MDGjAeswNL4M45mES3t0W9jFzyKkpKhXWxdoZ0EtNhFnnKtLqONpas" alt="Industrial Crates"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-on-background/82 via-transparent to-transparent"></div>
+          <div class="absolute bottom-0 p-8">
+            <h3 class="text-on-primary font-headline-lg text-headline-lg mb-2">Industrial Crates</h3>
+            <p class="text-on-primary/80 font-body-md text-body-md mb-5">Optimized for agricultural and food processing industries.</p>
+            <button class="card-btn bg-on-primary text-primary px-6 py-2 rounded-lg font-label-lg text-label-lg hover:bg-primary hover:text-on-primary transition-all">View Range</button>
+          </div>
+        </div>
+      </div>
+      <div class="md:col-span-4 product-card reveal stagger-3">
+        <div class="relative h-full overflow-hidden">
+          <img class="prod-img absolute inset-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAi7lX7MXKrbHrWBmmjBIrDOr-GkiDn11wjBI-4tJzzLTByVB4pLWgl03p7OzrUAv1z55KSeIbovkI1iGr1KPXaL8GtfZ3d5msswFDWb4Q7ypGNNjOorErYM85QzZdecEFaizTGKtW5V8Tj_RlLbpnLGqmrmy_IuXDAqUh379HVhVEgk-r3wsUg-lv_J_WMFfTWGa4wsaPX1e0Tn1wGhisKLuIdFP96aqybf2Zq01F-wI8Wbk6qbUubNsum4rTk2kX4KRwzRj5kjtQ" alt="Industrial Bins"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-on-background/82 via-transparent to-transparent"></div>
+          <div class="absolute bottom-0 p-8">
+            <h3 class="text-on-primary font-headline-md text-headline-md mb-2">Industrial Bins</h3>
+            <button class="card-btn text-on-primary font-label-lg text-label-lg underline">View Specs</button>
+          </div>
+        </div>
+      </div>
+      <div class="md:col-span-8 product-card reveal stagger-4">
+        <div class="relative h-full overflow-hidden">
+          <img class="prod-img absolute inset-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGXe8LA-bga17T9a2Vpsftq01DixGiLApBkzi6tmzwh1obOx6MwKMYUXla6REnQ00qhqHmrjWZ7pND_dnNW2uNdBgrZgflIMhMeOmOS6O3Ja0LGsD8-kfHveDxjoIbbFbYeylVw4VhvGxeybduhOz0H2_ZDxOG9_PPJJ78iBYqY9uBR4DAdi5_aH5XIoPJecGr4OHNBne3SamwVIFBwwHbPvHuE9Wt-YPPYVgzbI_qnpXtA8vneiWXgHSZwn2Ba7ycKwaClD7Iv-s" alt="Specialty Storage"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-on-background/82 via-transparent to-transparent"></div>
+          <div class="absolute bottom-0 p-8">
+            <h3 class="text-on-primary font-headline-lg text-headline-lg mb-2">Specialty Storage</h3>
+            <p class="text-on-primary/80 font-body-md text-body-md mb-5">Nesting and stackable containers for specialized supply chain needs.</p>
+            <button class="card-btn bg-on-primary text-primary px-6 py-2 rounded-lg font-label-lg text-label-lg hover:bg-primary hover:text-on-primary transition-all">Custom Solutions</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     5. STATS  (animated counters)
+════════════════════════════════════════════════════════ -->
+<section class="py-20 bg-primary text-on-primary relative overflow-hidden" id="stats-section">
+  <!-- Radial glow orbs -->
+  <div class="stats-orb absolute" style="width:500px;height:500px;top:-120px;left:-120px;animation:orbFloat 8s ease-in-out infinite"></div>
+  <div class="stats-orb absolute" style="width:380px;height:380px;bottom:-80px;right:-80px;animation:orbFloat 10s ease-in-out 3s infinite"></div>
+  <!-- Subtle dot grid overlay -->
+  <div class="absolute inset-0 pointer-events-none" style="background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px);background-size:28px 28px"></div>
+
+  <div class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto relative">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-8 lg:gap-12 text-center">
+      <div class="space-y-3">
+        <p class="font-display-lg text-headline-xl stat-num" data-target="22" data-suffix="+">0</p>
+        <p class="font-label-lg text-label-lg opacity-75 uppercase tracking-widest">Global Markets</p>
+      </div>
+      <div class="space-y-3">
+        <p class="font-display-lg text-headline-xl stat-num" data-target="600" data-suffix="k">0</p>
+        <p class="font-label-lg text-label-lg opacity-75 uppercase tracking-widest">Units Annually</p>
+      </div>
+      <div class="space-y-3">
+        <p class="font-display-lg text-headline-xl stat-num" data-target="150" data-suffix="+">0</p>
+        <p class="font-label-lg text-label-lg opacity-75 uppercase tracking-widest">Industrial Clients</p>
+      </div>
+      <div class="space-y-3">
+        <p class="font-display-lg text-headline-xl stat-num" data-target="100" data-suffix="%">0</p>
+        <p class="font-label-lg text-label-lg opacity-75 uppercase tracking-widest">Recyclable Material</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Separator ── -->
+<div class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop bg-surface">
+  <div class="sep-line">
+    <div class="sep-line-track"></div>
+    <div class="sep-diamond"></div>
+    <span class="sep-text">Latest Videos</span>
+    <div class="sep-diamond"></div>
+    <div class="sep-line-track"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     6. VIDEOS
+════════════════════════════════════════════════════════ -->
+<section class="pb-24 bg-surface relative overflow-hidden">
+  <!-- Soft blob -->
+  <div class="absolute bottom-0 right-0 w-96 h-96 rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(173,242,193,.18) 0%,transparent 70%);transform:translate(30%,30%)"></div>
+
+  <div class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto relative">
+    <div class="text-center mb-16 reveal">
+      <span class="section-eyebrow">Media</span>
+      <h2 class="font-headline-xl text-headline-xl mb-4">Latest Videos</h2>
+      <p class="text-on-surface-variant max-w-2xl mx-auto">See our manufacturing process, products in action, and industry insights.</p>
+    </div>
+    <!-- Desktop grid -->
+    <div class="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="video-card reveal stagger-1">
+        <div class="thumb-wrap">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvUppSIUhiLWIyyd-8B9t1tvTbccTRdXY9Nl-ZoAMQrVOWoSEOBUPOzR4MChZDQSGPBzoURAW5wiRz03UypGYnBhWRbL2bHFzLdP4oa__H5VSKHFILgRqm0OOjKI_7w5MoM1iXx21UsvZl9WUzk4UcYgTUkk9G0PPt690qiXU3pWB6FeHpoaWkfiQZQFt4WubDwOjG6SAiXOfUv6idi7QaGe3ZpmEqEMdT0z2YUXQlyT0Jtm9qCq9LAAc0s580PKk41Bbw42nyesw" alt="Video 1 thumbnail"/>
+          <div class="play-btn"><div class="play-btn-inner"><span class="material-symbols-outlined">play_arrow</span></div></div>
+        </div>
+        <div class="p-5">
+          <h3 class="font-headline-md text-headline-md mb-2">Inside Our Manufacturing Plant</h3>
+          <p class="text-on-surface-variant text-body-md mb-3">A full tour of our state-of-the-art Nasr City facility and production lines.</p>
+          <a href="#" class="video-card-link">Watch Now →</a>
+        </div>
+      </div>
+      <div class="video-card reveal stagger-2">
+        <div class="thumb-wrap">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdJc6ylJWEXyzDimYyjnQ00x9XeNWK9KPZjA140wr00AvC3HpOha8CRMQffb43tWBWd5yxbzkA-ixSLkuKY-r2HOXfkEq-vYsKBp1s9aFYbGRwcmy7Q9KkED-wQcDJ2NgzMQKLq_t9VitW_ahLz27Kn2QyAWRETwkE07VNOdNwXMx_-nQZ-BEd0MsWAXmE56g9obqnPkfvTznouerMn7vRreb0zQc0xU7-gv3HdLRYmhCXA3gzBhycrRJx9C8DTc05i0FwVAMl8MM" alt="Video 2 thumbnail"/>
+          <div class="play-btn"><div class="play-btn-inner"><span class="material-symbols-outlined">play_arrow</span></div></div>
+        </div>
+        <div class="p-5">
+          <h3 class="font-headline-md text-headline-md mb-2">Heavy-Duty Pallet Load Test</h3>
+          <p class="text-on-surface-variant text-body-md mb-3">Watching our pallets withstand 3-ton loads in controlled stress testing.</p>
+          <a href="#" class="video-card-link">Watch Now →</a>
+        </div>
+      </div>
+      <div class="video-card reveal stagger-3">
+        <div class="thumb-wrap">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1kpyOH_iWnAUZX8-RTg76vb4zbqZ4iP47eRO4mAHmjwp8dQT9IjGWzmq3jAk1XItktWoHE2kkRymnoB8jRwEF4INzD_7Y2_PS0wkkt2233pj6Cz9JkXj3BxSe5K8ACtSTQmkDyuSITv8x1zJU36sRXWuIra4y1GQvE65kh5Gl3-t_Jexsy5tuaIfv6WV1mPWHSubrOuhaDGrJogMrTJo1DbZUIwZkcslAGl68yoW_YUy4dDTlqTz7nBcucm11d95hnYR5zJFHvz8" alt="Video 3 thumbnail"/>
+          <div class="play-btn"><div class="play-btn-inner"><span class="material-symbols-outlined">play_arrow</span></div></div>
+        </div>
+        <div class="p-5">
+          <h3 class="font-headline-md text-headline-md mb-2">Export Logistics — Cairo to Europe</h3>
+          <p class="text-on-surface-variant text-body-md mb-3">How we manage quality-controlled shipping to 22+ global markets.</p>
+          <a href="#" class="video-card-link">Watch Now →</a>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile carousel -->
+    <div class="sm:hidden video-carousel px-6">
+      <div class="video-slides" id="video-slides">
+        <div class="video-slide"><div class="video-card">
+          <div class="thumb-wrap"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvUppSIUhiLWIyyd-8B9t1tvTbccTRdXY9Nl-ZoAMQrVOWoSEOBUPOzR4MChZDQSGPBzoURAW5wiRz03UypGYnBhWRbL2bHFzLdP4oa__H5VSKHFILgRqm0OOjKI_7w5MoM1iXx21UsvZl9WUzk4UcYgTUkk9G0PPt690qiXU3pWB6FeHpoaWkfiQZQFt4WubDwOjG6SAiXOfUv6idi7QaGe3ZpmEqEMdT0z2YUXQlyT0Jtm9qCq9LAAc0s580PKk41Bbw42nyesw" alt="Video 1"/>
+          <div class="play-btn"><div class="play-btn-inner"><span class="material-symbols-outlined">play_arrow</span></div></div></div>
+          <div class="p-4"><h3 class="font-headline-md text-headline-md mb-1">Inside Our Manufacturing Plant</h3><p class="text-on-surface-variant text-sm">A full tour of our Nasr City facility.</p></div>
+        </div></div>
+        <div class="video-slide"><div class="video-card">
+          <div class="thumb-wrap"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdJc6ylJWEXyzDimYyjnQ00x9XeNWK9KPZjA140wr00AvC3HpOha8CRMQffb43tWBWd5yxbzkA-ixSLkuKY-r2HOXfkEq-vYsKBp1s9aFYbGRwcmy7Q9KkED-wQcDJ2NgzMQKLq_t9VitW_ahLz27Kn2QyAWRETwkE07VNOdNwXMx_-nQZ-BEd0MsWAXmE56g9obqnPkfvTznouerMn7vRreb0zQc0xU7-gv3HdLRYmhCXA3gzBhycrRJx9C8DTc05i0FwVAMl8MM" alt="Video 2"/>
+          <div class="play-btn"><div class="play-btn-inner"><span class="material-symbols-outlined">play_arrow</span></div></div></div>
+          <div class="p-4"><h3 class="font-headline-md text-headline-md mb-1">Heavy-Duty Pallet Load Test</h3><p class="text-on-surface-variant text-sm">Stress tests for 3-ton loads.</p></div>
+        </div></div>
+        <div class="video-slide"><div class="video-card">
+          <div class="thumb-wrap"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1kpyOH_iWnAUZX8-RTg76vb4zbqZ4iP47eRO4mAHmjwp8dQT9IjGWzmq3jAk1XItktWoHE2kkRymnoB8jRwEF4INzD_7Y2_PS0wkkt2233pj6Cz9JkXj3BxSe5K8ACtSTQmkDyuSITv8x1zJU36sRXWuIra4y1GQvE65kh5Gl3-t_Jexsy5tuaIfv6WV1mPWHSubrOuhaDGrJogMrTJo1DbZUIwZkcslAGl68yoW_YUy4dDTlqTz7nBcucm11d95hnYR5zJFHvz8" alt="Video 3"/>
+          <div class="play-btn"><div class="play-btn-inner"><span class="material-symbols-outlined">play_arrow</span></div></div></div>
+          <div class="p-4"><h3 class="font-headline-md text-headline-md mb-1">Export Logistics — Cairo to Europe</h3><p class="text-on-surface-variant text-sm">22+ global markets served.</p></div>
+        </div></div>
+      </div>
+      <button class="carousel-btn carousel-btn-prev" id="vid-prev" aria-label="Previous"><span class="material-symbols-outlined">chevron_left</span></button>
+      <button class="carousel-btn carousel-btn-next" id="vid-next" aria-label="Next"><span class="material-symbols-outlined">chevron_right</span></button>
+      <div class="flex justify-center gap-2 mt-4" id="carousel-dots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Separator ── -->
+<div class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop bg-surface-container-low">
+  <div class="sep-line">
+    <div class="sep-line-track"></div>
+    <div class="sep-diamond"></div>
+    <span class="sep-text">Industries We Serve</span>
+    <div class="sep-diamond"></div>
+    <div class="sep-line-track"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     INDUSTRIES SERVED
+════════════════════════════════════════════════════════ -->
+<section class="pb-24 bg-surface-container-low">
+  <div class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 reveal">
+      <div class="max-w-xl">
+        <span class="section-eyebrow">Sectors</span>
+        <h2 class="font-headline-xl text-headline-xl mb-4">Industries Served</h2>
+        <p class="text-on-surface-variant font-body-lg text-body-lg">Our products are engineered to meet the specific sanitation, temperature, and weight requirements of diverse global sectors.</p>
+      </div>
+      <button class="border-2 border-primary text-primary px-8 py-3 rounded-full font-label-lg text-label-lg hover:bg-primary hover:text-on-primary transition-all hover:scale-105">Industry Partnerships</button>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+      <div class="industry-card p-7 bg-surface rounded-xl text-center hover:bg-primary hover:text-on-primary transition-all group reveal stagger-1 cursor-pointer" style="box-shadow:0 2px 14px rgba(0,0,0,.06)">
+        <span class="ind-icon material-symbols-outlined text-4xl mb-4 block transition-all duration-300 group-hover:scale-110">local_shipping</span>
+        <p class="font-label-lg text-label-lg font-bold">Logistics</p>
+      </div>
+      <div class="industry-card p-7 bg-surface rounded-xl text-center hover:bg-primary hover:text-on-primary transition-all group reveal stagger-2 cursor-pointer" style="box-shadow:0 2px 14px rgba(0,0,0,.06)">
+        <span class="ind-icon material-symbols-outlined text-4xl mb-4 block transition-all duration-300 group-hover:scale-110">restaurant</span>
+        <p class="font-label-lg text-label-lg font-bold">Food & Bev</p>
+      </div>
+      <div class="industry-card p-7 bg-surface rounded-xl text-center hover:bg-primary hover:text-on-primary transition-all group reveal stagger-3 cursor-pointer" style="box-shadow:0 2px 14px rgba(0,0,0,.06)">
+        <span class="ind-icon material-symbols-outlined text-4xl mb-4 block transition-all duration-300 group-hover:scale-110">medication</span>
+        <p class="font-label-lg text-label-lg font-bold">Pharma</p>
+      </div>
+      <div class="industry-card p-7 bg-surface rounded-xl text-center hover:bg-primary hover:text-on-primary transition-all group reveal stagger-4 cursor-pointer" style="box-shadow:0 2px 14px rgba(0,0,0,.06)">
+        <span class="ind-icon material-symbols-outlined text-4xl mb-4 block transition-all duration-300 group-hover:scale-110">agriculture</span>
+        <p class="font-label-lg text-label-lg font-bold">Agri-Tech</p>
+      </div>
+      <div class="industry-card p-7 bg-surface rounded-xl text-center hover:bg-primary hover:text-on-primary transition-all group reveal stagger-1 cursor-pointer" style="box-shadow:0 2px 14px rgba(0,0,0,.06)">
+        <span class="ind-icon material-symbols-outlined text-4xl mb-4 block transition-all duration-300 group-hover:scale-110">precision_manufacturing</span>
+        <p class="font-label-lg text-label-lg font-bold">Automotive</p>
+      </div>
+      <div class="industry-card p-7 bg-surface rounded-xl text-center hover:bg-primary hover:text-on-primary transition-all group reveal stagger-2 cursor-pointer" style="box-shadow:0 2px 14px rgba(0,0,0,.06)">
+        <span class="ind-icon material-symbols-outlined text-4xl mb-4 block transition-all duration-300 group-hover:scale-110">shopping_basket</span>
+        <p class="font-label-lg text-label-lg font-bold">Retail</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     WHY CHOOSE US
+════════════════════════════════════════════════════════ -->
+<section class="py-24 bg-on-background text-on-primary relative overflow-hidden">
+  <!-- Faint decorative blobs -->
+  <div class="absolute top-0 left-0 w-80 h-80 rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(146,213,166,.07) 0%,transparent 70%);transform:translate(-40%,-40%)"></div>
+  <div class="absolute bottom-0 right-0 w-96 h-96 rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(146,213,166,.06) 0%,transparent 70%);transform:translate(35%,35%)"></div>
+  <!-- Dot grid overlay -->
+  <div class="absolute inset-0 pointer-events-none" style="background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);background-size:30px 30px"></div>
+
+  <div class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto relative">
+    <div class="text-center mb-14 reveal">
+      <span class="section-eyebrow" style="background:rgba(173,242,193,.2);color:#92d5a6">Why Giant Storage</span>
+      <h2 class="font-headline-xl text-headline-xl mt-2">Built on Excellence</h2>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div class="feature-block space-y-6 reveal stagger-1">
+        <div class="feature-icon-ring">
+          <span class="material-symbols-outlined text-3xl text-on-primary">verified_user</span>
+        </div>
+        <h3 class="font-headline-md text-headline-md">Uncompromising Quality</h3>
+        <p class="text-surface-variant font-body-md text-body-md opacity-80">Our products undergo rigorous stress tests, including load-bearing analysis and temperature resilience, ensuring zero failure in critical environments.</p>
+      </div>
+      <div class="feature-block space-y-6 reveal stagger-2">
+        <div class="feature-icon-ring">
+          <span class="material-symbols-outlined text-3xl text-on-primary">public</span>
+        </div>
+        <h3 class="font-headline-md text-headline-md">Global Export Hub</h3>
+        <p class="text-surface-variant font-body-md text-body-md opacity-80">Strategically located in Cairo, we leverage Egypt's logistical routes to provide rapid, cost-effective shipping to Europe, Africa, and the Middle East.</p>
+      </div>
+      <div class="feature-block space-y-6 reveal stagger-3">
+        <div class="feature-icon-ring">
+          <span class="material-symbols-outlined text-3xl text-on-primary">eco</span>
+        </div>
+        <h3 class="font-headline-md text-headline-md">Eco-Forward Vision</h3>
+        <p class="text-surface-variant font-body-md text-body-md opacity-80">We champion a circular economy. All our plastic products are 100% recyclable, and we offer buy-back programs for damaged units to reduce industrial waste.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Manufacturing Teaser -->
+<section class="py-24 bg-surface">
+  <div class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto reveal">
+    <div class="relative rounded-3xl overflow-hidden h-[520px] group">
+      <div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105" style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdJc6ylJWEXyzDimYyjnQ00x9XeNWK9KPZjA140wr00AvC3HpOha8CRMQffb43tWBWd5yxbzkA-ixSLkuKY-r2HOXfkEq-vYsKBp1s9aFYbGRwcmy7Q9KkED-wQcDJ2NgzMQKLq_t9VitW_ahLz27Kn2QyAWRETwkE07VNOdNwXMx_-nQZ-BEd0MsWAXmE56g9obqnPkfvTznouerMn7vRreb0zQc0xU7-gv3HdLRYmhCXA3gzBhycrRJx9C8DTc05i0FwVAMl8MM')"></div>
+      <div class="absolute inset-0 bg-on-background/45 flex flex-col justify-center items-center text-center p-8">
+        <h2 class="text-on-primary font-display-lg text-headline-xl mb-6">Precision. Scale. Impact.</h2>
+        <p class="text-on-primary max-w-xl font-body-lg text-body-lg mb-8">Take a virtual tour of our state-of-the-art facility in Nasr City and witness the future of industrial molding.</p>
+        <button class="bg-on-primary text-primary p-6 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-2xl relative group/play">
+          <span class="absolute inset-0 rounded-full border-2 border-white/40 scale-100 group-hover/play:scale-125 group-hover/play:opacity-0 transition-all duration-500"></span>
+          <span class="material-symbols-outlined text-4xl" style="font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">play_arrow</span>
+        </button>
+      </div>
+      <!-- Location badge -->
+      <div class="mfg-badge">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">location_on</span>
+        Nasr City, Cairo, Egypt
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Separator ── -->
+<div class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop bg-surface-container-low">
+  <div class="sep-line">
+    <div class="sep-line-track"></div>
+    <div class="sep-diamond"></div>
+    <span class="sep-text">Quality Standards</span>
+    <div class="sep-diamond"></div>
+    <div class="sep-line-track"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     7. CERTIFICATIONS
+════════════════════════════════════════════════════════ -->
+<section class="pb-24 bg-surface-container-low relative overflow-hidden">
+  <div class="absolute top-0 right-0 w-72 h-72 dot-pattern-bg opacity-30 pointer-events-none" style="mask-image:radial-gradient(circle,#000 40%,transparent 80%);-webkit-mask-image:radial-gradient(circle,#000 40%,transparent 80%)"></div>
+
+  <div class="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto relative">
+    <div class="text-center mb-12 reveal">
+      <span class="section-eyebrow">Standards</span>
+      <h2 class="font-headline-xl text-headline-xl mb-4">Our Certifications</h2>
+      <p class="text-on-surface-variant max-w-2xl mx-auto">Every product we manufacture is backed by internationally recognized certifications, ensuring compliance and peace of mind for our global clients.</p>
+    </div>
+
+    <!-- Desktop connector -->
+    <div class="cert-connector-wrap mb-2">
+      <div class="cert-connector-node"></div>
+      <div class="cert-connector-line"></div>
+      <div class="cert-connector-node"></div>
+      <div class="cert-connector-line"></div>
+      <div class="cert-connector-node"></div>
+      <div class="cert-connector-line"></div>
+      <div class="cert-connector-node"></div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="cert-card reveal stagger-1">
+        <div class="cert-icon"><span class="material-symbols-outlined">workspace_premium</span></div>
+        <h3 class="font-headline-md text-headline-md mb-2">ISO 9001:2015</h3>
+        <p class="text-on-surface-variant text-body-md">Quality management systems ensuring consistent, high-standard production processes across all product lines.</p>
+      </div>
+      <div class="cert-card reveal stagger-2">
+        <div class="cert-icon"><span class="material-symbols-outlined">health_and_safety</span></div>
+        <h3 class="font-headline-md text-headline-md mb-2">OHSAS 18001</h3>
+        <p class="text-on-surface-variant text-body-md">Occupational health and safety standards protecting our workforce and operational environments.</p>
+      </div>
+      <div class="cert-card reveal stagger-3">
+        <div class="cert-icon"><span class="material-symbols-outlined">eco</span></div>
+        <h3 class="font-headline-md text-headline-md mb-2">ISO 14001</h3>
+        <p class="text-on-surface-variant text-body-md">Environmental management certification reflecting our commitment to sustainable and eco-forward manufacturing.</p>
+      </div>
+      <div class="cert-card reveal stagger-4">
+        <div class="cert-icon"><span class="material-symbols-outlined">verified</span></div>
+        <h3 class="font-headline-md text-headline-md mb-2">CE Marked</h3>
+        <p class="text-on-surface-variant text-body-md">European conformity marking confirming our products meet EU safety, health, and environmental requirements.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════ -->
+<footer class="bg-surface-container-highest text-on-surface border-t border-outline-variant relative overflow-hidden">
+  <!-- Subtle footer dot pattern -->
+  <div class="absolute inset-0 dot-pattern-light opacity-30 pointer-events-none"></div>
+
+  <div class="relative w-full py-16 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto grid grid-cols-1 md:grid-cols-4 gap-gutter">
+    <div class="col-span-1 md:col-span-1">
+      <h3 class="font-headline-md text-headline-md font-black text-primary mb-6">GIANT STORAGE</h3>
+      <p class="font-body-md text-body-md mb-8 opacity-80">Innovative plastic solutions for the world's most demanding logistics challenges. Precision engineered in Egypt.</p>
+      <div class="flex gap-4">
+        <a class="footer-social w-10 h-10 border border-outline rounded-full flex items-center justify-center hover:bg-primary hover:text-on-primary" href="#" aria-label="Facebook"><span class="material-symbols-outlined">face_nod</span></a>
+        <a class="footer-social w-10 h-10 border border-outline rounded-full flex items-center justify-center hover:bg-primary hover:text-on-primary" href="#" aria-label="Share"><span class="material-symbols-outlined">share</span></a>
+      </div>
+    </div>
+    <div class="col-span-1">
+      <h4 class="font-label-lg text-label-lg font-bold mb-6 uppercase">Product Catalog</h4>
+      <ul class="space-y-4">
+        <li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md nav-link" href="#">Heavy Duty Pallets</a></li>
+        <li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md nav-link" href="#">Stackable Crates</a></li>
+        <li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md nav-link" href="#">Ventilated Containers</a></li>
+        <li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md nav-link" href="#">Custom Molding</a></li>
+      </ul>
+    </div>
+    <div class="col-span-1">
+      <h4 class="font-label-lg text-label-lg font-bold mb-6 uppercase">Resources</h4>
+      <ul class="space-y-4">
+        <li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md nav-link" href="#">Manufacturing Tech</a></li>
+        <li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md nav-link" href="#">Quality Control</a></li>
+        <li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md nav-link" href="#">Global Export</a></li>
+        <li><a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md nav-link" href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="col-span-1">
+      <h4 class="font-label-lg text-label-lg font-bold mb-6 uppercase">Contact Headquarters</h4>
+      <ul class="space-y-4 font-body-md text-body-md text-on-surface-variant">
+        <li class="flex items-start gap-3"><span class="material-symbols-outlined text-primary">location_on</span><span>22 El Tayaran St., Nasr City,<br/>Cairo, Egypt</span></li>
+        <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">call</span><span>+20 2 2401 0000</span></li>
+        <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">mail</span><span>info@giantstorage-eg.com</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="relative border-t border-outline-variant/30 py-8 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto flex flex-col items-center gap-1">
+    <p class="font-label-sm text-label-sm text-center opacity-60">© 2024 Giant Storage Integrated Solutions. All Rights Reserved.</p>
+    <a href="#" style="font-family:'Lora',serif;font-style:italic;font-size:.72rem;opacity:.4;letter-spacing:.02em;transition:color .3s,opacity .3s;text-decoration:none;color:inherit" onmouseover="this.style.opacity='.75';this.style.color='#014e2a'" onmouseout="this.style.opacity='.4';this.style.color='inherit'">Created by Transition</a>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════════════════ -->
+<script>
+/* ── Cursor glow ── */
+const glow = document.getElementById('cursor-glow');
+let glowRaf;
+document.addEventListener('mousemove', e => {
+  glow.style.opacity = '1';
+  cancelAnimationFrame(glowRaf);
+  glowRaf = requestAnimationFrame(() => {
+    glow.style.transform = `translate(${e.clientX - 240}px,${e.clientY - 240}px)`;
+  });
+});
+document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+
+/* ── Scroll progress bar ── */
+const bar = document.getElementById('scroll-progress');
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+  bar.style.width = pct + '%';
+}, { passive: true });
+
+/* ── Sticky nav shadow ── */
+const header = document.getElementById('site-header');
+window.addEventListener('scroll', () => {
+  header.style.boxShadow = window.scrollY > 50 ? '0 4px 24px rgba(0,0,0,.1)' : 'none';
+}, { passive: true });
+
+/* ── Mobile nav toggle ── */
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+
+/* ── Scroll-reveal ── */
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in-view'); revealObs.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ── Animated counters + pulse ── */
+function animateCounter(el) {
+  const target = +el.dataset.target;
+  const suffix = el.dataset.suffix || '';
+  const duration = 1900;
+  const start = performance.now();
+  const step = (now) => {
+    const p = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.floor(eased * target) + suffix;
+    if (p < 1) { requestAnimationFrame(step); }
+    else {
+      el.textContent = target + suffix;
+      el.classList.add('stat-pulse');
+      el.addEventListener('animationend', () => el.classList.remove('stat-pulse'), { once: true });
+    }
+  };
+  requestAnimationFrame(step);
+}
+let statsDone = false;
+new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !statsDone) {
+      statsDone = true;
+      document.querySelectorAll('[data-target]').forEach(animateCounter);
+    }
+  });
+}, { threshold: 0.3 }).observe(document.getElementById('stats-section'));
+
+/* ── About image parallax ── */
+const aboutImg = document.getElementById('about-img-parallax');
+if (aboutImg && window.matchMedia('(hover: hover)').matches) {
+  aboutImg.addEventListener('mousemove', e => {
+    const r = aboutImg.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width - 0.5) * 14;
+    const y = ((e.clientY - r.top) / r.height - 0.5) * 14;
+    aboutImg.style.transform = `perspective(800px) rotateY(${x}deg) rotateX(${-y}deg) scale(1.02)`;
+    aboutImg.style.transition = 'transform .08s ease-out';
+  });
+  aboutImg.addEventListener('mouseleave', () => {
+    aboutImg.style.transform = '';
+    aboutImg.style.transition = 'transform .5s ease-out';
+  });
+}
+
+/* ── Mobile video carousel ── */
+const slides = document.getElementById('video-slides');
+const dotsWrap = document.getElementById('carousel-dots');
+if (slides && dotsWrap) {
+  let cur = 0; const total = 3;
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('button');
+    d.setAttribute('aria-label', 'Slide ' + (i + 1));
+    d.style.cssText = `border:none;cursor:pointer;border-radius:9999px;background:${i===0?'#014e2a':'#c0c9bf'};height:8px;width:${i===0?'20px':'8px'};transition:all .3s`;
+    d.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(d);
+  }
+  function goTo(n) {
+    cur = (n + total) % total;
+    slides.style.transform = `translateX(-${cur * 100}%)`;
+    dotsWrap.querySelectorAll('button').forEach((d, i) => {
+      d.style.background = i === cur ? '#014e2a' : '#c0c9bf';
+      d.style.width = i === cur ? '20px' : '8px';
+    });
+  }
+  document.getElementById('vid-prev').addEventListener('click', () => goTo(cur - 1));
+  document.getElementById('vid-next').addEventListener('click', () => goTo(cur + 1));
+  let tx = 0;
+  slides.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  slides.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 40) goTo(dx < 0 ? cur + 1 : cur - 1);
+  });
+}
+</script>
+</body>
+</html>
