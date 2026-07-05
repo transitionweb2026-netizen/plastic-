@@ -173,3 +173,331 @@ export function DimensionLine({ className = "", tone = "dark" }: ArtProps) {
     </svg>
   );
 }
+
+/* ════════════════════════════════════════════════════════════════════
+ * DECORATIVE BACKGROUND SYSTEM — reusable building blocks
+ * (see docs/DECOR-SYSTEM.md for the catalog and usage examples)
+ *
+ * Conventions shared by everything below:
+ *  - Position/size via `className` (Tailwind: absolute, w-[...], hidden lg:block …)
+ *  - `tone="light"` for dark sections (pale-green strokes) — default "dark"
+ *  - `opacity` between 0.02 and 0.06 (defaults 0.05) — palette colors only
+ *  - All elements render aria-hidden with pointer-events disabled
+ *  - Line art draws itself on load (.draw-auto); add "decor-breathe" or
+ *    "decor-scroll-rotate" through className for extra motion
+ * ════════════════════════════════════════════════════════════════════ */
+
+type SystemProps = ArtProps & {
+  /** 0.02–0.06 recommended; defaults to 0.05 */
+  opacity?: number;
+};
+
+type FadeEdge = "none" | "top" | "bottom" | "left" | "right" | "radial";
+
+function fadeMask(fade: FadeEdge): React.CSSProperties {
+  if (fade === "none") return {};
+  const img =
+    fade === "radial"
+      ? "radial-gradient(circle, black 35%, transparent 75%)"
+      : `linear-gradient(to ${fade}, black, transparent)`;
+  return { maskImage: img, WebkitMaskImage: img };
+}
+
+/** Blueprint grid block (40px engineering grid) with an optional fade edge. */
+export function BlueprintGridBlock({
+  className = "",
+  fade = "none",
+}: {
+  className?: string;
+  fade?: FadeEdge;
+}) {
+  return (
+    <div
+      aria-hidden
+      className={`pointer-events-none blueprint-grid ${className}`}
+      style={fadeMask(fade)}
+    />
+  );
+}
+
+/** Dot-matrix grid (SVG pattern) with an optional fade edge. */
+export function DotGrid({
+  className = "",
+  tone = "dark",
+  opacity = 0.05,
+  fade = "none",
+}: SystemProps & { fade?: FadeEdge }) {
+  return (
+    <svg
+      aria-hidden
+      className={`pointer-events-none ${className}`}
+      style={fadeMask(fade)}
+    >
+      <defs>
+        {/* Fixed ids are safe: duplicate defs are identical, so any
+            instance resolving to the first still renders correctly. */}
+        <pattern
+          id={`decor-dots-${tone}`}
+          width="18"
+          height="18"
+          patternUnits="userSpaceOnUse"
+        >
+          <circle
+            cx="2"
+            cy="2"
+            r="1.5"
+            fill={strokeColor(tone)}
+            fillOpacity={opacity}
+          />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#decor-dots-${tone})`} />
+    </svg>
+  );
+}
+
+/** Repeating warehouse pattern: rows of stacked pallet/box outlines. */
+export function WarehousePattern({
+  className = "",
+  tone = "dark",
+  opacity = 0.045,
+  fade = "none",
+}: SystemProps & { fade?: FadeEdge }) {
+  const s = strokeColor(tone);
+  return (
+    <svg
+      aria-hidden
+      className={`pointer-events-none ${className}`}
+      style={fadeMask(fade)}
+    >
+      <defs>
+        <pattern
+          id={`decor-warehouse-${tone}`}
+          width="96"
+          height="72"
+          patternUnits="userSpaceOnUse"
+        >
+          <g fill="none" stroke={s} strokeOpacity={opacity} strokeWidth="1.5">
+            {/* box + pallet base, offset every second row */}
+            <rect x="8" y="8" width="36" height="24" rx="2" />
+            <line x1="8" y1="36" x2="44" y2="36" />
+            <line x1="12" y1="36" x2="12" y2="40" />
+            <line x1="40" y1="36" x2="40" y2="40" />
+            <rect x="56" y="44" width="36" height="24" rx="2" />
+            <line x1="56" y1="72" x2="92" y2="72" />
+          </g>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#decor-warehouse-${tone})`} />
+    </svg>
+  );
+}
+
+/** Single large hexagon outline (self-drawing). */
+export function HexOutline({
+  className = "",
+  tone = "dark",
+  opacity = 0.06,
+}: SystemProps) {
+  const p = {
+    ...common,
+    stroke: strokeColor(tone),
+    pathLength: 1,
+    className: "draw-auto",
+  };
+  return (
+    <svg
+      viewBox="0 0 200 174"
+      aria-hidden
+      className={`pointer-events-none ${className}`}
+      style={{ strokeOpacity: opacity }}
+    >
+      <polygon points="50,5 150,5 195,87 150,169 50,169 5,87" {...p} />
+    </svg>
+  );
+}
+
+/** Honeycomb cluster of hexagon outlines (self-drawing). */
+export function HexCluster({
+  className = "",
+  tone = "dark",
+  opacity = 0.05,
+}: SystemProps) {
+  const p = {
+    ...common,
+    stroke: strokeColor(tone),
+    pathLength: 1,
+    className: "draw-auto",
+  };
+  return (
+    <svg
+      viewBox="0 0 300 240"
+      aria-hidden
+      className={`pointer-events-none ${className}`}
+      style={{ strokeOpacity: opacity }}
+    >
+      <polygon points="40,10 100,10 130,62 100,114 40,114 10,62" {...p} />
+      <polygon points="160,40 220,40 250,92 220,144 160,144 130,92" {...p} />
+      <polygon points="70,130 130,130 160,182 130,234 70,234 40,182" {...p} />
+    </svg>
+  );
+}
+
+/** Large outline circle with crosshair center — optionally dashed. */
+export function OutlineCircle({
+  className = "",
+  tone = "dark",
+  opacity = 0.05,
+  dashed = false,
+}: SystemProps & { dashed?: boolean }) {
+  const s = strokeColor(tone);
+  const stroke = {
+    fill: "none",
+    stroke: s,
+    strokeWidth: 1.5,
+    vectorEffect: "non-scaling-stroke",
+  } as const;
+  return (
+    <svg
+      viewBox="0 0 200 200"
+      aria-hidden
+      className={`pointer-events-none ${className}`}
+      style={{ strokeOpacity: opacity }}
+    >
+      <circle
+        cx="100"
+        cy="100"
+        r="95"
+        {...stroke}
+        strokeDasharray={dashed ? "6 8" : undefined}
+      />
+      <line x1="100" y1="88" x2="100" y2="112" {...stroke} />
+      <line x1="88" y1="100" x2="112" y2="100" {...stroke} />
+    </svg>
+  );
+}
+
+/** Large outline square (rounded) with an inner dashed square. */
+export function OutlineSquare({
+  className = "",
+  tone = "dark",
+  opacity = 0.05,
+}: SystemProps) {
+  const s = strokeColor(tone);
+  const stroke = {
+    fill: "none",
+    stroke: s,
+    strokeWidth: 1.5,
+    vectorEffect: "non-scaling-stroke",
+  } as const;
+  return (
+    <svg
+      viewBox="0 0 200 200"
+      aria-hidden
+      className={`pointer-events-none ${className}`}
+      style={{ strokeOpacity: opacity }}
+    >
+      <rect x="5" y="5" width="190" height="190" rx="20" {...stroke} />
+      <rect
+        x="35"
+        y="35"
+        width="130"
+        height="130"
+        rx="12"
+        {...stroke}
+        strokeDasharray="4 8"
+      />
+    </svg>
+  );
+}
+
+/** Thin corner decoration; pick which corner it hugs. */
+export function CornerAccent({
+  className = "",
+  corner = "tl",
+}: {
+  className?: string;
+  corner?: "tl" | "tr" | "bl" | "br";
+}) {
+  return <div aria-hidden className={`decor-corner-${corner} ${className}`} />;
+}
+
+/** Large Material Symbols icon watermark (size via className font-size). */
+export function IconWatermark({
+  icon,
+  className = "",
+  tone = "dark",
+  opacity = 0.04,
+}: SystemProps & { icon: string }) {
+  return (
+    <span
+      aria-hidden
+      className={`material-symbols-outlined pointer-events-none select-none leading-none ${className}`}
+      style={{ color: strokeColor(tone), opacity }}
+    >
+      {icon}
+    </span>
+  );
+}
+
+/** Abstract engineering sheet: centerlines, arcs, and callout leaders. */
+export function EngineeringLines({
+  className = "",
+  tone = "dark",
+  opacity = 0.06,
+}: SystemProps) {
+  const p = {
+    ...common,
+    stroke: strokeColor(tone),
+    pathLength: 1,
+    className: "draw-auto",
+  };
+  return (
+    <svg
+      viewBox="0 0 360 200"
+      aria-hidden
+      className={`pointer-events-none ${className}`}
+      style={{ strokeOpacity: opacity }}
+    >
+      <line x1="90" y1="20" x2="90" y2="180" strokeDasharray="14 6 3 6" {...p} />
+      <line x1="10" y1="100" x2="170" y2="100" strokeDasharray="14 6 3 6" {...p} />
+      <path d="M 150 100 A 60 60 0 0 0 90 40" {...p} />
+      <path d="M 130 100 A 40 40 0 0 0 90 60" {...p} />
+      <polyline points="150,58 210,30 300,30" {...p} />
+      <circle cx="300" cy="30" r="4" {...p} />
+      <polyline points="140,130 220,168 330,168" {...p} />
+      <circle cx="330" cy="168" r="4" {...p} />
+      <rect x="260" y="80" width="56" height="56" rx="6" {...p} />
+      <line x1="260" y1="108" x2="316" y2="108" {...p} />
+    </svg>
+  );
+}
+
+/** Blueprint sheet frame: double border + title-block corner. */
+export function BlueprintFrame({
+  className = "",
+  tone = "dark",
+  opacity = 0.05,
+}: SystemProps) {
+  const p = {
+    ...common,
+    stroke: strokeColor(tone),
+    pathLength: 1,
+    className: "draw-auto",
+  };
+  return (
+    <svg
+      viewBox="0 0 400 260"
+      aria-hidden
+      className={`pointer-events-none ${className}`}
+      style={{ strokeOpacity: opacity }}
+    >
+      <rect x="6" y="6" width="388" height="248" rx="4" {...p} />
+      <rect x="16" y="16" width="368" height="228" rx="2" {...p} />
+      <polyline points="384,196 284,196 284,244" {...p} />
+      <line x1="284" y1="212" x2="384" y2="212" {...p} />
+      <line x1="284" y1="228" x2="384" y2="228" {...p} />
+      <line x1="334" y1="196" x2="334" y2="244" {...p} />
+    </svg>
+  );
+}

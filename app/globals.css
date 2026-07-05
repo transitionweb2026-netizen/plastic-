@@ -2152,6 +2152,22 @@ a[role="button"],
   border-right: 2px solid rgba(1, 78, 42, 0.14);
   border-bottom-right-radius: 0.5rem;
 }
+.decor-corner-tr {
+  pointer-events: none;
+  width: 56px;
+  height: 56px;
+  border-top: 2px solid rgba(1, 78, 42, 0.14);
+  border-right: 2px solid rgba(1, 78, 42, 0.14);
+  border-top-right-radius: 0.5rem;
+}
+.decor-corner-bl {
+  pointer-events: none;
+  width: 56px;
+  height: 56px;
+  border-bottom: 2px solid rgba(1, 78, 42, 0.14);
+  border-left: 2px solid rgba(1, 78, 42, 0.14);
+  border-bottom-left-radius: 0.5rem;
+}
 .decor-ring {
   pointer-events: none;
   border: 2px solid rgba(1, 78, 42, 0.1);
