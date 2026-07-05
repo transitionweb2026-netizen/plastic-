@@ -20,6 +20,20 @@ export type Article = {
   hasCounters: boolean;
 };
 
+import { AR_ARTICLES } from './articles-ar';
+
+/** Article with locale-appropriate metadata/hero (body falls back to
+ * English until AR_ARTICLES provides a translated bodyHtml). */
+export function localizeArticle(article: Article, locale: string): Article {
+  if (locale !== 'ar') return article;
+  return { ...article, ...AR_ARTICLES[article.slug] };
+}
+
+/** True when the article body itself is available in the locale. */
+export function articleBodyLocalized(slug: string, locale: string): boolean {
+  return locale !== 'ar' || Boolean(AR_ARTICLES[slug]?.bodyHtml);
+}
+
 export const ARTICLES: Article[] = [
   {
     "slug": "high-density-storage",

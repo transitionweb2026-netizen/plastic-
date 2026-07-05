@@ -4,7 +4,12 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
 import ArticleCounters from "@/components/blog/ArticleCounters";
-import { ARTICLES, getArticle } from "@/lib/articles";
+import {
+  ARTICLES,
+  articleBodyLocalized,
+  getArticle,
+  localizeArticle,
+} from "@/lib/articles";
 import { SITE_URL } from "@/lib/site";
 
 type Params = { slug: string; locale: string };
@@ -18,9 +23,10 @@ export async function generateMetadata({
 }: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const article = getArticle(slug);
-  if (!article) return {};
+  const { slug, locale } = await params;
+  const base = getArticle(slug);
+  if (!base) return {};
+  const article = localizeArticle(base, locale);
   return {
     title: article.title,
     description: article.description,
@@ -40,8 +46,10 @@ export default async function ArticlePage({
 }) {
   const { slug, locale } = await params;
   setRequestLocale(locale);
-  const article = getArticle(slug);
-  if (!article) notFound();
+  const base = getArticle(slug);
+  if (!base) notFound();
+  const article = localizeArticle(base, locale);
+  const bodyLocalized = articleBodyLocalized(slug, locale);
 
   const pageUrl = `${SITE_URL}/blog/${article.slug}`;
   const bodyHtml = article.bodyHtml
@@ -92,8 +100,11 @@ export default async function ArticlePage({
       {/* Article body — verbatim legacy markup (share row with fixed share
           links, stats strips, prose, prev/next, related). Injected as-is to
           preserve the original content and styling exactly. */}
+      {/* Until AR_ARTICLES carries translated bodies, English bodies render
+          LTR inside the RTL shell for readability. */}
       <div
         className="article-body"
+        dir={bodyLocalized ? undefined : "ltr"}
         dangerouslySetInnerHTML={{ __html: bodyHtml }}
       />
     </div>
