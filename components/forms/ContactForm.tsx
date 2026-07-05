@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import SocialIcon from "@/components/ui/SocialIcon";
 import { CONTACT, WHATSAPP_HREF } from "@/lib/nav";
 
@@ -10,13 +11,7 @@ const whatsappBase = envNumber ? `https://wa.me/${envNumber}` : WHATSAPP_HREF;
 
 type Status = "idle" | "loading" | "success" | "error";
 
-const INQUIRY_TYPES = [
-  "Warehouse Automation",
-  "Industrial Pallets/Crates",
-  "Cold Chain Logistics",
-  "Bulk Storage Systems",
-  "General Support",
-];
+const INQUIRY_KEYS = ["warehouse", "pallets", "coldChain", "bulk", "support"] as const;
 
 const inputClass =
   "w-full h-12 px-4 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md form-input-focus transition-all";
@@ -29,35 +24,32 @@ const channelBtnClass =
 function collectForm(form: HTMLFormElement | null): Record<string, string> | null {
   if (!form || !form.reportValidity()) return null;
   const data = new FormData(form);
-  return Object.fromEntries(
-    [...data.entries()].map(([k, v]) => [k, String(v)])
-  );
-}
-
-/** Formats the inquiry as readable multi-line text for email/WhatsApp bodies. */
-function formatInquiry(d: Record<string, string>): string {
-  return [
-    "New inquiry from the Giant Storage website",
-    "",
-    `Name: ${d.name}`,
-    `Email: ${d.email}`,
-    `Company: ${d.company || "-"}`,
-    `Inquiry Type: ${d.inquiry_type}`,
-    "",
-    "Project Details:",
-    d.message || "-",
-  ].join("\n");
+  return Object.fromEntries([...data.entries()].map(([k, v]) => [k, String(v)]));
 }
 
 /**
  * Contact inquiry form (from legacy contact.html). "Send Inquiry" posts
- * FormData to Formspree via NEXT_PUBLIC_FORMSPREE_CONTACT_ID (shows a clear
- * not-configured message until a real ID is provided). The two channel
- * buttons above the consent row send the same validated form data through
- * the visitor's own client instead: mailto: draft or wa.me chat message.
+ * FormData to Formspree; the two channel buttons above the consent row
+ * send the same validated data via the visitor's email client or WhatsApp.
  */
 export default function ContactForm() {
+  const t = useTranslations("contactForm");
+  const tc = useTranslations("common");
   const [status, setStatus] = useState<Status>("idle");
+
+  /** Formats the inquiry as readable multi-line text for email/WhatsApp bodies. */
+  const formatInquiry = (d: Record<string, string>): string =>
+    [
+      t("messageIntro"),
+      "",
+      `${t("fieldName")}: ${d.name}`,
+      `${t("fieldEmail")}: ${d.email}`,
+      `${t("fieldCompany")}: ${d.company || "-"}`,
+      `${t("fieldInquiryType")}: ${d.inquiry_type}`,
+      "",
+      `${t("fieldProjectDetails")}:`,
+      d.message || "-",
+    ].join("\n");
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -84,7 +76,7 @@ export default function ContactForm() {
   const sendViaEmail = (e: React.MouseEvent<HTMLButtonElement>) => {
     const d = collectForm(e.currentTarget.form);
     if (!d) return;
-    const subject = `Website Inquiry — ${d.inquiry_type} (${d.name})`;
+    const subject = t("emailSubject", { type: d.inquiry_type, name: d.name });
     window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(formatInquiry(d))}`;
@@ -107,13 +99,13 @@ export default function ContactForm() {
           className="font-label-md text-label-md text-on-surface-variant block"
           htmlFor="contact-name"
         >
-          Full Name
+          {t("fullName")}
         </label>
         <input
           className={inputClass}
           id="contact-name"
           name="name"
-          placeholder="John Doe"
+          placeholder={t("fullNamePlaceholder")}
           type="text"
           required
         />
@@ -123,15 +115,16 @@ export default function ContactForm() {
           className="font-label-md text-label-md text-on-surface-variant block"
           htmlFor="contact-email"
         >
-          Professional Email
+          {t("email")}
         </label>
         <input
           className={inputClass}
           id="contact-email"
           name="email"
-          placeholder="j.doe@company.com"
+          placeholder={t("emailPlaceholder")}
           type="email"
           required
+          dir="ltr"
         />
       </div>
       <div className="space-y-2">
@@ -139,13 +132,13 @@ export default function ContactForm() {
           className="font-label-md text-label-md text-on-surface-variant block"
           htmlFor="contact-company"
         >
-          Company Name
+          {t("company")}
         </label>
         <input
           className={inputClass}
           id="contact-company"
           name="company"
-          placeholder="Manufacturing Ltd."
+          placeholder={t("companyPlaceholder")}
           type="text"
         />
       </div>
@@ -154,15 +147,15 @@ export default function ContactForm() {
           className="font-label-md text-label-md text-on-surface-variant block"
           htmlFor="contact-inquiry"
         >
-          Inquiry Type
+          {t("inquiryType")}
         </label>
         <select
           className={`${inputClass} appearance-none`}
           id="contact-inquiry"
           name="inquiry_type"
         >
-          {INQUIRY_TYPES.map((type) => (
-            <option key={type}>{type}</option>
+          {INQUIRY_KEYS.map((key) => (
+            <option key={key}>{t(`inquiryTypes.${key}`)}</option>
           ))}
         </select>
       </div>
@@ -171,13 +164,13 @@ export default function ContactForm() {
           className="font-label-md text-label-md text-on-surface-variant block"
           htmlFor="contact-message"
         >
-          Project Details
+          {t("message")}
         </label>
         <textarea
           className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md form-input-focus transition-all"
           id="contact-message"
           name="message"
-          placeholder="Tell us about your storage requirements or specific facility challenges..."
+          placeholder={t("messagePlaceholder")}
           rows={4}
         />
       </div>
@@ -190,7 +183,7 @@ export default function ContactForm() {
           type="button"
           onClick={sendViaEmail}
         >
-          Send via Email
+          {tc("sendViaEmail")}
           <span className="material-symbols-outlined" aria-hidden>
             mail
           </span>
@@ -200,7 +193,7 @@ export default function ContactForm() {
           type="button"
           onClick={sendViaWhatsApp}
         >
-          Send via WhatsApp
+          {tc("sendViaWhatsApp")}
           <SocialIcon brand="whatsapp" size={20} />
         </button>
       </div>
@@ -219,8 +212,7 @@ export default function ContactForm() {
             className="font-label-sm text-label-sm text-on-surface-variant leading-tight"
             htmlFor="terms"
           >
-            I agree to Giant Storage&apos;s privacy policy and terms for data
-            processing.
+            {t("terms")}
           </label>
         </div>
         <button
@@ -229,26 +221,28 @@ export default function ContactForm() {
           disabled={status === "loading"}
         >
           {status === "loading"
-            ? "Sending…"
+            ? t("sending")
             : status === "success"
-              ? "Inquiry Sent ✓"
-              : "Send Inquiry"}
+              ? t("sent")
+              : t("sendInquiry")}
           {status === "idle" && (
-            <span className="material-symbols-outlined">send</span>
+            <span className="material-symbols-outlined rtl-flip">send</span>
           )}
         </button>
       </div>
       {status === "error" && (
         <p className="md:col-span-2 text-error text-sm">
-          {formId
-            ? "Something went wrong sending your inquiry."
-            : "The contact form isn't configured yet."}{" "}
-          Please reach us directly at{" "}
+          {formId ? t("errorConfigured") : t("errorNotConfigured")}{" "}
+          {t("reachDirectly")}{" "}
           <a className="underline font-semibold" href={`mailto:${CONTACT.email}`}>
             {CONTACT.email}
           </a>{" "}
-          or{" "}
-          <a className="underline font-semibold" href={CONTACT.phoneMain.href}>
+          {t("or")}{" "}
+          <a
+            className="underline font-semibold"
+            href={CONTACT.phoneMain.href}
+            dir="ltr"
+          >
             {CONTACT.phoneMain.display}
           </a>
           .
@@ -256,8 +250,7 @@ export default function ContactForm() {
       )}
       {status === "success" && (
         <p className="md:col-span-2 text-primary text-sm font-semibold">
-          Thank you — an engineering consultant will contact you within 24
-          business hours.
+          {t("successMessage")}
         </p>
       )}
     </form>

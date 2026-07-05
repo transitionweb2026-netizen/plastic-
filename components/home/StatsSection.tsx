@@ -1,16 +1,18 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 
-const STATS = [
-  { target: 22, suffix: "+", label: "Global Markets" },
-  { target: 600, suffix: "k", label: "Units Annually" },
-  { target: 150, suffix: "+", label: "Industrial Clients" },
-  { target: 100, suffix: "%", label: "Recyclable Material" },
-];
+const STAT_DEFS = [
+  { target: 22, suffix: "+", key: "statsMarkets" },
+  { target: 600, suffix: "k", key: "statsUnits" },
+  { target: 150, suffix: "+", key: "statsClients" },
+  { target: 100, suffix: "%", key: "statsRecyclable" },
+] as const;
 
 /** Animated count-up stats band (legacy home.html stats section). */
 export default function StatsSection() {
+  const t = useTranslations("home");
   const sectionRef = useRef<HTMLElement>(null);
   const done = useRef(false);
 
@@ -95,17 +97,18 @@ export default function StatsSection() {
 
       <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto relative">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-8 lg:gap-12 text-center">
-          {STATS.map((stat) => (
-            <div key={stat.label} className="space-y-3">
+          {STAT_DEFS.map((stat) => (
+            <div key={stat.key} className="space-y-3">
               <p
                 className="font-display-lg text-headline-xl stat-num"
+                dir="ltr"
                 data-target={stat.target}
                 data-suffix={stat.suffix}
               >
                 0
               </p>
               <p className="font-label-lg text-label-lg opacity-75 uppercase tracking-widest">
-                {stat.label}
+                {t(stat.key)}
               </p>
             </div>
           ))}

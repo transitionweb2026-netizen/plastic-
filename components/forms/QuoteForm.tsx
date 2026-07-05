@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import SocialIcon from "@/components/ui/SocialIcon";
 import { CONTACT, WHATSAPP_HREF } from "@/lib/nav";
 
@@ -10,26 +11,10 @@ const whatsappBase = envNumber ? `https://wa.me/${envNumber}` : WHATSAPP_HREF;
 
 type Status = "idle" | "loading" | "success" | "error";
 
-const PRODUCT_TYPES = [
-  "Automated Racking Systems",
-  "Heavy-Duty Mezzanines",
-  "Industrial Shelving",
-  "Custom Warehouse Integration",
-];
-
-const LEAD_TIMES = [
-  "Urgent (30 Days)",
-  "Standard (60-90 Days)",
-  "Future Planning (6+ Months)",
-];
-
-const ENVIRONMENTS = ["Cold Storage", "Ambient", "Hazardous", "High-Humidity"];
-
-const STEPS = [
-  { num: 1, label: "Project Details" },
-  { num: 2, label: "Logistics" },
-  { num: 3, label: "Company Info" },
-];
+const PRODUCT_TYPE_KEYS = ["racking", "mezzanines", "shelving", "custom"] as const;
+const LEAD_TIME_KEYS = ["urgent", "standard", "future"] as const;
+const ENVIRONMENT_KEYS = ["cold", "ambient", "hazardous", "humidity"] as const;
+const STEP_KEYS = ["project", "logistics", "company"] as const;
 
 const inputClass =
   "w-full bg-transparent border border-outline rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none";
@@ -38,42 +23,17 @@ const inputClass =
 const channelBtnClass =
   "w-full sm:flex-1 px-10 py-4 rounded-lg font-label-lg text-label-lg transition-all shadow-lg flex items-center justify-center gap-3";
 
-/** Formats the full quote request as readable multi-line text for email/WhatsApp. */
-function formatQuote(d: Record<string, string>): string {
-  return [
-    "New quote request from the Giant Storage website",
-    "",
-    "— Project Details —",
-    `Product Type: ${d.product_type}`,
-    `Estimated Quantity: ${d.quantity || "-"}`,
-    `Storage Environment: ${d.storage_environment}`,
-    "",
-    "— Logistics —",
-    `Destination: ${d.destination || "-"}`,
-    `Lead Time: ${d.lead_time}`,
-    `On-site Assembly: ${d.installation_required === "yes" ? "Yes" : "No"}`,
-    "",
-    "— Company —",
-    `Company: ${d.company || "-"}`,
-    `Business Email: ${d.email}`,
-    `Industry Sector: ${d.industry_sector || "-"}`,
-    `Phone: ${d.phone || "-"}`,
-    "",
-    "Project Brief:",
-    d.project_brief || "-",
-  ].join("\n");
-}
-
 /**
  * 3-step quote wizard (from legacy request qoute.html), with the legacy
- * defects fixed: every field now has a name attribute (the legacy form
- * submitted empty FormData), and the storage-environment picker buttons
- * actually select (they were inert). Posts to Formspree via
- * NEXT_PUBLIC_FORMSPREE_QUOTE_ID.
+ * defects fixed: every field has a name attribute and the environment
+ * picker actually selects. Posts to Formspree; the channel buttons send
+ * the same validated data via email client / WhatsApp.
  */
 export default function QuoteForm() {
+  const t = useTranslations("quoteForm");
+  const tc = useTranslations("common");
   const [step, setStep] = useState(1);
-  const [environment, setEnvironment] = useState(ENVIRONMENTS[0]);
+  const [environment, setEnvironment] = useState<string>("cold");
   const [status, setStatus] = useState<Status>("idle");
   const wrapRef = useRef<HTMLDivElement>(null);
 
@@ -82,6 +42,76 @@ export default function QuoteForm() {
     // Legacy behavior: scroll back to the top of the form on step change.
     const top = wrapRef.current?.getBoundingClientRect().top ?? 0;
     window.scrollTo({ top: window.scrollY + top - 110, behavior: "smooth" });
+  };
+
+  const environmentLabel = (key: string) =>
+    t(`environments.${key as (typeof ENVIRONMENT_KEYS)[number]}`);
+
+  /** Formats the full quote request as readable multi-line text. */
+  const formatQuote = (d: Record<string, string>): string =>
+    [
+      t("messageIntro"),
+      "",
+      t("sectionProject"),
+      `${t("fieldProductType")}: ${d.product_type}`,
+      `${t("fieldQuantity")}: ${d.quantity || "-"}`,
+      `${t("fieldEnvironment")}: ${d.storage_environment}`,
+      "",
+      t("sectionLogistics"),
+      `${t("fieldDestination")}: ${d.destination || "-"}`,
+      `${t("fieldLeadTime")}: ${d.lead_time}`,
+      `${t("fieldAssembly")}: ${d.installation_required === "yes" ? t("yes") : t("no")}`,
+      "",
+      t("sectionCompany"),
+      `${t("fieldCompany")}: ${d.company || "-"}`,
+      `${t("fieldBusinessEmail")}: ${d.email}`,
+      `${t("fieldIndustry")}: ${d.industry_sector || "-"}`,
+      `${t("fieldPhone")}: ${d.phone || "-"}`,
+      "",
+      `${t("fieldBrief")}:`,
+      d.project_brief || "-",
+    ].join("\n");
+
+  /**
+   * Same validation as the main submission: if a required field is invalid,
+   * jump the wizard to that field's step and surface the native prompt.
+   */
+  const collectQuote = (
+    form: HTMLFormElement | null
+  ): Record<string, string> | null => {
+    if (!form) return null;
+    if (!form.checkValidity()) {
+      const panel = form.querySelector(":invalid")?.closest("[data-quote-step]");
+      const target = panel ? Number(panel.getAttribute("data-quote-step")) : step;
+      if (target !== step) goToStep(target);
+      window.setTimeout(() => form.reportValidity(), target !== step ? 450 : 0);
+      return null;
+    }
+    const data = new FormData(form);
+    data.set("storage_environment", environmentLabel(environment));
+    return Object.fromEntries([...data.entries()].map(([k, v]) => [k, String(v)]));
+  };
+
+  const sendViaEmail = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const d = collectQuote(e.currentTarget.form);
+    if (!d) return;
+    const subject = t("emailSubject", {
+      product: d.product_type,
+      company: d.company || d.email,
+    });
+    window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(formatQuote(d))}`;
+  };
+
+  const sendViaWhatsApp = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const d = collectQuote(e.currentTarget.form);
+    if (!d) return;
+    window.open(
+      `${whatsappBase}?text=${encodeURIComponent(formatQuote(d))}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -94,7 +124,7 @@ export default function QuoteForm() {
     setStatus("loading");
     try {
       const data = new FormData(form);
-      data.set("storage_environment", environment);
+      data.set("storage_environment", environmentLabel(environment));
       const res = await fetch(`https://formspree.io/f/${formId}`, {
         method: "POST",
         headers: { Accept: "application/json" },
@@ -112,77 +142,32 @@ export default function QuoteForm() {
   const stepClass = (n: number) =>
     step === n ? "step-active space-y-8" : "step-inactive space-y-8";
 
-  /**
-   * Same validation as the main submission: if a required field is invalid,
-   * jump the wizard to that field's step and surface the native prompt
-   * (the browser can't focus fields hidden in inactive steps).
-   */
-  const collectQuote = (
-    form: HTMLFormElement | null
-  ): Record<string, string> | null => {
-    if (!form) return null;
-    if (!form.checkValidity()) {
-      const panel = form
-        .querySelector(":invalid")
-        ?.closest("[data-quote-step]");
-      const target = panel
-        ? Number(panel.getAttribute("data-quote-step"))
-        : step;
-      if (target !== step) goToStep(target);
-      window.setTimeout(() => form.reportValidity(), target !== step ? 450 : 0);
-      return null;
-    }
-    const data = new FormData(form);
-    data.set("storage_environment", environment);
-    return Object.fromEntries(
-      [...data.entries()].map(([k, v]) => [k, String(v)])
-    );
-  };
-
-  const sendViaEmail = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const d = collectQuote(e.currentTarget.form);
-    if (!d) return;
-    const subject = `Quote Request — ${d.product_type} (${d.company || d.email})`;
-    window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(formatQuote(d))}`;
-  };
-
-  const sendViaWhatsApp = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const d = collectQuote(e.currentTarget.form);
-    if (!d) return;
-    window.open(
-      `${whatsappBase}?text=${encodeURIComponent(formatQuote(d))}`,
-      "_blank",
-      "noopener,noreferrer"
-    );
-  };
-
   return (
-    <div ref={wrapRef} className="glass-card rounded-xl p-8 md:p-12 shadow-[0px_4px_20px_rgba(0,0,0,0.05)]">
+    <div
+      ref={wrapRef}
+      className="glass-card rounded-xl p-8 md:p-12 shadow-[0px_4px_20px_rgba(0,0,0,0.05)]"
+    >
       {/* Stepper */}
       <div className="flex items-center gap-4 mb-12">
-        {STEPS.map((s, i) => (
-          <div key={s.num} className="contents">
+        {STEP_KEYS.map((key, i) => (
+          <div key={key} className="contents">
             {i > 0 && <div className="h-px bg-outline-variant flex-1" />}
             <div
               className={`flex items-center gap-2 ${
-                step >= s.num
-                  ? "text-primary font-bold"
-                  : "text-on-surface-variant"
+                step >= i + 1 ? "text-primary font-bold" : "text-on-surface-variant"
               }`}
             >
               <span
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-label-sm ${
-                  step >= s.num
+                  step >= i + 1
                     ? "bg-primary text-on-primary"
                     : "bg-surface-container-high text-on-surface-variant"
                 }`}
               >
-                {s.num}
+                {i + 1}
               </span>
               <span className="font-label-lg text-label-lg hidden md:block">
-                {s.label}
+                {t(`steps.${key}`)}
               </span>
             </div>
           </div>
@@ -200,12 +185,9 @@ export default function QuoteForm() {
             check_circle
           </span>
           <h3 className="font-headline-md text-headline-md text-primary mb-2">
-            Quote Request Received
+            {t("successTitle")}
           </h3>
-          <p className="text-on-surface-variant">
-            Our engineering team will send your comprehensive technical proposal
-            within 24 hours.
-          </p>
+          <p className="text-on-surface-variant">{t("successMessage")}</p>
         </div>
       ) : (
         <form onSubmit={onSubmit}>
@@ -217,15 +199,15 @@ export default function QuoteForm() {
                   className="font-label-lg text-label-lg text-on-surface"
                   htmlFor="quote-product-type"
                 >
-                  Product Types
+                  {t("productTypes")}
                 </label>
                 <select
                   className={inputClass}
                   id="quote-product-type"
                   name="product_type"
                 >
-                  {PRODUCT_TYPES.map((type) => (
-                    <option key={type}>{type}</option>
+                  {PRODUCT_TYPE_KEYS.map((key) => (
+                    <option key={key}>{t(`productTypeOptions.${key}`)}</option>
                   ))}
                 </select>
               </div>
@@ -234,35 +216,35 @@ export default function QuoteForm() {
                   className="font-label-lg text-label-lg text-on-surface"
                   htmlFor="quote-quantity"
                 >
-                  Estimated Quantity
+                  {t("quantity")}
                 </label>
                 <input
                   className={inputClass}
                   id="quote-quantity"
                   name="quantity"
-                  placeholder="e.g. 500 units"
+                  placeholder={t("quantityPlaceholder")}
                   type="number"
                 />
               </div>
             </div>
             <div className="space-y-2">
               <span className="font-label-lg text-label-lg text-on-surface block">
-                Storage Environment
+                {t("environment")}
               </span>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {ENVIRONMENTS.map((env) => (
+                {ENVIRONMENT_KEYS.map((key) => (
                   <button
-                    key={env}
+                    key={key}
                     type="button"
-                    aria-pressed={environment === env}
-                    onClick={() => setEnvironment(env)}
+                    aria-pressed={environment === key}
+                    onClick={() => setEnvironment(key)}
                     className={
-                      environment === env
+                      environment === key
                         ? "border border-primary bg-primary-fixed-dim/20 text-primary px-4 py-3 rounded-lg text-label-lg transition-all hover:bg-primary-fixed-dim/40"
                         : "border border-outline text-on-surface-variant px-4 py-3 rounded-lg text-label-lg transition-all hover:border-primary"
                     }
                   >
-                    {env}
+                    {t(`environments.${key}`)}
                   </button>
                 ))}
               </div>
@@ -273,7 +255,7 @@ export default function QuoteForm() {
                 onClick={() => goToStep(2)}
                 type="button"
               >
-                Next: Logistics Requirements
+                {t("nextLogistics")}
               </button>
 
               {/* Channel buttons — send the completed quote via the visitor's
@@ -284,7 +266,7 @@ export default function QuoteForm() {
                   type="button"
                   onClick={sendViaEmail}
                 >
-                  Send via Email
+                  {tc("sendViaEmail")}
                   <span className="material-symbols-outlined" aria-hidden>
                     mail
                   </span>
@@ -294,7 +276,7 @@ export default function QuoteForm() {
                   type="button"
                   onClick={sendViaWhatsApp}
                 >
-                  Send via WhatsApp
+                  {tc("sendViaWhatsApp")}
                   <SocialIcon brand="whatsapp" size={20} />
                 </button>
               </div>
@@ -309,13 +291,13 @@ export default function QuoteForm() {
                   className="font-label-lg text-label-lg text-on-surface"
                   htmlFor="quote-destination"
                 >
-                  Destination Port/City
+                  {t("destination")}
                 </label>
                 <input
                   className={inputClass}
                   id="quote-destination"
                   name="destination"
-                  placeholder="e.g. Rotterdam, NL"
+                  placeholder={t("destinationPlaceholder")}
                   type="text"
                 />
               </div>
@@ -324,18 +306,18 @@ export default function QuoteForm() {
                   className="font-label-lg text-label-lg text-on-surface"
                   htmlFor="quote-lead-time"
                 >
-                  Lead Time Preference
+                  {t("leadTime")}
                 </label>
                 <select className={inputClass} id="quote-lead-time" name="lead_time">
-                  {LEAD_TIMES.map((time) => (
-                    <option key={time}>{time}</option>
+                  {LEAD_TIME_KEYS.map((key) => (
+                    <option key={key}>{t(`leadTimes.${key}`)}</option>
                   ))}
                 </select>
               </div>
             </div>
             <div className="space-y-2">
               <span className="font-label-lg text-label-lg text-on-surface block">
-                Installation Services
+                {t("installation")}
               </span>
               <div className="flex items-center gap-4">
                 <label className="flex items-center gap-2 cursor-pointer group">
@@ -346,7 +328,7 @@ export default function QuoteForm() {
                     value="yes"
                   />
                   <span className="text-on-surface-variant group-hover:text-primary transition-colors">
-                    On-site Assembly Required
+                    {t("installationLabel")}
                   </span>
                 </label>
               </div>
@@ -357,14 +339,14 @@ export default function QuoteForm() {
                 onClick={() => goToStep(1)}
                 type="button"
               >
-                Back
+                {t("back")}
               </button>
               <button
                 className="flex-1 md:flex-none bg-primary text-on-primary px-10 py-4 rounded-lg font-label-lg text-label-lg hover:bg-primary-container transition-all"
                 onClick={() => goToStep(3)}
                 type="button"
               >
-                Next: Company Information
+                {t("nextCompany")}
               </button>
             </div>
           </div>
@@ -377,13 +359,13 @@ export default function QuoteForm() {
                   className="font-label-lg text-label-lg text-on-surface"
                   htmlFor="quote-company"
                 >
-                  Company Name
+                  {t("companyName")}
                 </label>
                 <input
                   className={inputClass}
                   id="quote-company"
                   name="company"
-                  placeholder="Global Logistics Corp"
+                  placeholder={t("companyPlaceholder")}
                   type="text"
                 />
               </div>
@@ -392,15 +374,16 @@ export default function QuoteForm() {
                   className="font-label-lg text-label-lg text-on-surface"
                   htmlFor="quote-email"
                 >
-                  Business Email
+                  {t("businessEmail")}
                 </label>
                 <input
                   className={inputClass}
                   id="quote-email"
                   name="email"
-                  placeholder="procurement@company.com"
+                  placeholder={t("businessEmailPlaceholder")}
                   type="email"
                   required
+                  dir="ltr"
                 />
               </div>
               <div className="space-y-2">
@@ -408,13 +391,13 @@ export default function QuoteForm() {
                   className="font-label-lg text-label-lg text-on-surface"
                   htmlFor="quote-industry"
                 >
-                  Industry Sector
+                  {t("industrySector")}
                 </label>
                 <input
                   className={inputClass}
                   id="quote-industry"
                   name="industry_sector"
-                  placeholder="e.g. E-commerce, Manufacturing"
+                  placeholder={t("industrySectorPlaceholder")}
                   type="text"
                 />
               </div>
@@ -423,14 +406,15 @@ export default function QuoteForm() {
                   className="font-label-lg text-label-lg text-on-surface"
                   htmlFor="quote-phone"
                 >
-                  Phone Number
+                  {t("phone")}
                 </label>
                 <input
                   className={inputClass}
                   id="quote-phone"
                   name="phone"
-                  placeholder="+1 (555) 000-0000"
+                  placeholder={t("phonePlaceholder")}
                   type="tel"
+                  dir="ltr"
                 />
               </div>
             </div>
@@ -439,13 +423,13 @@ export default function QuoteForm() {
                 className="font-label-lg text-label-lg text-on-surface"
                 htmlFor="quote-brief"
               >
-                Project Brief / Special Instructions
+                {t("brief")}
               </label>
               <textarea
                 className={inputClass}
                 id="quote-brief"
                 name="project_brief"
-                placeholder="Briefly describe your project scope..."
+                placeholder={t("briefPlaceholder")}
                 rows={4}
               />
             </div>
@@ -455,32 +439,31 @@ export default function QuoteForm() {
                 onClick={() => goToStep(2)}
                 type="button"
               >
-                Back
+                {t("back")}
               </button>
               <button
                 className="flex-1 md:flex-none bg-primary text-on-primary px-12 py-4 rounded-lg font-label-lg text-label-lg hover:bg-primary-container transition-all shadow-xl shadow-primary/20 uppercase tracking-widest disabled:opacity-70"
                 type="submit"
                 disabled={status === "loading"}
               >
-                {status === "loading" ? "Sending…" : "Direct Inquiry"}
+                {status === "loading" ? t("sending") : t("submit")}
               </button>
             </div>
             {status === "error" && (
               <p className="text-error text-sm">
-                {formId
-                  ? "Something went wrong sending your request."
-                  : "The quote form isn't configured yet."}{" "}
-                Please contact us directly at{" "}
+                {formId ? t("errorConfigured") : t("errorNotConfigured")}{" "}
+                {t("reachDirectly")}{" "}
                 <a
                   className="underline font-semibold"
                   href={`mailto:${CONTACT.email}`}
                 >
                   {CONTACT.email}
                 </a>{" "}
-                or{" "}
+                {t("or")}{" "}
                 <a
                   className="underline font-semibold"
                   href={CONTACT.phoneMain.href}
+                  dir="ltr"
                 >
                   {CONTACT.phoneMain.display}
                 </a>
