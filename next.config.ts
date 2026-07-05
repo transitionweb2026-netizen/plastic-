@@ -15,7 +15,9 @@ const contentSecurityPolicy = [
   "font-src 'self' data:",
   "img-src 'self' data: https://lh3.googleusercontent.com https://upload.wikimedia.org",
   "connect-src 'self' https://formspree.io",
-  "frame-src 'none'",
+  // Gallery video lightbox: YouTube embeds + self-hosted MP4s
+  "frame-src https://www.youtube-nocookie.com",
+  "media-src 'self'",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self' https://formspree.io",

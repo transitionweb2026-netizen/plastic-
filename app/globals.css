@@ -2107,6 +2107,189 @@ a[role="button"],
   min-height: 44px;
 }
 
+/* ═══════════════ GALLERY PAGE ═══════════════ */
+/* Masonry items (CSS columns) — hover zoom + elevation, caption slide-up */
+.gallery-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  break-inside: avoid;
+  border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  background: #e9e7ea;
+  box-shadow: 0 4px 20px rgba(14, 74, 48, 0.07);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s;
+}
+.gallery-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(14, 74, 48, 0.16), 0 0 0 1px rgba(1, 78, 42, 0.07);
+}
+.gallery-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.gallery-item:hover .gallery-img {
+  transform: scale(1.06);
+}
+.gallery-caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 2.25rem 1.1rem 0.9rem;
+  background: linear-gradient(to top, rgba(27, 28, 29, 0.78), transparent);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+.gallery-item:hover .gallery-caption,
+.gallery-item:focus-visible .gallery-caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fullscreen lightbox (images + video player) */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(20, 22, 21, 0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4.5rem 1rem 2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.lightbox.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.lightbox-figure {
+  max-width: 92vw;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  animation: lightboxIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.lightbox-img {
+  width: auto;
+  height: auto;
+  max-width: 92vw;
+  max-height: 78vh;
+  border-radius: 0.75rem;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+}
+.lightbox-caption {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+@keyframes lightboxIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+.lightbox-ctl {
+  position: absolute;
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.lightbox-ctl:hover {
+  background: rgba(255, 255, 255, 0.24);
+  transform: scale(1.1);
+}
+.lightbox-ctl:active {
+  transform: scale(0.94);
+}
+.lightbox-close {
+  top: 1.25rem;
+  right: 1.25rem;
+}
+.lightbox-close:hover {
+  transform: scale(1.1) rotate(90deg);
+}
+.lightbox-prev {
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.lightbox-next {
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+.lightbox-prev:active,
+.lightbox-next:active {
+  transform: translateY(-50%) scale(0.94);
+}
+
+/* Video player box: responsive 16:9 */
+.lightbox-player {
+  width: min(1080px, 94vw);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  animation: lightboxIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.lightbox-player iframe,
+.lightbox-player video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: 0.75rem;
+  background: #000;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 639px) {
+  .lightbox {
+    padding: 4rem 0.5rem 1.25rem;
+  }
+  .lightbox-prev {
+    left: 0.4rem;
+  }
+  .lightbox-next {
+    right: 0.4rem;
+  }
+}
+
 /* ═══════════════ FOOTER BOTTOM BAR (Model 7) ═══════════════ */
 /* Solid primary-green bar: copyright + "Created by Transition" lockup on the
    left, legal links on the right, dot-matrix texture fading in from the

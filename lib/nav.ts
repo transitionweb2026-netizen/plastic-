@@ -14,6 +14,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: "Products", href: "/products", icon: "inventory_2" },
   { label: "Industries", href: "/industries", icon: "precision_manufacturing" },
   { label: "Blog", href: "/blog", icon: "article" },
+  { label: "Gallery", href: "/gallery", icon: "photo_library" },
   { label: "About Us", href: "/about", icon: "factory" },
   { label: "Contact", href: "/contact", icon: "mail" },
 ];
