@@ -1331,6 +1331,11 @@ iframe {
   aspect-ratio: 16/9;
   object-fit: cover;
 }
+/* 1:1 white-background studio shots render un-cropped on white */
+.modal-img-contain {
+  object-fit: contain;
+  background: #ffffff;
+}
 /* Product modal angle gallery */
 .gallery-main {
   animation: galleryFade 0.35s ease both;

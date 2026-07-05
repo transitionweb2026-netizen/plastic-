@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import {
   PRODUCT_CATEGORIES,
   PRODUCTS,
+  productCover,
   type Product,
   type ProductCategory,
 } from "@/lib/products";
@@ -125,7 +126,7 @@ export default function ProductCatalog() {
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-[.875rem] bg-surface-container-low">
                   <Image
                     className="card-img object-cover"
-                    src={product.image}
+                    src={productCover(product)}
                     alt={product.name}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

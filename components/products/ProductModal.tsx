@@ -52,8 +52,12 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
           <div className="relative">
             {/* key remount triggers the fade/scale transition on image switch */}
             <div key={activeSrc} className="gallery-main">
+              {/* Local studio shots are 1:1 on white — show them un-cropped
+                  (contain on white); remote catalog photos keep the 16:9 crop. */}
               <Image
-                className="modal-img rounded-t-xl"
+                className={`modal-img rounded-t-xl ${
+                  activeSrc?.startsWith("/products/") ? "modal-img-contain" : ""
+                }`}
                 src={activeSrc ?? product.image}
                 alt={product.name}
                 width={920}

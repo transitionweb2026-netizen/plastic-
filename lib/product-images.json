@@ -1,0 +1,302 @@
+{
+  "1": {
+    "cover": "/products/product-1/cover.jpg",
+    "images": [
+      "/products/product-1/front.jpg",
+      "/products/product-1/back.jpg",
+      "/products/product-1/side.jpg",
+      "/products/product-1/top.jpg",
+      "/products/product-1/detail.jpg"
+    ]
+  },
+  "2": {
+    "cover": "/products/product-2/cover.jpg",
+    "images": [
+      "/products/product-2/front.jpg",
+      "/products/product-2/back.jpg",
+      "/products/product-2/side.jpg",
+      "/products/product-2/top.jpg",
+      "/products/product-2/detail.jpg"
+    ]
+  },
+  "3": {
+    "cover": "/products/product-3/cover.jpg",
+    "images": [
+      "/products/product-3/front.jpg",
+      "/products/product-3/back.jpg",
+      "/products/product-3/side.jpg",
+      "/products/product-3/top.jpg",
+      "/products/product-3/detail.jpg"
+    ]
+  },
+  "4": {
+    "cover": "/products/product-4/cover.jpg",
+    "images": [
+      "/products/product-4/front.jpg",
+      "/products/product-4/back.jpg",
+      "/products/product-4/side.jpg",
+      "/products/product-4/top.jpg",
+      "/products/product-4/detail.jpg"
+    ]
+  },
+  "5": {
+    "cover": "/products/product-5/cover.jpg",
+    "images": [
+      "/products/product-5/front.jpg",
+      "/products/product-5/back.jpg",
+      "/products/product-5/side.jpg",
+      "/products/product-5/top.jpg",
+      "/products/product-5/detail.jpg"
+    ]
+  },
+  "6": {
+    "cover": "/products/product-6/cover.jpg",
+    "images": [
+      "/products/product-6/front.jpg",
+      "/products/product-6/back.jpg",
+      "/products/product-6/side.jpg",
+      "/products/product-6/top.jpg",
+      "/products/product-6/detail.jpg"
+    ]
+  },
+  "7": {
+    "cover": "/products/product-7/cover.jpg",
+    "images": [
+      "/products/product-7/front.jpg",
+      "/products/product-7/back.jpg",
+      "/products/product-7/side.jpg",
+      "/products/product-7/top.jpg",
+      "/products/product-7/detail.jpg"
+    ]
+  },
+  "8": {
+    "cover": "/products/product-8/cover.jpg",
+    "images": [
+      "/products/product-8/front.jpg",
+      "/products/product-8/back.jpg",
+      "/products/product-8/side.jpg",
+      "/products/product-8/top.jpg",
+      "/products/product-8/detail.jpg"
+    ]
+  },
+  "9": {
+    "cover": "/products/product-9/cover.jpg",
+    "images": [
+      "/products/product-9/front.jpg",
+      "/products/product-9/back.jpg",
+      "/products/product-9/side.jpg",
+      "/products/product-9/top.jpg",
+      "/products/product-9/detail.jpg"
+    ]
+  },
+  "10": {
+    "cover": "/products/product-10/cover.jpg",
+    "images": [
+      "/products/product-10/front.jpg",
+      "/products/product-10/back.jpg",
+      "/products/product-10/side.jpg",
+      "/products/product-10/top.jpg",
+      "/products/product-10/detail.jpg"
+    ]
+  },
+  "11": {
+    "cover": "/products/product-11/cover.jpg",
+    "images": [
+      "/products/product-11/front.jpg",
+      "/products/product-11/back.jpg",
+      "/products/product-11/side.jpg",
+      "/products/product-11/top.jpg",
+      "/products/product-11/detail.jpg"
+    ]
+  },
+  "12": {
+    "cover": "/products/product-12/cover.jpg",
+    "images": [
+      "/products/product-12/front.jpg",
+      "/products/product-12/back.jpg",
+      "/products/product-12/side.jpg",
+      "/products/product-12/top.jpg",
+      "/products/product-12/detail.jpg"
+    ]
+  },
+  "13": {
+    "cover": "/products/product-13/cover.jpg",
+    "images": [
+      "/products/product-13/front.jpg",
+      "/products/product-13/back.jpg",
+      "/products/product-13/side.jpg",
+      "/products/product-13/top.jpg",
+      "/products/product-13/detail.jpg"
+    ]
+  },
+  "14": {
+    "cover": "/products/product-14/cover.jpg",
+    "images": [
+      "/products/product-14/front.jpg",
+      "/products/product-14/back.jpg",
+      "/products/product-14/side.jpg",
+      "/products/product-14/top.jpg",
+      "/products/product-14/detail.jpg"
+    ]
+  },
+  "15": {
+    "cover": "/products/product-15/cover.jpg",
+    "images": [
+      "/products/product-15/front.jpg",
+      "/products/product-15/back.jpg",
+      "/products/product-15/side.jpg",
+      "/products/product-15/top.jpg",
+      "/products/product-15/detail.jpg"
+    ]
+  },
+  "16": {
+    "cover": "/products/product-16/cover.jpg",
+    "images": [
+      "/products/product-16/front.jpg",
+      "/products/product-16/back.jpg",
+      "/products/product-16/side.jpg",
+      "/products/product-16/top.jpg",
+      "/products/product-16/detail.jpg"
+    ]
+  },
+  "17": {
+    "cover": "/products/product-17/cover.jpg",
+    "images": [
+      "/products/product-17/front.jpg",
+      "/products/product-17/back.jpg",
+      "/products/product-17/side.jpg",
+      "/products/product-17/top.jpg",
+      "/products/product-17/detail.jpg"
+    ]
+  },
+  "18": {
+    "cover": "/products/product-18/cover.jpg",
+    "images": [
+      "/products/product-18/front.jpg",
+      "/products/product-18/back.jpg",
+      "/products/product-18/side.jpg",
+      "/products/product-18/top.jpg",
+      "/products/product-18/detail.jpg"
+    ]
+  },
+  "19": {
+    "cover": "/products/product-19/cover.jpg",
+    "images": [
+      "/products/product-19/front.jpg",
+      "/products/product-19/back.jpg",
+      "/products/product-19/side.jpg",
+      "/products/product-19/top.jpg",
+      "/products/product-19/detail.jpg"
+    ]
+  },
+  "20": {
+    "cover": "/products/product-20/cover.jpg",
+    "images": [
+      "/products/product-20/front.jpg",
+      "/products/product-20/back.jpg",
+      "/products/product-20/side.jpg",
+      "/products/product-20/top.jpg",
+      "/products/product-20/detail.jpg"
+    ]
+  },
+  "21": {
+    "cover": "/products/product-21/cover.jpg",
+    "images": [
+      "/products/product-21/front.jpg",
+      "/products/product-21/back.jpg",
+      "/products/product-21/side.jpg",
+      "/products/product-21/top.jpg",
+      "/products/product-21/detail.jpg"
+    ]
+  },
+  "22": {
+    "cover": "/products/product-22/cover.jpg",
+    "images": [
+      "/products/product-22/front.jpg",
+      "/products/product-22/back.jpg",
+      "/products/product-22/side.jpg",
+      "/products/product-22/top.jpg",
+      "/products/product-22/detail.jpg"
+    ]
+  },
+  "23": {
+    "cover": "/products/product-23/cover.jpg",
+    "images": [
+      "/products/product-23/front.jpg",
+      "/products/product-23/back.jpg",
+      "/products/product-23/side.jpg",
+      "/products/product-23/top.jpg",
+      "/products/product-23/detail.jpg"
+    ]
+  },
+  "24": {
+    "cover": "/products/product-24/cover.jpg",
+    "images": [
+      "/products/product-24/front.jpg",
+      "/products/product-24/back.jpg",
+      "/products/product-24/side.jpg",
+      "/products/product-24/top.jpg",
+      "/products/product-24/detail.jpg"
+    ]
+  },
+  "25": {
+    "cover": "/products/product-25/cover.jpg",
+    "images": [
+      "/products/product-25/front.jpg",
+      "/products/product-25/back.jpg",
+      "/products/product-25/side.jpg",
+      "/products/product-25/top.jpg",
+      "/products/product-25/detail.jpg"
+    ]
+  },
+  "26": {
+    "cover": "/products/product-26/cover.jpg",
+    "images": [
+      "/products/product-26/front.jpg",
+      "/products/product-26/back.jpg",
+      "/products/product-26/side.jpg",
+      "/products/product-26/top.jpg",
+      "/products/product-26/detail.jpg"
+    ]
+  },
+  "27": {
+    "cover": "/products/product-27/cover.jpg",
+    "images": [
+      "/products/product-27/front.jpg",
+      "/products/product-27/back.jpg",
+      "/products/product-27/side.jpg",
+      "/products/product-27/top.jpg",
+      "/products/product-27/detail.jpg"
+    ]
+  },
+  "28": {
+    "cover": "/products/product-28/cover.jpg",
+    "images": [
+      "/products/product-28/front.jpg",
+      "/products/product-28/back.jpg",
+      "/products/product-28/side.jpg",
+      "/products/product-28/top.jpg",
+      "/products/product-28/detail.jpg"
+    ]
+  },
+  "29": {
+    "cover": "/products/product-29/cover.jpg",
+    "images": [
+      "/products/product-29/front.jpg",
+      "/products/product-29/back.jpg",
+      "/products/product-29/side.jpg",
+      "/products/product-29/top.jpg",
+      "/products/product-29/detail.jpg"
+    ]
+  },
+  "30": {
+    "cover": "/products/product-30/cover.jpg",
+    "images": [
+      "/products/product-30/front.jpg",
+      "/products/product-30/back.jpg",
+      "/products/product-30/side.jpg",
+      "/products/product-30/top.jpg",
+      "/products/product-30/detail.jpg"
+    ]
+  }
+}
