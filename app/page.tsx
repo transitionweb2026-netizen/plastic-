@@ -9,6 +9,7 @@ import AboutImageParallax from "@/components/home/AboutImageParallax";
 import StatsSection from "@/components/home/StatsSection";
 import VideoSection from "@/components/home/VideoSection";
 import SocialIcon from "@/components/ui/SocialIcon";
+import { PalletBlueprint, CircuitLines, DimensionLine, RackOutline } from "@/components/ui/DecorArt";
 import { CONTACT, SOCIAL_LINKS } from "@/lib/nav";
 
 export const metadata: Metadata = {
@@ -241,6 +242,7 @@ export default function Home() {
 
       {/* ═══ 2. ABOUT US ═══ */}
       <section className="pb-28 bg-surface overflow-hidden relative" id="about">
+        <DimensionLine className="absolute bottom-8 left-16 w-[380px] hidden xl:block" />
         <div
           className="absolute top-0 right-0 w-64 h-64 dot-pattern-bg opacity-40 pointer-events-none"
           style={{
@@ -330,6 +332,7 @@ export default function Home() {
 
       {/* ═══ 3. TRUSTED BY ═══ */}
       <section className="pb-20 bg-surface-container-low overflow-hidden relative">
+        <RackOutline className="decor-breathe absolute -left-10 bottom-2 w-[280px] hidden xl:block" />
         <div className="absolute inset-0 dot-pattern-light opacity-60 pointer-events-none" />
 
         <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto relative">
@@ -456,6 +459,8 @@ export default function Home() {
 
       {/* ═══ WHY CHOOSE US ═══ */}
       <section className="py-24 bg-on-background text-on-primary relative overflow-hidden">
+        <div aria-hidden className="absolute inset-0 noise-overlay pointer-events-none" />
+        <PalletBlueprint tone="light" className="decor-breathe absolute -bottom-8 -right-6 w-[400px] hidden lg:block" />
         <div
           className="absolute top-0 left-0 w-80 h-80 rounded-full pointer-events-none"
           style={{
@@ -520,6 +525,7 @@ export default function Home() {
 
       {/* ═══ 7. CERTIFICATIONS ═══ */}
       <section className="pb-24 bg-surface-container-low relative overflow-hidden">
+        <CircuitLines className="absolute top-6 right-4 w-[320px] hidden xl:block" />
         <div
           className="absolute top-0 right-0 w-72 h-72 dot-pattern-bg opacity-30 pointer-events-none"
           style={{

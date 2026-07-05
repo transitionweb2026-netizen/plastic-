@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ProductCatalog from "@/components/products/ProductCatalog";
+import { PalletBlueprint, CrateSchematic, DimensionLine } from "@/components/ui/DecorArt";
 
 export const metadata: Metadata = {
   title: "Industrial Storage Products",
@@ -12,7 +13,8 @@ export default function ProductsPage() {
     <div className="relative overflow-hidden pt-6 pb-20">
       {/* Whitespace decor (palette-only, non-interactive) */}
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-72 blueprint-grid [mask-image:linear-gradient(to_bottom,black,transparent)]" />
-      <span aria-hidden className="material-symbols-outlined decor-icon absolute top-8 right-10 hidden lg:block">inventory_2</span>
+      <PalletBlueprint className="decor-breathe absolute top-6 right-8 w-[440px] hidden lg:block" />
+      <DimensionLine className="absolute top-[300px] right-16 w-[340px] hidden xl:block" />
       <div aria-hidden className="decor-orb absolute -left-28 top-[430px] w-72 h-72 hidden md:block" />
 
       {/* Hero */}
@@ -31,6 +33,7 @@ export default function ProductsPage() {
 
       {/* Catalog is client-side (modal state) */}
       <ProductCatalog />
+      <CrateSchematic className="absolute -bottom-4 -right-4 w-[260px] hidden lg:block" />
     </div>
   );
 }

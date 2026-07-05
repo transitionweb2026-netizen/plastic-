@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import RevealObserver from "@/components/ui/RevealObserver";
 import ImageGallery from "@/components/gallery/ImageGallery";
+import { RackOutline, DimensionLine } from "@/components/ui/DecorArt";
 import VideoGallery from "@/components/gallery/VideoGallery";
 
 export const metadata: Metadata = {
@@ -49,6 +50,7 @@ export default function GalleryPage() {
       <section className="relative overflow-hidden py-24 bg-surface">
         <div aria-hidden className="decor-orb absolute -left-28 top-72 w-80 h-80 hidden lg:block" />
         <div aria-hidden className="decor-ring absolute -bottom-10 -right-10 w-40 h-40 hidden lg:block" />
+        <DimensionLine className="absolute top-16 left-1/2 -translate-x-1/2 w-[420px] hidden md:block" />
         <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
           <div className="text-center mb-16 reveal">
             <span className="section-eyebrow">Our Work</span>
@@ -67,6 +69,7 @@ export default function GalleryPage() {
 
       {/* ═══ VIDEOS ═══ */}
       <section className="py-24 bg-surface-container-low relative overflow-hidden">
+        <RackOutline className="decor-breathe absolute top-8 -right-8 w-[280px] hidden xl:block" />
         <div className="absolute inset-0 dot-pattern-light opacity-40 pointer-events-none" />
         <div className="relative px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
           <div className="text-center mb-16 reveal">

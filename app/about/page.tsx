@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PalletBlueprint, DimensionLine } from "@/components/ui/DecorArt";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -52,6 +53,7 @@ export default function AboutPage() {
       <section className="relative px-4 md:px-margin-desktop py-20 overflow-hidden">
         <div aria-hidden className="absolute -top-16 -right-16 w-64 h-64 dot-pattern-bg opacity-40 pointer-events-none [mask-image:radial-gradient(circle,#000_40%,transparent_80%)]" />
         <div aria-hidden className="decor-orb absolute -left-28 bottom-4 w-80 h-80 hidden md:block" />
+        <DimensionLine className="absolute bottom-2 left-4 w-[340px] hidden lg:block" />
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
           <div className="z-10">
             <span className="inline-block px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm mb-4">
@@ -185,7 +187,9 @@ export default function AboutPage() {
       </section>
 
       {/* Factory overview */}
-      <section className="bg-inverse-surface py-20 px-4 md:px-margin-desktop overflow-hidden">
+      <section className="relative bg-inverse-surface py-20 px-4 md:px-margin-desktop overflow-hidden">
+        <div aria-hidden className="absolute inset-0 noise-overlay pointer-events-none" />
+        <PalletBlueprint tone="light" className="decor-breathe absolute -bottom-10 -right-4 w-[380px] hidden lg:block" />
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
             <div className="max-w-2xl">

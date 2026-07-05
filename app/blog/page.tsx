@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { RackOutline, CircuitLines } from "@/components/ui/DecorArt";
 import Image from "next/image";
 import Link from "next/link";
 import RevealObserver from "@/components/ui/RevealObserver";
@@ -129,6 +130,7 @@ export default function BlogPage() {
       <section className="relative overflow-hidden py-20 bg-surface" id="featured">
         <div aria-hidden className="decor-orb absolute -top-28 -right-28 w-96 h-96" />
         <div aria-hidden className="decor-corner-tl absolute top-8 left-4 md:left-8 hidden md:block" />
+        <RackOutline className="decor-breathe absolute -bottom-6 -left-8 w-[260px] hidden xl:block" />
         <div className="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
           <div className="flex items-center gap-4 mb-10 reveal">
             <div className="h-px flex-1 bg-outline-variant" />
@@ -197,7 +199,9 @@ export default function BlogPage() {
       </section>
 
       {/* ═══ LATEST UPDATES ═══ */}
-      <section className="py-20 bg-surface-container-low dot-bg" id="updates">
+      <section className="relative overflow-hidden py-20 bg-surface-container-low dot-bg" id="updates">
+        <CircuitLines className="absolute -bottom-4 right-6 w-[300px] hidden lg:block" />
+        <div aria-hidden className="decor-ring-static decor-scroll-rotate absolute top-10 -right-12 w-36 h-36 hidden xl:block" />
         <div className="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
           <div className="flex justify-between items-end mb-12">
             <div className="reveal">

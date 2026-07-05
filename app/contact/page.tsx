@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CircuitLines, CrateSchematic, DimensionLine } from "@/components/ui/DecorArt";
 import Image from "next/image";
 import ContactForm from "@/components/forms/ContactForm";
 import { CONTACT } from "@/lib/nav";
@@ -25,6 +26,8 @@ export default function ContactPage() {
       <section className="relative px-4 md:px-margin-desktop mb-20">
         <span aria-hidden className="material-symbols-outlined decor-icon absolute -top-4 right-10 hidden lg:block">support_agent</span>
         <div aria-hidden className="decor-corner-tl absolute -top-2 left-1 hidden md:block" />
+        <DimensionLine className="absolute -bottom-10 left-4 w-[360px] hidden lg:block" />
+        <CircuitLines className="decor-breathe absolute top-14 right-64 w-[280px] hidden 2xl:block" />
         <div className="max-w-4xl">
           <span className="text-primary font-label-md text-label-md tracking-widest uppercase mb-4 block">
             Connect with our Experts
@@ -43,6 +46,7 @@ export default function ContactPage() {
 
       {/* Bento grid */}
       <div aria-hidden className="decor-orb absolute -left-24 top-[520px] w-80 h-80 hidden lg:block pointer-events-none" />
+      <CrateSchematic className="absolute bottom-2 -left-8 w-[240px] hidden xl:block" />
       <section className="px-4 md:px-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Info cards */}
         <div className="lg:col-span-4 space-y-6">

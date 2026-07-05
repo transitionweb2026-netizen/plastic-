@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PalletBlueprint, DimensionLine } from "@/components/ui/DecorArt";
 import Image from "next/image";
 import QuoteForm from "@/components/forms/QuoteForm";
 
@@ -36,6 +37,7 @@ export default function RequestQuotePage() {
       <section className="relative pt-16 pb-8 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
         <span aria-hidden className="material-symbols-outlined decor-icon absolute top-6 right-10 hidden lg:block">request_quote</span>
         <div aria-hidden className="decor-corner-tl absolute top-8 left-2 hidden md:block" />
+        <DimensionLine className="absolute bottom-0 left-2 w-[400px] hidden lg:block" />
         <div className="max-w-3xl">
           <h1 className="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-primary mb-4">
             Custom Industrial Quote Request
@@ -53,6 +55,7 @@ export default function RequestQuotePage() {
         <div aria-hidden className="decor-orb absolute -right-24 top-16 w-80 h-80 hidden xl:block" />
         <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-56 blueprint-grid [mask-image:linear-gradient(to_top,black,transparent)]" />
         <div aria-hidden className="decor-corner-br absolute bottom-10 right-2 hidden md:block" />
+        <PalletBlueprint className="decor-breathe absolute bottom-6 left-6 w-[320px] hidden xl:block" />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
           <div className="lg:col-span-8">
             <QuoteForm />
