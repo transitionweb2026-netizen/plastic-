@@ -1205,45 +1205,6 @@ iframe {
   transform: scale(0.96);
 }
 
-.page-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 0.82rem;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s, transform 0.18s, box-shadow 0.2s;
-  border: 1px solid #707971;
-  color: #404941;
-  background: transparent;
-}
-.page-btn:hover:not(.active):not(:disabled) {
-  background: #f5f3f5;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-}
-.page-btn.active {
-  background: #014e2a;
-  color: #fff;
-  border-color: #014e2a;
-  box-shadow: 0 4px 14px rgba(1, 78, 42, 0.32);
-  transform: scale(1.06);
-}
-.page-btn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-.page-btn.nav-btn {
-  border-color: #c0c9bf;
-}
-.page-btn.nav-btn:hover:not(:disabled) {
-  border-color: #014e2a;
-  color: #014e2a;
-}
-
 /* Product detail modal */
 .modal-backdrop {
   position: fixed;

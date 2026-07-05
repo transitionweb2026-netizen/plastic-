@@ -12,7 +12,8 @@ import {
 } from "@/lib/products";
 import ProductModal from "./ProductModal";
 
-const PRODUCTS_PER_PAGE = 6;
+/** The catalog shows a single page of exactly six products (no pagination). */
+const MAX_VISIBLE_PRODUCTS = 6;
 const DELAYS = ["delay-1", "delay-2", "delay-3", "delay-4", "delay-5", "delay-6"];
 
 type CategoryFilter = ProductCategory | "all";
@@ -24,9 +25,9 @@ function isCategory(value: string | null): value is CategoryFilter {
 }
 
 /**
- * Client-side product catalog: category filter, paginated grid, and detail
- * modal — same behavior as the legacy inline renderer. Supports deep links
- * like /products?category=pallets (used by footer links).
+ * Client-side product catalog: category filter, a single six-product grid,
+ * and detail modal. Supports deep links like /products?category=pallets
+ * (used by footer links).
  */
 export default function ProductCatalog() {
   const searchParams = useSearchParams();
@@ -34,23 +35,20 @@ export default function ProductCatalog() {
   const [category, setCategory] = useState<CategoryFilter>(
     isCategory(initialCat) ? initialCat : "all"
   );
-  const [page, setPage] = useState(1);
   const [selected, setSelected] = useState<Product | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const didMount = useRef(false);
 
-  const filtered = useMemo(
+  const pageItems = useMemo(
     () =>
-      category === "all" ? PRODUCTS : PRODUCTS.filter((p) => p.cat === category),
+      (category === "all"
+        ? PRODUCTS
+        : PRODUCTS.filter((p) => p.cat === category)
+      ).slice(0, MAX_VISIBLE_PRODUCTS),
     [category]
   );
-  const totalPages = Math.ceil(filtered.length / PRODUCTS_PER_PAGE);
-  const pageItems = filtered.slice(
-    (page - 1) * PRODUCTS_PER_PAGE,
-    page * PRODUCTS_PER_PAGE
-  );
 
-  // Legacy behavior: page/filter changes scroll back to the top of the grid.
+  // Legacy behavior: filter changes scroll back to the top of the grid.
   useEffect(() => {
     if (!didMount.current) {
       didMount.current = true;
@@ -58,7 +56,7 @@ export default function ProductCatalog() {
     }
     const top = gridRef.current?.offsetTop ?? 0;
     window.scrollTo({ top: top - 120, behavior: "smooth" });
-  }, [page, category]);
+  }, [category]);
 
   // Scroll-reveal for cards (legacy .fade-up → .visible).
   useEffect(() => {
@@ -81,7 +79,6 @@ export default function ProductCatalog() {
 
   const selectCategory = (next: CategoryFilter) => {
     setCategory(next);
-    setPage(1);
   };
 
   return (
@@ -119,7 +116,7 @@ export default function ProductCatalog() {
           ) : (
             pageItems.map((product, i) => (
               <div
-                key={`${category}-${page}-${product.id}`}
+                key={`${category}-${product.id}`}
                 className={`prod-card fade-up ${DELAYS[i] ?? ""}`}
                 onClick={() => setSelected(product)}
               >
@@ -170,44 +167,6 @@ export default function ProductCatalog() {
           )}
         </div>
       </section>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <section className="px-4 md:px-margin-desktop mt-20 flex justify-center">
-          <div className="flex items-center gap-2">
-            <button
-              className="page-btn nav-btn"
-              disabled={page === 1}
-              onClick={() => setPage(page - 1)}
-              aria-label="Previous page"
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-                chevron_left
-              </span>
-            </button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-              <button
-                key={p}
-                className={`page-btn ${page === p ? "active" : ""}`}
-                onClick={() => setPage(p)}
-                aria-current={page === p ? "page" : undefined}
-              >
-                {p}
-              </button>
-            ))}
-            <button
-              className="page-btn nav-btn"
-              disabled={page === totalPages}
-              onClick={() => setPage(page + 1)}
-              aria-label="Next page"
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-                chevron_right
-              </span>
-            </button>
-          </div>
-        </section>
-      )}
 
       <ProductModal product={selected} onClose={() => setSelected(null)} />
     </>
