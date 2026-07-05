@@ -30,7 +30,18 @@ let m;
 while ((m = re.exec(src))) products.push({ id: +m[1], image: m[2] });
 console.log(`Found ${products.length} products`);
 
-const ANGLES = ["front", "back", "side", "top", "detail"];
+// Recognized gallery file names, in display order (first found = default
+// image). The generator only creates the first five; clients may supply any.
+const ANGLES = [
+  "front",
+  "back",
+  "left",
+  "right",
+  "side",
+  "top",
+  "detail",
+  "lifestyle",
+];
 const manifestOnly = process.argv.includes("--manifest-only");
 
 async function makeVariants(id, buf) {
