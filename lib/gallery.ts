@@ -28,7 +28,7 @@ export type GalleryVideo = {
 } & ({ type: 'youtube'; youtubeId: string } | { type: 'mp4'; src: string });
 
 /** Alt/caption text per image slot (index-aligned with the generated files). */
-const IMAGE_TEXT: { alt: string; caption: string }[] = [
+const IMAGE_TEXT_EN: { alt: string; caption: string }[] = [
   { alt: 'High-bay warehouse aisle with racked plastic pallets', caption: 'High-Density Warehouse — Nasr City' },
   { alt: 'Injection molding machine forming an industrial pallet', caption: 'Injection Molding Line' },
   { alt: 'Stacked export crates in the dispatch yard', caption: 'Export Dispatch Yard' },
@@ -47,15 +47,56 @@ const IMAGE_TEXT: { alt: string; caption: string }[] = [
   { alt: 'Completed racking project for a client site', caption: 'Client Project — Racking Install' },
 ];
 
-export const GALLERY_IMAGES: GalleryImage[] = (
-  GALLERY_MANIFEST as { file: string; width: number; height: number }[]
-).map((m, i) => ({
-  src: m.file,
-  width: m.width,
-  height: m.height,
-  alt: IMAGE_TEXT[i]?.alt ?? 'Giant Storage facility',
-  caption: IMAGE_TEXT[i]?.caption ?? 'Giant Storage',
-}));
+
+/** Arabic alt/caption text (index-aligned with the generated files). */
+const IMAGE_TEXT_AR: { alt: string; caption: string }[] = [
+  { alt: 'ممر مخزن عالي الارتفاع بمنصات بلاستيكية مرففة', caption: 'مخزن عالي الكثافة — مدينة نصر' },
+  { alt: 'ماكينة قولبة بالحقن تُشكّل منصة صناعية', caption: 'خط القولبة بالحقن' },
+  { alt: 'صناديق تصدير مكدسة في ساحة الشحن', caption: 'ساحة شحن الصادرات' },
+  { alt: 'ناقل مؤتمت ينقل صناديق التخزين', caption: 'نظام مناولة مؤتمت' },
+  { alt: 'نظرة عامة على أرضية الإنتاج ومحطات القولبة', caption: 'نظرة عامة على أرضية الإنتاج' },
+  { alt: 'فحص ضبط جودة للمنصات الجاهزة', caption: 'محطة ضبط الجودة' },
+  { alt: 'غرفة تخزين مبرد بمنصات صحية', caption: 'منشأة سلسلة التبريد' },
+  { alt: 'ذراع روبوتية تناول مكونات مقولبة', caption: 'الروبوتات والأتمتة' },
+  { alt: 'صوامع خامات تغذي خط الإنتاج', caption: 'مناولة المواد الخام' },
+  { alt: 'بضائع جاهزة معدة لتحميل الحاويات', caption: 'رصيف تحميل الحاويات' },
+  { alt: 'فني يعاير معدات القولبة', caption: 'معايرة دقيقة' },
+  { alt: 'مشهد بانورامي لمنشأة التصنيع', caption: 'بانوراما المنشأة' },
+  { alt: 'حاويات متداخلة مكدسة في المخزن', caption: 'مخزون الحاويات المتداخلة' },
+  { alt: 'منصة اختبار إجهاد أحمال المنصات أثناء العمل', caption: 'معمل اختبارات التحميل' },
+  { alt: 'فريق المخزن يراجع لوحات بيانات اللوجستيات', caption: 'غرفة تحكم اللوجستيات' },
+  { alt: 'مشروع ترفيف منفذ لموقع أحد العملاء', caption: 'مشروع عميل — تركيب أرفف' },
+];
+
+/** Gallery images with text in the requested locale. */
+export function galleryImages(locale: string): GalleryImage[] {
+  const text = locale === 'ar' ? IMAGE_TEXT_AR : IMAGE_TEXT_EN;
+  const fallback =
+    locale === 'ar'
+      ? { alt: 'منشأة جاينت ستوريدج', caption: 'جاينت ستوريدج' }
+      : { alt: 'Giant Storage facility', caption: 'Giant Storage' };
+  return (
+    GALLERY_MANIFEST as { file: string; width: number; height: number }[]
+  ).map((m, i) => ({
+    src: m.file,
+    width: m.width,
+    height: m.height,
+    alt: text[i]?.alt ?? fallback.alt,
+    caption: text[i]?.caption ?? fallback.caption,
+  }));
+}
+
+const VIDEO_TEXT_AR: Record<string, { title: string; desc: string }> = {
+  'facility-tour': { title: 'داخل مصنعنا', desc: 'جولة كاملة في منشأة مدينة نصر وخطوط إنتاجها.' },
+  'load-test': { title: 'اختبار تحميل المنصات شديدة التحمل', desc: 'منصات تتحمل أحمال 3 أطنان في اختبارات إجهاد مُحكمة.' },
+  'export-logistics': { title: 'لوجستيات التصدير — من القاهرة إلى أوروبا', desc: 'شحن مضبوط الجودة إلى أكثر من 22 سوقًا عالميًا.' },
+};
+
+/** Gallery videos with text in the requested locale. */
+export function galleryVideos(locale: string): GalleryVideo[] {
+  if (locale !== 'ar') return GALLERY_VIDEOS;
+  return GALLERY_VIDEOS.map((v) => ({ ...v, ...VIDEO_TEXT_AR[v.id] }));
+}
 
 /** TODO: replace the placeholder youtubeId values with the client's real videos. */
 export const GALLERY_VIDEOS: GalleryVideo[] = [

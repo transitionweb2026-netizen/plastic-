@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { GALLERY_IMAGES } from "@/lib/gallery";
+import { useLocale, useTranslations } from "next-intl";
+import { galleryImages } from "@/lib/gallery";
 
 const STAGGERS = ["d1", "d2", "d3", "d4"];
 
@@ -13,9 +14,13 @@ const STAGGERS = ["d1", "d2", "d3", "d4"];
  * next/image defaults.
  */
 export default function ImageGallery() {
+  const locale = useLocale();
+  const t = useTranslations("galleryUi");
+  const tc = useTranslations("common");
+  const images = galleryImages(locale);
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
-  const total = GALLERY_IMAGES.length;
+  const total = images.length;
 
   const step = useCallback(
     (dir: 1 | -1) =>
@@ -41,18 +46,18 @@ export default function ImageGallery() {
     };
   }, [openIdx, step]);
 
-  const active = openIdx !== null ? GALLERY_IMAGES[openIdx] : null;
+  const active = openIdx !== null ? images[openIdx] : null;
 
   return (
     <>
       <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 [column-fill:balance]">
-        {GALLERY_IMAGES.map((img, i) => (
+        {images.map((img, i) => (
           <button
             key={img.src}
             type="button"
             className={`gallery-item reveal ${STAGGERS[i % STAGGERS.length]}`}
             onClick={() => setOpenIdx(i)}
-            aria-label={`View larger: ${img.caption}`}
+            aria-label={t("viewLarger", { caption: img.caption })}
           >
             <Image
               src={img.src}
@@ -72,7 +77,7 @@ export default function ImageGallery() {
         className={`lightbox ${active ? "open" : ""}`}
         role="dialog"
         aria-modal="true"
-        aria-label={active?.caption ?? "Image viewer"}
+        aria-label={active?.caption ?? t("imageViewer")}
         onClick={(e) => {
           if (e.target === e.currentTarget) setOpenIdx(null);
         }}
@@ -82,14 +87,14 @@ export default function ImageGallery() {
             <button
               ref={closeBtnRef}
               className="lightbox-ctl lightbox-close"
-              aria-label="Close"
+              aria-label={tc("close")}
               onClick={() => setOpenIdx(null)}
             >
               <span className="material-symbols-outlined">close</span>
             </button>
             <button
               className="lightbox-ctl lightbox-prev"
-              aria-label="Previous image"
+              aria-label={t("previousImage")}
               onClick={() => step(-1)}
             >
               <span className="material-symbols-outlined">chevron_left</span>
@@ -110,14 +115,14 @@ export default function ImageGallery() {
                 {active.caption}
                 <span className="opacity-60">
                   {" "}
-                  · {openIdx + 1} / {total}
+                  · <span dir="ltr">{openIdx + 1} / {total}</span>
                 </span>
               </figcaption>
             </figure>
 
             <button
               className="lightbox-ctl lightbox-next"
-              aria-label="Next image"
+              aria-label={t("nextImage")}
               onClick={() => step(1)}
             >
               <span className="material-symbols-outlined">chevron_right</span>

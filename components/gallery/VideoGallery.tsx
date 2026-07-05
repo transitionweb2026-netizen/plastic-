@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { GALLERY_VIDEOS, type GalleryVideo } from "@/lib/gallery";
+import { useLocale, useTranslations } from "next-intl";
+import { galleryVideos, type GalleryVideo } from "@/lib/gallery";
 
 const STAGGERS = ["d1", "d2", "d3"];
 
@@ -12,6 +13,10 @@ const STAGGERS = ["d1", "d2", "d3"];
  * (see lib/gallery.ts — placeholders until client videos arrive).
  */
 export default function VideoGallery() {
+  const locale = useLocale();
+  const t = useTranslations("galleryUi");
+  const tc = useTranslations("common");
+  const videos = galleryVideos(locale);
   const [open, setOpen] = useState<GalleryVideo | null>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -30,13 +35,13 @@ export default function VideoGallery() {
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {GALLERY_VIDEOS.map((video, i) => (
+        {videos.map((video, i) => (
           <button
             key={video.id}
             type="button"
             className={`video-card text-left reveal ${STAGGERS[i % STAGGERS.length]}`}
             onClick={() => setOpen(video)}
-            aria-label={`Play video: ${video.title}`}
+            aria-label={t("playVideo", { title: video.title })}
           >
             <div className="thumb-wrap relative aspect-video">
               <Image
@@ -67,7 +72,7 @@ export default function VideoGallery() {
         className={`lightbox ${open ? "open" : ""}`}
         role="dialog"
         aria-modal="true"
-        aria-label={open?.title ?? "Video player"}
+        aria-label={open?.title ?? t("videoPlayer")}
         onClick={(e) => {
           if (e.target === e.currentTarget) setOpen(null);
         }}
@@ -77,7 +82,7 @@ export default function VideoGallery() {
             <button
               ref={closeBtnRef}
               className="lightbox-ctl lightbox-close"
-              aria-label="Close"
+              aria-label={tc("close")}
               onClick={() => setOpen(null)}
             >
               <span className="material-symbols-outlined">close</span>
