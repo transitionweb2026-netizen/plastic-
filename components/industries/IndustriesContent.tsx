@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
 import IndustryModal from "./IndustryModal";
-import { INDUSTRY_MODALS } from "@/lib/industries";
+import { INDUSTRY_MODALS, localizeIndustryModal } from "@/lib/industries";
 
 const HERO_IMG =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuD9tA-rr56TAmeLUnSIaFKlqLG4WOQHKeKl--QJeyBeW4FocUP0_70tEj7xLqMSxysGDlXeHbbhUEYKgQDUx4Bobd1-tTTOPJbQ-sBlHT8xEeBEuI246As9lEE9_tN8TpHTJADF-JYWyVqKw8d_Y9FUF9rfzQdccymjHv0TkPA9KCAip3cT_w1e5ZaTtgmlFM5xlQ17smw7Xjp3FFIyb6tOk2YOJGs4PnucZmYwhk3bSsUt8q0LPvZ0eKBY8BA4-mxFCSsjFeZyefM";
@@ -49,6 +49,7 @@ const STEP_IMAGES: Record<string, string> = Object.fromEntries(
 
 export default function IndustriesContent() {
   const t = useTranslations("industriesPage");
+  const locale = useLocale();
   const [openId, setOpenId] = useState<string | null>(null);
 
   const stats = STAT_DEFS.map((s) => ({ ...s, label: t(s.key) }));
@@ -381,7 +382,11 @@ export default function IndustriesContent() {
       </section>
 
       <IndustryModal
-        data={openId ? INDUSTRY_MODALS[openId] ?? null : null}
+        data={
+          openId && INDUSTRY_MODALS[openId]
+            ? localizeIndustryModal(openId, INDUSTRY_MODALS[openId], locale)
+            : null
+        }
         onClose={() => setOpenId(null)}
       />
     </div>

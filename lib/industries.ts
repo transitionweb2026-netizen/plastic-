@@ -19,6 +19,18 @@ export type IndustryModal = {
   availability: string;
 };
 
+import { AR_INDUSTRY_MODALS } from './industries-ar';
+
+/** Modal data with locale-appropriate text (codes/standards preserved). */
+export function localizeIndustryModal(
+  id: string,
+  data: IndustryModal,
+  locale: string
+): IndustryModal {
+  if (locale !== 'ar') return data;
+  return { ...data, ...AR_INDUSTRY_MODALS[id] };
+}
+
 export const INDUSTRY_MODALS: Record<string, IndustryModal> = {
   "step1": {
     "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuAfIz7xoCoCeskrANEUPt-yxmMglbOfvTX0ZWWdu0-qiPLkl851yRKeGtCHeCegMXiizZoGTJ4-dG8VVXUiRrIuBHoi3yZ_QKUHDbtGpPandXKrYMrk-jlW3HGt7LCZGYBdluK3ctxfQ5CrxWyYnzvVvrZr5IrgYqhty4Fm7a5rfceSqMYfvgi1JVw01lRZZLRm1thT3mVTOT1Ipxeq7UE_pfIMVCMOGGPPIa68T3fNVo8nNy4_S0j_-RLx_xwX9dX7gTtFMrqMldA",

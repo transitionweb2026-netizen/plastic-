@@ -4,16 +4,16 @@ import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 
-const OPTIONS: { locale: AppLocale; flag: string; labelKey: "arabic" | "english" }[] = [
-  { locale: "ar", flag: "🇪🇬", labelKey: "arabic" },
-  { locale: "en", flag: "🇺🇸", labelKey: "english" },
+const OPTIONS: { locale: AppLocale; label: string }[] = [
+  { locale: "ar", label: "AR" },
+  { locale: "en", label: "EN" },
 ];
 
 /**
- * Segmented language pill (🇪🇬 العربية / 🇺🇸 English). Switching persists the
+ * Compact segmented language toggle (AR | EN). Switching persists the
  * choice in the NEXT_LOCALE cookie (read by proxy.ts) and swaps the locale
- * via a client-side navigation — no full page reload; the locale layout's
- * keyed wrapper provides the fade transition.
+ * via a client-side navigation — no full reload; the locale layout's keyed
+ * wrapper provides the fade transition. Arabic remains the default locale.
  */
 export default function LanguageSwitcher({
   className = "",
@@ -36,6 +36,7 @@ export default function LanguageSwitcher({
       role="group"
       aria-label={t("label")}
       className={`lang-switch ${className}`}
+      dir="ltr"
     >
       {OPTIONS.map((opt) => (
         <button
@@ -43,10 +44,10 @@ export default function LanguageSwitcher({
           type="button"
           onClick={() => switchTo(opt.locale)}
           aria-pressed={locale === opt.locale}
+          aria-label={opt.locale === "ar" ? t("arabic") : t("english")}
           className={`lang-switch-btn ${locale === opt.locale ? "active" : ""}`}
         >
-          <span aria-hidden>{opt.flag}</span>
-          <span className="lang-switch-label">{t(opt.labelKey)}</span>
+          {opt.label}
         </button>
       ))}
     </div>
