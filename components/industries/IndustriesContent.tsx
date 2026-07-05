@@ -58,57 +58,6 @@ const PROCESS_STEPS = [
   },
 ];
 
-const INDUSTRY_CARDS = [
-  {
-    id: "ind1",
-    delay: "d1",
-    icon: "directions_car",
-    title: "Automotive Manufacturing",
-    desc: "VDA-compliant returnable containers and kanban systems for OEM and tier-1 suppliers.",
-    tags: ["VDA 4500", "JIT Kanban", "OEM Grade"],
-  },
-  {
-    id: "ind2",
-    delay: "d2",
-    icon: "science",
-    title: "Pharmaceutical & Life Sciences",
-    desc: "GDP-validated cold-chain shippers and GMP-certified storage containers for the pharma supply chain.",
-    tags: ["GDP Compliant", "GMP Certified", "Cold Chain"],
-  },
-  {
-    id: "ind3",
-    delay: "d3",
-    icon: "restaurant",
-    title: "Food & Beverage",
-    desc: "FDA-approved, HACCP-compliant food-contact containers with antimicrobial treatment options.",
-    tags: ["FDA Approved", "HACCP", "Washable"],
-  },
-  {
-    id: "ind4",
-    delay: "d4",
-    icon: "local_shipping",
-    title: "Logistics & E-Commerce",
-    desc: "RFID-ready totes and precision-toleranced containers for automated fulfillment and sortation systems.",
-    tags: ["RFID Ready", "Robotic Grade", "200+ Trips"],
-  },
-  {
-    id: "ind5",
-    delay: "d5",
-    icon: "grass",
-    title: "Agriculture & Fresh Produce",
-    desc: "Ultra-lightweight harvest crates and ventilated field bins rated for 10+ seasons of outdoor use.",
-    tags: ["UV Stabilized", "32% Ventilation", "Export Grade"],
-  },
-  {
-    id: "ind6",
-    delay: "d6",
-    icon: "memory",
-    title: "Electronics & Technology",
-    desc: "IEC 61340-5-1 certified ESD containers and cleanroom totes for sensitive component handling.",
-    tags: ["ESD Safe", "IEC 61340", "Cleanroom"],
-  },
-];
-
 const TECH_ITEMS = [
   {
     id: "tech1",
@@ -334,68 +283,6 @@ export default function IndustriesContent() {
                 </div>
               </button>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ INDUSTRIES WE SERVE ═══ */}
-      <section className="py-24 bg-surface-container-low" id="industries">
-        <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3 reveal">
-              Industries We Serve
-            </p>
-            <h2 className="font-headline-xl text-headline-xl reveal d1">
-              Built for Every Sector
-            </h2>
-            <p className="font-body-lg text-body-lg text-on-surface-variant mt-4 max-w-2xl mx-auto reveal d2">
-              From automotive JIT lines to pharmaceutical cold chains, our
-              solutions are engineered for your industry&apos;s unique
-              requirements.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {INDUSTRY_CARDS.map((card) => (
-              <button
-                key={card.id}
-                type="button"
-                className={`ind-card reveal ${card.delay} text-left`}
-                onClick={() => setOpenId(card.id)}
-              >
-                <div className="ind-icon-wrap">
-                  <span className="material-symbols-outlined text-on-primary text-2xl">
-                    {card.icon}
-                  </span>
-                </div>
-                <div>
-                  <h3 className="font-headline-md text-headline-md mb-1">
-                    {card.title}
-                  </h3>
-                  <p className="text-sm text-on-surface-variant">{card.desc}</p>
-                </div>
-                <div className="flex gap-2 flex-wrap mt-1">
-                  {card.tags.map((tag) => (
-                    <span key={tag} className="app-tag">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex items-center gap-1 text-primary text-sm font-bold mt-1">
-                  Learn More{" "}
-                  <span className="material-symbols-outlined ind-arrow" style={{ fontSize: 16 }}>
-                    arrow_forward
-                  </span>
-                </div>
-              </button>
-            ))}
-          </div>
-          <div className="mt-12 text-center reveal">
-            <Link href="/products" className="btn-hero-primary inline-flex">
-              Browse All Products{" "}
-              <span className="material-symbols-outlined btn-arrow" style={{ fontSize: 18 }}>
-                arrow_forward
-              </span>
-            </Link>
           </div>
         </div>
       </section>

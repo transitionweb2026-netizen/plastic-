@@ -1584,48 +1584,6 @@ iframe {
   opacity: 1;
 }
 
-.ind-card {
-  cursor: pointer;
-  background: #fff;
-  border-radius: 1rem;
-  padding: 2rem;
-  border: 1px solid #e4e2e4;
-  box-shadow: 0 2px 12px rgba(14, 74, 48, 0.05);
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s,
-    border-color 0.3s, background 0.3s;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.ind-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(14, 74, 48, 0.14);
-  border-color: rgba(1, 78, 42, 0.3);
-  background: linear-gradient(135deg, #fff 0%, rgba(1, 78, 42, 0.02) 100%);
-}
-.ind-icon-wrap {
-  width: 56px;
-  height: 56px;
-  border-radius: 0.875rem;
-  background: #014e2a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-.ind-card:hover .ind-icon-wrap {
-  transform: scale(1.12) rotate(-3deg);
-  box-shadow: 0 8px 20px rgba(1, 78, 42, 0.3);
-}
-.ind-card .ind-arrow {
-  transition: transform 0.3s, opacity 0.3s;
-  opacity: 0.5;
-}
-.ind-card:hover .ind-arrow {
-  transform: translateX(5px);
-  opacity: 1;
-}
-
 .tech-item {
   cursor: pointer;
   display: flex;
