@@ -2399,54 +2399,111 @@ html[lang="ar"] .font-serif {
 }
 
 /* ═══════════════ GALLERY PAGE ═══════════════ */
-/* Masonry items (CSS columns) — hover zoom + elevation, caption slide-up */
-.gallery-item {
-  position: relative;
+/* Featured image + 5-up thumbnail carousel (masonry layout retired) */
+.gfeat-frame {
+  box-shadow: 0 4px 20px rgba(14, 74, 48, 0.07);
+  border: none;
+  padding: 0;
+  background: #e9e7ea;
+  transition: box-shadow 0.35s ease;
+}
+.gfeat-frame:hover {
+  box-shadow: 0 20px 48px rgba(14, 74, 48, 0.16), 0 0 0 1px rgba(1, 78, 42, 0.07);
+}
+.gfeat-main {
+  animation: gfeatIn 0.5s ease both;
+}
+@keyframes gfeatIn {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.gfeat-caption {
+  opacity: 1;
+  transform: none;
+}
+
+.gfeat-track {
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+.gfeat-slot {
+  flex: 0 0 20%;
+  padding-inline: 5px;
+  box-sizing: border-box;
+}
+@media (min-width: 768px) {
+  .gfeat-slot {
+    padding-inline: 8px;
+  }
+}
+.gfeat-thumb {
   display: block;
   width: 100%;
-  margin-bottom: 1.5rem;
-  break-inside: avoid;
-  border-radius: 1rem;
+  aspect-ratio: 4 / 3;
+  border-radius: 0.75rem;
   overflow: hidden;
   cursor: pointer;
   padding: 0;
-  border: none;
   background: #e9e7ea;
-  box-shadow: 0 4px 20px rgba(14, 74, 48, 0.07);
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s;
+  border: 2px solid transparent;
+  opacity: 0.7;
+  transition: opacity 0.25s ease, border-color 0.25s ease,
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
 }
-.gallery-item:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 48px rgba(14, 74, 48, 0.16), 0 0 0 1px rgba(1, 78, 42, 0.07);
-}
-.gallery-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.gallery-item:hover .gallery-img {
-  transform: scale(1.06);
-}
-.gallery-caption {
-  position: absolute;
-  inset: auto 0 0 0;
-  padding: 2.25rem 1.1rem 0.9rem;
-  background: linear-gradient(to top, rgba(27, 28, 29, 0.78), transparent);
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-align: left;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  pointer-events: none;
-}
-.gallery-item:hover .gallery-caption,
-.gallery-item:focus-visible .gallery-caption {
+.gfeat-thumb:hover {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(14, 74, 48, 0.16);
+}
+.gfeat-thumb.active {
+  opacity: 1;
+  border-color: #014e2a;
+  box-shadow: 0 4px 14px rgba(1, 78, 42, 0.25);
+}
+.gfeat-thumb:active {
+  transform: scale(0.96);
+}
+
+.gfeat-arrow {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1px solid #c0c9bf;
+  color: #014e2a;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease,
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+}
+.gfeat-arrow:hover:not(:disabled) {
+  background: #014e2a;
+  border-color: #014e2a;
+  color: #fff;
+  transform: scale(1.08);
+  box-shadow: 0 6px 18px rgba(1, 78, 42, 0.3);
+}
+.gfeat-arrow:active:not(:disabled) {
+  transform: scale(0.94);
+}
+.gfeat-arrow:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+@media (max-width: 639px) {
+  .gfeat-arrow {
+    width: 38px;
+    height: 38px;
+  }
 }
 
 /* Fullscreen lightbox (images + video player) */
