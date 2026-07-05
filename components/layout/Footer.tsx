@@ -154,15 +154,56 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="relative border-t border-outline-variant/30 py-8 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto flex flex-col items-center gap-1">
-        <p className="font-label-sm text-label-sm text-center opacity-60">
-          © {new Date().getFullYear()} Giant Storage Integrated Solutions. All
-          Rights Reserved.
-        </p>
-        {/* TODO: point the credit at the agency's site when a URL is available. */}
-        <span className="font-serif italic text-[0.72rem] tracking-[0.02em] opacity-40">
-          Created by Transition
-        </span>
+      {/* Bottom bar — "Model 7" reference: primary-green band, credit lockup
+          left, legal links right, dot texture fading in from the right. */}
+      <div className="relative bg-primary text-on-primary overflow-hidden">
+        <div className="fbar-dots" aria-hidden />
+        <div className="relative py-7 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div className="flex flex-col items-center lg:items-start gap-4 text-center lg:text-left">
+            <p className="font-body-md text-body-md">
+              © {new Date().getFullYear()} Giant Storage Integrated Solutions.
+              All rights reserved.
+            </p>
+            {/* TODO: point the credit at the agency's site when a URL is available. */}
+            <span className="fbar-credit">
+              <span className="font-body-md text-body-md opacity-90">
+                Created by
+              </span>
+              <span className="fbar-t-badge" aria-hidden>
+                T
+              </span>
+              <span className="text-[17px] font-bold tracking-tight">
+                Transition
+              </span>
+            </span>
+          </div>
+
+          <nav
+            aria-label="Legal"
+            className="flex items-center justify-center flex-wrap gap-x-0 gap-y-2"
+          >
+            <Link
+              className="fbar-link font-body-md text-body-md px-5 first:pl-0"
+              href="/privacy-policy"
+            >
+              Privacy Policy
+            </Link>
+            <span className="h-4 w-px bg-white/25" aria-hidden />
+            <Link
+              className="fbar-link font-body-md text-body-md px-5"
+              href="/terms-of-service"
+            >
+              Terms of Service
+            </Link>
+            <span className="h-4 w-px bg-white/25" aria-hidden />
+            <Link
+              className="fbar-link font-body-md text-body-md px-5 last:pr-0"
+              href="/contact"
+            >
+              Contact
+            </Link>
+          </nav>
+        </div>
       </div>
     </footer>
   );

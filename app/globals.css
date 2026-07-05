@@ -2161,6 +2161,83 @@ a[role="button"],
   min-height: 44px;
 }
 
+/* ═══════════════ FOOTER BOTTOM BAR (Model 7) ═══════════════ */
+/* Solid primary-green bar: copyright + "Created by Transition" lockup on the
+   left, legal links on the right, dot-matrix texture fading in from the
+   right edge (per the approved reference mock). */
+.fbar-dots {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: min(340px, 40%);
+  pointer-events: none;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.38) 1.2px,
+    transparent 1.3px
+  );
+  background-size: 13px 13px;
+  -webkit-mask-image: linear-gradient(to left, black 20%, transparent);
+  mask-image: linear-gradient(to left, black 20%, transparent);
+  opacity: 0.55;
+}
+
+/* Legal links: color shift + growing underline + soft green glow */
+.fbar-link {
+  position: relative;
+  color: rgba(255, 255, 255, 0.92);
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+.fbar-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 1.5px;
+  width: 100%;
+  border-radius: 99px;
+  background: #92d5a6;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.fbar-link:hover {
+  color: #b5f0cb;
+  text-shadow: 0 0 14px rgba(146, 213, 166, 0.45);
+}
+.fbar-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* "Created by [T] Transition" lockup with its underline rule */
+.fbar-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 9px;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.35);
+  transition: border-color 0.25s ease, text-shadow 0.25s ease;
+}
+.fbar-credit:hover {
+  border-color: rgba(146, 213, 166, 0.75);
+  text-shadow: 0 0 14px rgba(146, 213, 166, 0.4);
+}
+.fbar-t-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #014e2a;
+  font-weight: 900;
+  font-size: 15px;
+  line-height: 1;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
 /* ═══════════════ FLOATING CONTACT WIDGET (right rail) ═══════════════ */
 /* Glass pill fixed to the right edge, vertically centered. Only transform/
    opacity/filter are animated so everything stays compositor-friendly. */
