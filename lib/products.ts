@@ -16,6 +16,14 @@ export type Product = {
   statusClass: 'status-badge-green' | 'status-badge-blue' | 'status-badge-amber';
   shortDesc: string;
   image: string;
+  /**
+   * Optional gallery of this product from different angles (front, back,
+   * sides, close-up…). First entry is the main preview. When omitted, a
+   * placeholder gallery is derived from same-category products (see
+   * productGallery below); set a single-entry array to force the classic
+   * one-image modal for a product.
+   */
+  images?: string[];
   description: string;
   material: string;
   dimensions: string;
@@ -1094,3 +1102,29 @@ export const PRODUCTS: Product[] = [
     "availability": "In stock. Bulk serial number pre-allocation available. Integration with TMX tracking systems."
   }
 ];
+
+/**
+ * PLACEHOLDER GALLERIES — the catalog currently has one photo per product.
+ * Until real multi-angle photography is available, each product's gallery is
+ * padded with images of other products from the same category so the gallery
+ * UI is fully functional. TODO: when real angle shots arrive, set `images`
+ * on each product (first entry = main preview) and this derivation is
+ * bypassed automatically. Flip to false to disable placeholder galleries
+ * site-wide (modals fall back to the single product image).
+ */
+export const USE_PLACEHOLDER_GALLERY = true;
+
+/** Gallery for a product: its own `images` array, or a derived placeholder set (own image first + up to 4 same-category images). */
+export function productGallery(product: Product): string[] {
+  if (product.images && product.images.length > 0) return product.images;
+  if (!USE_PLACEHOLDER_GALLERY) return [product.image];
+  const peers = PRODUCTS.filter(
+    (p) => p.cat === product.cat && p.id !== product.id
+  );
+  // Deterministic rotation so each product gets a different-looking set.
+  const start = product.id % Math.max(peers.length, 1);
+  const extras = [...peers.slice(start), ...peers.slice(0, start)]
+    .slice(0, 4)
+    .map((p) => p.image);
+  return [product.image, ...extras];
+}

@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { COLOR_LABELS, type Product } from "@/lib/products";
+import { COLOR_LABELS, productGallery, type Product } from "@/lib/products";
 
 type ProductModalProps = {
   product: Product | null;
@@ -12,6 +12,17 @@ type ProductModalProps = {
 
 /** Product detail modal (ported from the legacy openModal renderer). */
 export default function ProductModal({ product, onClose }: ProductModalProps) {
+  const gallery = useMemo(
+    () => (product ? productGallery(product) : []),
+    [product]
+  );
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  // Each product starts its gallery on the main (first) image.
+  useEffect(() => {
+    setActiveIdx(0);
+  }, [product]);
+
   // Legacy behavior: lock body scroll while open, close on Escape.
   useEffect(() => {
     document.body.style.overflow = product ? "hidden" : "";
@@ -23,6 +34,8 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
       document.removeEventListener("keydown", onKey);
     };
   }, [product, onClose]);
+
+  const activeSrc = gallery[activeIdx] ?? product?.image;
 
   return (
     <div
@@ -37,14 +50,17 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
       {product && (
         <div className="modal-box">
           <div className="relative">
-            <Image
-              className="modal-img rounded-t-xl"
-              src={product.image}
-              alt={product.name}
-              width={920}
-              height={518}
-              sizes="(max-width: 920px) 100vw, 920px"
-            />
+            {/* key remount triggers the fade/scale transition on image switch */}
+            <div key={activeSrc} className="gallery-main">
+              <Image
+                className="modal-img rounded-t-xl"
+                src={activeSrc ?? product.image}
+                alt={product.name}
+                width={920}
+                height={518}
+                sizes="(max-width: 920px) 100vw, 920px"
+              />
+            </div>
             <button className="modal-close" aria-label="Close" onClick={onClose}>
               <span
                 className="material-symbols-outlined text-on-surface"
@@ -61,6 +77,34 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
               </span>
             </div>
           </div>
+
+          {/* Angle gallery — hidden when a product has only one image */}
+          {gallery.length > 1 && (
+            <div
+              className="gallery-thumbs"
+              role="group"
+              aria-label={`${product.name} images`}
+            >
+              {gallery.map((src, i) => (
+                <button
+                  key={src}
+                  type="button"
+                  className={`gallery-thumb ${i === activeIdx ? "active" : ""}`}
+                  aria-label={`View image ${i + 1} of ${gallery.length}`}
+                  aria-current={i === activeIdx}
+                  onClick={() => setActiveIdx(i)}
+                >
+                  <Image
+                    src={src}
+                    alt=""
+                    width={128}
+                    height={96}
+                    sizes="128px"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
 
           <div className="p-6 md:p-8">
             <div className="flex flex-wrap items-start justify-between gap-3 mb-2">
