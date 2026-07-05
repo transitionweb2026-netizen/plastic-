@@ -3,7 +3,7 @@ import { Inter, Lora } from "next/font/google";
 import localFont from "next/font/local";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import WhatsAppButton from "@/components/ui/WhatsAppButton";
+import FloatingContactWidget from "@/components/ui/FloatingContactWidget";
 import { CONTACT } from "@/lib/nav";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -85,7 +85,7 @@ export default function RootLayout({
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
-        <WhatsAppButton />
+        <FloatingContactWidget />
       </body>
     </html>
   );

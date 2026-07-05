@@ -2161,6 +2161,151 @@ a[role="button"],
   min-height: 44px;
 }
 
+/* ═══════════════ FLOATING CONTACT WIDGET (right rail) ═══════════════ */
+/* Glass pill fixed to the right edge, vertically centered. Only transform/
+   opacity/filter are animated so everything stays compositor-friendly. */
+.fcw {
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 10px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(228, 226, 228, 0.6);
+  box-shadow: 0 8px 32px rgba(14, 74, 48, 0.14);
+  animation: fcwFloat 6s ease-in-out 2.4s infinite;
+}
+
+.fcw-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 9999px;
+  color: #ffffff;
+  opacity: 0;
+  animation: fcwEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.28s ease, filter 0.28s ease;
+  will-change: transform;
+}
+/* Staggered entrance: phone first, WhatsApp ~180ms later */
+.fcw-btn-phone {
+  animation-delay: 0.9s;
+  background: linear-gradient(135deg, #014e2a, #246640);
+  box-shadow: 0 6px 20px rgba(1, 78, 42, 0.35);
+}
+.fcw-btn-whatsapp {
+  animation-delay: 1.08s;
+  background: linear-gradient(135deg, #25d366, #1eb857);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.38);
+}
+
+/* Soft attention pulse every few seconds (expanding ring, offset per button
+   so they never fire together; long idle tail keeps it non-distracting) */
+.fcw-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+}
+.fcw-btn-phone::after {
+  box-shadow: 0 0 0 2px rgba(1, 78, 42, 0.45);
+  animation: fcwPulse 7s ease-out 3.2s infinite;
+}
+.fcw-btn-whatsapp::after {
+  box-shadow: 0 0 0 2px rgba(37, 211, 102, 0.5);
+  animation: fcwPulse 7s ease-out 6.7s infinite;
+}
+
+.fcw-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fcw-btn:hover {
+  transform: scale(1.09);
+  filter: brightness(1.08);
+}
+.fcw-btn-phone:hover {
+  box-shadow: 0 12px 32px rgba(1, 78, 42, 0.45);
+}
+.fcw-btn-whatsapp:hover {
+  box-shadow: 0 12px 32px rgba(37, 211, 102, 0.48);
+}
+.fcw-btn:hover .fcw-icon {
+  transform: rotate(8deg);
+}
+.fcw-btn:active {
+  transform: scale(0.94);
+  transition-duration: 0.12s;
+}
+
+@keyframes fcwEnter {
+  from {
+    opacity: 0;
+    transform: translateX(72px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes fcwFloat {
+  0%,
+  100% {
+    transform: translateY(-50%);
+  }
+  50% {
+    transform: translateY(calc(-50% - 7px));
+  }
+}
+@keyframes fcwPulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  18% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+
+/* Slightly smaller rail on phones so it never crowds content */
+@media (max-width: 639px) {
+  .fcw {
+    right: 10px;
+    gap: 10px;
+    padding: 8px;
+  }
+  .fcw-btn {
+    width: 46px;
+    height: 46px;
+  }
+  .fcw-icon {
+    font-size: 21px;
+    width: 21px;
+    height: 21px;
+  }
+}
+
 /* ═══════════════ KEYBOARD FOCUS (a11y polish) ═══════════════ */
 a:focus-visible,
 button:focus-visible,
