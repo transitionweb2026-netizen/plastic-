@@ -2247,6 +2247,11 @@ html[lang="ar"] .font-serif {
   }
 }
 
+/* Injected legacy article markup uses physical alignment - mirror it */
+[dir="rtl"] .article-body .text-right {
+  text-align: left;
+}
+
 /* Gallery captions + lightbox controls */
 [dir="rtl"] .gallery-caption {
   text-align: right;
