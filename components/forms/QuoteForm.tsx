@@ -1,9 +1,12 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { CONTACT } from "@/lib/nav";
+import SocialIcon from "@/components/ui/SocialIcon";
+import { CONTACT, WHATSAPP_HREF } from "@/lib/nav";
 
 const formId = process.env.NEXT_PUBLIC_FORMSPREE_QUOTE_ID;
+const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
+const whatsappBase = envNumber ? `https://wa.me/${envNumber}` : WHATSAPP_HREF;
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -30,6 +33,36 @@ const STEPS = [
 
 const inputClass =
   "w-full bg-transparent border border-outline rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none";
+
+/** Shared recipe for the two channel buttons (mirrors this page's primary buttons). */
+const channelBtnClass =
+  "w-full sm:flex-1 px-10 py-4 rounded-lg font-label-lg text-label-lg transition-all shadow-lg flex items-center justify-center gap-3";
+
+/** Formats the full quote request as readable multi-line text for email/WhatsApp. */
+function formatQuote(d: Record<string, string>): string {
+  return [
+    "New quote request from the Giant Storage website",
+    "",
+    "— Project Details —",
+    `Product Type: ${d.product_type}`,
+    `Estimated Quantity: ${d.quantity || "-"}`,
+    `Storage Environment: ${d.storage_environment}`,
+    "",
+    "— Logistics —",
+    `Destination: ${d.destination || "-"}`,
+    `Lead Time: ${d.lead_time}`,
+    `On-site Assembly: ${d.installation_required === "yes" ? "Yes" : "No"}`,
+    "",
+    "— Company —",
+    `Company: ${d.company || "-"}`,
+    `Business Email: ${d.email}`,
+    `Industry Sector: ${d.industry_sector || "-"}`,
+    `Phone: ${d.phone || "-"}`,
+    "",
+    "Project Brief:",
+    d.project_brief || "-",
+  ].join("\n");
+}
 
 /**
  * 3-step quote wizard (from legacy request qoute.html), with the legacy
@@ -78,6 +111,52 @@ export default function QuoteForm() {
 
   const stepClass = (n: number) =>
     step === n ? "step-active space-y-8" : "step-inactive space-y-8";
+
+  /**
+   * Same validation as the main submission: if a required field is invalid,
+   * jump the wizard to that field's step and surface the native prompt
+   * (the browser can't focus fields hidden in inactive steps).
+   */
+  const collectQuote = (
+    form: HTMLFormElement | null
+  ): Record<string, string> | null => {
+    if (!form) return null;
+    if (!form.checkValidity()) {
+      const panel = form
+        .querySelector(":invalid")
+        ?.closest("[data-quote-step]");
+      const target = panel
+        ? Number(panel.getAttribute("data-quote-step"))
+        : step;
+      if (target !== step) goToStep(target);
+      window.setTimeout(() => form.reportValidity(), target !== step ? 450 : 0);
+      return null;
+    }
+    const data = new FormData(form);
+    data.set("storage_environment", environment);
+    return Object.fromEntries(
+      [...data.entries()].map(([k, v]) => [k, String(v)])
+    );
+  };
+
+  const sendViaEmail = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const d = collectQuote(e.currentTarget.form);
+    if (!d) return;
+    const subject = `Quote Request — ${d.product_type} (${d.company || d.email})`;
+    window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(formatQuote(d))}`;
+  };
+
+  const sendViaWhatsApp = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const d = collectQuote(e.currentTarget.form);
+    if (!d) return;
+    window.open(
+      `${whatsappBase}?text=${encodeURIComponent(formatQuote(d))}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
 
   return (
     <div ref={wrapRef} className="glass-card rounded-xl p-8 md:p-12 shadow-[0px_4px_20px_rgba(0,0,0,0.05)]">
@@ -131,7 +210,7 @@ export default function QuoteForm() {
       ) : (
         <form onSubmit={onSubmit}>
           {/* Step 1: Project Details */}
-          <div className={stepClass(1)}>
+          <div className={stepClass(1)} data-quote-step={1}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
                 <label
@@ -196,11 +275,34 @@ export default function QuoteForm() {
               >
                 Next: Logistics Requirements
               </button>
+
+              {/* Channel buttons — send the completed quote via the visitor's
+                  email client or WhatsApp (same validation as the submit) */}
+              <div className="mt-3 flex flex-col sm:flex-row gap-3">
+                <button
+                  className={`${channelBtnClass} bg-primary text-on-primary hover:bg-primary-container shadow-primary/10`}
+                  type="button"
+                  onClick={sendViaEmail}
+                >
+                  Send via Email
+                  <span className="material-symbols-outlined" aria-hidden>
+                    mail
+                  </span>
+                </button>
+                <button
+                  className={`${channelBtnClass} bg-[#25D366] text-white hover:bg-[#1eb857] shadow-[#25D366]/20`}
+                  type="button"
+                  onClick={sendViaWhatsApp}
+                >
+                  Send via WhatsApp
+                  <SocialIcon brand="whatsapp" size={20} />
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Step 2: Logistics */}
-          <div className={stepClass(2)}>
+          <div className={stepClass(2)} data-quote-step={2}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
                 <label
@@ -268,7 +370,7 @@ export default function QuoteForm() {
           </div>
 
           {/* Step 3: Company Info */}
-          <div className={stepClass(3)}>
+          <div className={stepClass(3)} data-quote-step={3}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
                 <label
