@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import IndustriesContent from "@/components/industries/IndustriesContent";
 
-export const metadata: Metadata = {
-  title: "Industries & Manufacturing",
-  description:
-    "Inside Giant Storage's Cairo production facility: 5-stage manufacturing workflow, AI-driven robotics, and certified solutions for automotive, pharma, food, logistics, agriculture, and electronics.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta.industries" });
+  return { title: t("title"), description: t("description") };
+}
 
 export default async function IndustriesPage({
   params,

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
@@ -13,117 +14,59 @@ const HERO_IMG =
 const TECH_IMG =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuCa9xG4AOLYtNF6EeqxOIyGlrwnGXVZUlh95ADhGQ5AGSP8iESn5u-6v9g6KADSN3RpjfF6GSiDeK_wNYUVdHIn8wKBxZo_D4u9W7UgkZA4jTj8gm6koZL_FxEZ09iCcpCZPIXctcf8iSUoqEetfgp8MdJ_j2BULAwR3iDzEF6mOP0MVLDYrXY-U0epKLARtpzAZ9k7HEDlc-6_7ehjbIBA8VuQ5uUQMbtKDSe1MNKu1hOQNMOmYz0K1x0EiDW25D-yKgCj4LWADIk";
 
-const STATS = [
-  { num: "22", suffix: "+", label: "Years in Industry" },
-  { num: "600K", suffix: "+", label: "Units Produced" },
-  { num: "150", suffix: "+", label: "Products Available" },
-  { num: "5", suffix: "", label: "Export Continents" },
-];
+const STAT_DEFS = [
+  { num: "22", suffix: "+", key: "stat1" },
+  { num: "600K", suffix: "+", key: "stat2" },
+  { num: "150", suffix: "+", key: "stat3" },
+  { num: "5", suffix: "", key: "stat4" },
+] as const;
 
-const PROCESS_STEPS = [
-  {
-    id: "step1",
-    num: "01",
-    delay: "d1",
-    title: "Design & Engineering",
-    desc: "Custom structural modeling using advanced FEA stress-test simulation software.",
-  },
-  {
-    id: "step2",
-    num: "02",
-    delay: "d2",
-    title: "Raw Material Selection",
-    desc: "High-density polymers sourced globally for maximum durability.",
-  },
-  {
-    id: "step3",
-    num: "03",
-    delay: "d3",
-    title: "Injection Molding",
-    desc: "Precision high-pressure molding using our 3000-ton press fleet.",
-  },
-  {
-    id: "step4",
-    num: "04",
-    delay: "d4",
-    title: "Quality Control",
-    desc: "Individual unit testing for weight capacity, impact resistance, and tolerance.",
-  },
-  {
-    id: "step5",
-    num: "05",
-    delay: "d5",
-    title: "Export Preparation",
-    desc: "Optimized palletization and global tracking for seamless international shipping.",
-  },
-];
+const STEP_DEFS = [
+  { id: "step1", num: "01", delay: "d1" },
+  { id: "step2", num: "02", delay: "d2" },
+  { id: "step3", num: "03", delay: "d3" },
+  { id: "step4", num: "04", delay: "d4" },
+  { id: "step5", num: "05", delay: "d5" },
+] as const;
 
-const TECH_ITEMS = [
-  {
-    id: "tech1",
-    icon: "smart_toy",
-    iconBg: "bg-primary",
-    title: "AI-Driven Robotics",
-    desc: "14 collaborative arms with 0.01mm AI vision precision enabling 24/7 unmanned production.",
-  },
-  {
-    id: "tech2",
-    icon: "precision_manufacturing",
-    iconBg: "bg-secondary",
-    title: "5-Axis CNC Machining",
-    desc: "In-house tool room with ±0.005mm tolerance, cutting mold repair time to under 72 hours.",
-  },
-  {
-    id: "tech3",
-    icon: "settings_input_component",
-    iconBg: "",
-    title: "High-Precision Molding",
-    desc: "Climate-controlled bays at ±1°C preventing material warp, with 18% faster cycle times.",
-  },
-];
+const TECH_DEFS = [
+  { id: "tech1", icon: "smart_toy", iconBg: "bg-primary" },
+  { id: "tech2", icon: "precision_manufacturing", iconBg: "bg-secondary" },
+  { id: "tech3", icon: "settings_suggest", iconBg: "" },
+] as const;
 
-const CERTS = [
-  {
-    id: "cert1",
-    delay: "d1",
-    icon: "verified",
-    title: "ISO 9001:2015",
-    subtitle: "Quality Management",
-    desc: "International benchmark for quality management systems across all production stages.",
-  },
-  {
-    id: "cert2",
-    delay: "d2",
-    icon: "eco",
-    title: "ISO 14001",
-    subtitle: "Environmental Standard",
-    desc: "Systematic environmental management with year-on-year carbon reduction targets.",
-  },
-  {
-    id: "cert3",
-    delay: "d3",
-    icon: "health_and_safety",
-    title: "OHSAS 18001",
-    subtitle: "Health & Safety",
-    desc: "7+ consecutive years zero Lost Time Injury record across 14,000m² facility.",
-  },
-  {
-    id: "cert4",
-    delay: "d4",
-    icon: "public",
-    title: "CE Compliant",
-    subtitle: "European Quality",
-    desc: "Full EU market access with RoHS and REACH SVHC compliance documentation.",
-  },
-];
+const CERT_DEFS = [
+  { id: "cert1", icon: "workspace_premium", delay: "d1", title: "ISO 9001:2015" },
+  { id: "cert2", icon: "eco", delay: "d2", title: "ISO 14001" },
+  { id: "cert3", icon: "health_and_safety", delay: "d3", title: "OHSAS 18001" },
+  { id: "cert4", icon: "verified", delay: "d4", title: "CE Compliant" },
+] as const;
 
 /** Legacy proc-card images keyed by step id (same order as the IMGS constant). */
 const STEP_IMAGES: Record<string, string> = Object.fromEntries(
-  PROCESS_STEPS.map((s) => [s.id, INDUSTRY_MODALS[s.id].image])
+  STEP_DEFS.map((s) => [s.id, INDUSTRY_MODALS[s.id].image])
 );
 
 export default function IndustriesContent() {
+  const t = useTranslations("industriesPage");
   const [openId, setOpenId] = useState<string | null>(null);
+
+  const stats = STAT_DEFS.map((s) => ({ ...s, label: t(s.key) }));
+  const processSteps = STEP_DEFS.map((s) => ({
+    ...s,
+    title: t(`${s.id}Title`),
+    desc: t(`${s.id}Desc`),
+  }));
+  const techItems = TECH_DEFS.map((s) => ({
+    ...s,
+    title: t(`${s.id}Title`),
+    desc: t(`${s.id}Desc`),
+  }));
+  const certs = CERT_DEFS.map((s) => ({
+    ...s,
+    subtitle: t(`${s.id}Sub`),
+    desc: t(`${s.id}Desc`),
+  }));
 
   return (
     <div className="page-industries">
@@ -164,34 +107,32 @@ export default function IndustriesContent() {
               <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
                 location_on
               </span>
-              Excellence in Cairo, Egypt
+              {t("badgeLocation")}
             </span>
             <h1
               className="hero-badge font-black text-[38px] md:text-[56px] leading-tight mb-6 text-on-background"
               style={{ animationDelay: ".25s", letterSpacing: "-.02em" }}
             >
-              State-of-the-Art
+              {t("heroTitle1")}
               <br />
-              <span className="text-primary">Production Facility</span>
+              <span className="text-primary">{t("heroTitle2")}</span>
             </h1>
             <p
               className="hero-badge font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-lg"
               style={{ animationDelay: ".4s" }}
             >
-              Discover the epicentre of industrial precision. Our Egyptian
-              facility combines global engineering standards with local
-              logistical advantages to deliver world-class storage solutions.
+              {t("heroPara")}
             </p>
             <div className="hero-badge flex flex-wrap gap-4" style={{ animationDelay: ".55s" }}>
               <Link href="/products" className="btn-hero-primary">
-                Explore Products
-                <span className="material-symbols-outlined btn-arrow" style={{ fontSize: 18 }}>
+                {t("exploreProducts")}
+                <span className="material-symbols-outlined btn-arrow rtl-flip" style={{ fontSize: 18 }}>
                   arrow_forward
                 </span>
               </Link>
               <Link href="/contact" className="btn-hero-outline">
-                Contact Us
-                <span className="material-symbols-outlined btn-arrow" style={{ fontSize: 18 }}>
+                {t("contactUs")}
+                <span className="material-symbols-outlined btn-arrow rtl-flip" style={{ fontSize: 18 }}>
                   arrow_forward
                 </span>
               </Link>
@@ -199,9 +140,9 @@ export default function IndustriesContent() {
           </div>
 
           <div className="absolute right-8 bottom-12 hidden xl:flex flex-col gap-3">
-            <div className="glass-badge">22+ Years Experience</div>
-            <div className="glass-badge">600K+ Units Exported</div>
-            <div className="glass-badge">ISO 9001:2015 Certified</div>
+            <div className="glass-badge">{t("glass1")}</div>
+            <div className="glass-badge">{t("glass2")}</div>
+            <div className="glass-badge">{t("glass3")}</div>
           </div>
         </div>
       </section>
@@ -210,14 +151,14 @@ export default function IndustriesContent() {
       <section className="bg-primary">
         <div className="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
           <div className="grid grid-cols-2 md:grid-cols-4">
-            {STATS.map((stat, i) => (
+            {stats.map((stat, i) => (
               <div
                 key={stat.label}
                 className={`stat-item ${
-                  i < STATS.length - 1 ? "border-r border-white/20" : ""
+                  i < stats.length - 1 ? "border-r border-white/20" : ""
                 }`}
               >
-                <div className="stat-num text-white">
+                <div className="stat-num text-white" dir="ltr">
                   {stat.num}
                   {stat.suffix && <span className="text-white/70">{stat.suffix}</span>}
                 </div>
@@ -234,15 +175,13 @@ export default function IndustriesContent() {
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
             <div className="max-w-xl">
               <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3 reveal">
-                Manufacturing Process
+                {t("processLabel")}
               </p>
               <h2 className="font-headline-xl text-headline-xl reveal d1">
-                Integrated Production Workflow
+                {t("processTitle")}
               </h2>
               <p className="font-body-md text-body-md text-on-surface-variant mt-4 reveal d2">
-                Every Giant Storage product undergoes a rigorous 5-stage
-                manufacturing cycle, ensuring structural integrity and precision
-                at scale. Click any stage to explore details.
+                {t("processPara")}
               </p>
             </div>
             <div className="sep w-full md:w-64 reveal d3">
@@ -251,7 +190,7 @@ export default function IndustriesContent() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            {PROCESS_STEPS.map((step) => (
+            {processSteps.map((step) => (
               <button
                 key={step.id}
                 type="button"
@@ -268,10 +207,10 @@ export default function IndustriesContent() {
                   />
                   <div className="card-overlay absolute inset-0 bg-primary/30 flex items-center justify-center">
                     <span className="text-white text-xs font-bold uppercase tracking-widest bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                      View Details
+                      {t("viewDetails")}
                     </span>
                   </div>
-                  <span className="step-num absolute top-3 left-4">{step.num}</span>
+                  <span className="step-num absolute top-3 start-4" dir="ltr">{step.num}</span>
                 </div>
                 <div className="p-5">
                   <h3 className="font-headline-md text-headline-md mb-2">
@@ -296,7 +235,7 @@ export default function IndustriesContent() {
                 <Image
                   className="w-full h-auto transition-transform duration-700 hover:scale-105"
                   src={TECH_IMG}
-                  alt="Advanced robotics"
+                  alt={t("techAlt")}
                   width={720}
                   height={480}
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -305,7 +244,7 @@ export default function IndustriesContent() {
                   <span className="material-symbols-outlined" style={{ fontSize: 14 }}>
                     verified
                   </span>
-                  Industry 4.0 Certified
+                  {t("industry40")}
                 </div>
               </div>
               <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/10 rounded-full animate-float" />
@@ -313,17 +252,17 @@ export default function IndustriesContent() {
             </div>
             <div className="reveal-right">
               <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3">
-                Technology Infrastructure
+                {t("techLabel")}
               </p>
               <h2 className="font-headline-xl text-headline-xl mb-10">
-                Advanced Manufacturing Technology
+                {t("techTitle")}
               </h2>
               <div className="space-y-3">
-                {TECH_ITEMS.map((item) => (
+                {techItems.map((item) => (
                   <button
                     key={item.id}
                     type="button"
-                    className="tech-item w-full text-left"
+                    className="tech-item w-full text-start"
                     onClick={() => setOpenId(item.id)}
                   >
                     <div
@@ -363,19 +302,17 @@ export default function IndustriesContent() {
         <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
           <div className="text-center mb-16">
             <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3 reveal">
-              Compliance &amp; Standards
+              {t("certsLabel")}
             </p>
             <h2 className="font-headline-xl text-headline-xl reveal d1">
-              Certified for Global Compliance
+              {t("certsTitle")}
             </h2>
             <p className="font-body-lg text-body-lg text-on-surface-variant mt-4 max-w-2xl mx-auto reveal d2">
-              Our facility and processes meet the world&apos;s most stringent
-              industrial and environmental standards. Click any certification to
-              learn more.
+              {t("certsPara")}
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {CERTS.map((cert) => (
+            {certs.map((cert) => (
               <button
                 key={cert.id}
                 type="button"
@@ -397,8 +334,8 @@ export default function IndustriesContent() {
                   {cert.desc}
                 </p>
                 <span className="text-primary text-xs font-bold uppercase tracking-wider flex items-center gap-1">
-                  View Details{" "}
-                  <span className="material-symbols-outlined" style={{ fontSize: 14 }}>
+                  {t("viewDetails")}{" "}
+                  <span className="material-symbols-outlined rtl-flip" style={{ fontSize: 14 }}>
                     arrow_forward
                   </span>
                 </span>
@@ -420,11 +357,10 @@ export default function IndustriesContent() {
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 animate-float-slow" />
         <div className="relative z-10 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto text-center">
           <h2 className="font-headline-xl text-headline-xl text-white mb-4 reveal">
-            Ready to Start Your Project?
+            {t("ctaTitle")}
           </h2>
           <p className="text-white/80 font-body-lg text-body-lg max-w-2xl mx-auto mb-10 reveal d1">
-            Our engineering team is available to discuss custom solutions,
-            prototyping, and large-format supply contracts.
+            {t("ctaPara")}
           </p>
           <div className="flex flex-wrap gap-4 justify-center reveal d2">
             <Link
@@ -432,13 +368,13 @@ export default function IndustriesContent() {
               className="bg-white text-primary font-bold px-8 py-4 rounded-lg text-sm hover:shadow-xl active:scale-95 transition-all inline-flex items-center"
               style={{ boxShadow: "0 8px 24px rgba(0,0,0,.2)" }}
             >
-              Request a Quote
+              {t("requestQuote")}
             </Link>
             <Link
               href="/contact"
               className="border-2 border-white/40 text-white font-bold px-8 py-4 rounded-lg text-sm hover:bg-white/10 active:scale-95 transition-all inline-flex items-center"
             >
-              Contact Engineering Team
+              {t("contactTeam")}
             </Link>
           </div>
         </div>

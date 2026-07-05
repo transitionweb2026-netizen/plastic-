@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { IndustryModal as IndustryModalData } from "@/lib/industries";
 
@@ -17,6 +18,7 @@ type IndustryModalProps = {
  * a second Contact CTA.
  */
 export default function IndustryModal({ data, onClose }: IndustryModalProps) {
+  const t = useTranslations("productsUi");
   useEffect(() => {
     document.body.style.overflow = data ? "hidden" : "";
     if (!data) return;
@@ -89,7 +91,7 @@ export default function IndustryModal({ data, onClose }: IndustryModalProps) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <p className="modal-section-title">Technical Specifications</p>
+                <p className="modal-section-title">{t("technicalSpecifications")}</p>
                 <div>
                   {data.specs.map(([label, value]) => (
                     <div key={label} className="spec-row">
@@ -100,7 +102,7 @@ export default function IndustryModal({ data, onClose }: IndustryModalProps) {
                 </div>
               </div>
               <div>
-                <p className="modal-section-title">Key Features</p>
+                <p className="modal-section-title">{t("keyFeatures")}</p>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {data.features.map((feature) => (
                     <span key={feature} className="feature-chip">
@@ -118,7 +120,7 @@ export default function IndustryModal({ data, onClose }: IndustryModalProps) {
                     </span>
                   ))}
                 </div>
-                <p className="modal-section-title">Applications</p>
+                <p className="modal-section-title">{t("applications")}</p>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {data.applications.map((app) => (
                     <span key={app} className="app-tag">
@@ -126,7 +128,7 @@ export default function IndustryModal({ data, onClose }: IndustryModalProps) {
                     </span>
                   ))}
                 </div>
-                <p className="modal-section-title">Industries Served</p>
+                <p className="modal-section-title">{t("industriesServed")}</p>
                 <div className="flex flex-wrap gap-2">
                   {data.industries.map((industry) => (
                     <span key={industry} className="ind-tag">
@@ -140,7 +142,7 @@ export default function IndustryModal({ data, onClose }: IndustryModalProps) {
             <div className="mt-8 pt-6 border-t border-outline-variant flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
               <p className="text-sm text-on-surface-variant">
                 <span className="font-semibold text-on-surface">
-                  Availability:
+                  {t("availability")}
                 </span>{" "}
                 {data.availability}
               </p>
@@ -156,7 +158,7 @@ export default function IndustryModal({ data, onClose }: IndustryModalProps) {
                   className="bg-primary text-on-primary px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-secondary active:scale-95 transition-all inline-flex items-center min-h-[44px]"
                   style={{ boxShadow: "0 6px 20px rgba(1,78,42,.3)" }}
                 >
-                  Request a Quote
+                  {t("requestAQuote")}
                 </Link>
               </div>
             </div>

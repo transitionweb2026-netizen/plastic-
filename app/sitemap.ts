@@ -2,6 +2,10 @@ import type { MetadataRoute } from "next";
 import { ARTICLES } from "@/lib/articles";
 import { SITE_URL } from "@/lib/site";
 
+/**
+ * Bilingual sitemap: Arabic is canonical at "/", English under "/en".
+ * Each entry carries hreflang alternates for both languages.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     { path: "", priority: 1 },
@@ -14,17 +18,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/request-quote", priority: 0.9 },
     { path: "/privacy-policy", priority: 0.2 },
     { path: "/terms-of-service", priority: 0.2 },
-  ].map(({ path, priority }) => ({
-    url: `${SITE_URL}${path}`,
-    lastModified: new Date(),
+  ];
+
+  const entry = (path: string, priority: number, lastModified: Date) => ({
+    url: `${SITE_URL}${path === "" ? "/" : path}`,
+    lastModified,
     priority,
-  }));
+    alternates: {
+      languages: {
+        ar: `${SITE_URL}${path === "" ? "/" : path}`,
+        en: `${SITE_URL}/en${path}`,
+      },
+    },
+  });
 
-  const articles = ARTICLES.map((article) => ({
-    url: `${SITE_URL}/blog/${article.slug}`,
-    lastModified: new Date(article.date),
-    priority: 0.5,
-  }));
-
-  return [...pages, ...articles];
+  return [
+    ...pages.map(({ path, priority }) => entry(path, priority, new Date())),
+    ...ARTICLES.map((article) =>
+      entry(`/blog/${article.slug}`, 0.5, new Date(article.date))
+    ),
+  ];
 }
