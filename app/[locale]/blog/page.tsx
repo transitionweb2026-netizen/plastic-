@@ -1,54 +1,28 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { RackOutline, CircuitLines } from "@/components/ui/DecorArt";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
 import NewsletterForm from "@/components/forms/NewsletterForm";
 
-export const metadata: Metadata = {
-  title: "Industrial Insights",
-  description:
-    "Giant Intelligence — expert analysis on global logistics, warehouse technology, and corporate milestones driving the future of integrated storage solutions.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta.blog" });
+  return { title: t("title"), description: t("description") };
+}
 
 const HERO_IMG =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuAcPMNwGE1bKWNaxncsX8vguDLGBzb6mHxljOIWBIQfY54ECIbO6Jr5uNXH_2cYqbiwkVxl8LoPWz01Sr4FEwQkdYOoyJzOmLbH-dust81lmyCbBv4ftAyfeXNbK4e4xe8Aeius_CZgI0p9_Ag61H4ylBWqi4CgwGF3e8EdSzKc-vOuSTDlQniT0Xw47wauaFbsPBm1hIrNjzf1r2SQ1NcDyukNsZlZSP5YgxEv5IE68RuFARFzROEtWG514_5N_Ii3Qe31tLoqhNQ";
 
-const RECENT_ARTICLES = [
-  {
-    href: "/blog/net-zero-2030",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDhOM_ZjQqp8NJDoi3TNAvcIdLUaAQ_ri_gcyBDD-xY0k2iO845ekZDNRcTLjA3ywaMyoXSbjseHsWl0wnoL6Llm5IU-w8Jse3BJ9ZmyTP-bkKvf2IlpIdJRciAU8R9XZKMvuVXIbECxOsCD4Dbft9KWCVkWGwJIXYkBEebjogwT646gqGWF9yJP1RGROkfOJa9U4Io-G751y7aB8lnVJ3c3IzrUAUjhXzH4nOOgUGBELGPEdR33mialt8zDm4fkln6tYm8-ZdpHfE",
-    alt: "Solar warehouse",
-    tag: "Corporate CSR",
-    title: "Sustainable Logistics: Our Net Zero 2030 Commitment",
-    desc: "Reducing carbon footprint through solar-integrated facility design and electrified transit solutions.",
-    date: "May 24, 2024",
-    read: "8 min read",
-    delay: "d1",
-  },
-  {
-    href: "/blog/urban-fulfillment",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCNPxQPmmNYVdxT76yKC5NKNvGeB48Yvcy0rl9G-sDkDPLCYXmAxU9F2gv1fxCj_fMW8cmA6Z7pR-9TamLGlTXv9lXR7AbYHpBAAzvs_DlYeXE3Qi6YX32FqBS1zKXAysb0VhryyE7uaMEyS5sN7JYozlOi2FeoMDJEfuk97fTNl8PpS0UoOHtEVzZRObvMx1n7h-nbdiDjHO6iDKTPbrwDXAxDrGePe0PAPtOXAEX4y_sjp1jFelUdDUEu0T2VkHr8SecHPxIXZGc",
-    alt: "Racking system",
-    tag: "Logistics Trends",
-    title: "Maximizing Floor Space in Urban Fulfillment Centers",
-    desc: "How vertical racking systems are enabling next-day delivery in densely populated global metros.",
-    date: "May 18, 2024",
-    read: "10 min read",
-    delay: "d2",
-  },
-  {
-    href: "/blog/southeast-asia",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuB33hTy7fYKCExhmtTn0k_-HKmx_UcrBf8Xwmv2i5rx3djejhVbzzsrQiDl5fegvJJYvCNKiYdSK14zuQ_dUDZ49TtEdA46-VBDErjJay49wo2wxSDCGC8krTJkV7xCOFbY06N3ir2O7av1SEGGOYS1YlvEEZ6vV-d-etUVv5Z6QmPJ6QcSyCfla4LsgBuPM_jcNX04psJfTi0RUiStiDNwEOHfrYn2n-ayFh6a6ueJOT1xeNaE_TLO018jWTFzwSV0WORcvkNUZQI",
-    alt: "Global network",
-    tag: "Global Export",
-    title: "Expanding Our Reach: New Distribution Hubs in Southeast Asia",
-    desc: "Giant Storage announces strategic partnerships to bolster storage infrastructure in emerging markets.",
-    date: "May 12, 2024",
-    read: "7 min read",
-    delay: "d3",
-  },
+const RECENT_ARTICLE_META = [
+  { href: "/blog/net-zero-2030", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDhOM_ZjQqp8NJDoi3TNAvcIdLUaAQ_ri_gcyBDD-xY0k2iO845ekZDNRcTLjA3ywaMyoXSbjseHsWl0wnoL6Llm5IU-w8Jse3BJ9ZmyTP-bkKvf2IlpIdJRciAU8R9XZKMvuVXIbECxOsCD4Dbft9KWCVkWGwJIXYkBEebjogwT646gqGWF9yJP1RGROkfOJa9U4Io-G751y7aB8lnVJ3c3IzrUAUjhXzH4nOOgUGBELGPEdR33mialt8zDm4fkln6tYm8-ZdpHfE", key: "art1", delay: "d1" },
+  { href: "/blog/urban-fulfillment", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCNPxQPmmNYVdxT76yKC5NKNvGeB48Yvcy0rl9G-sDkDPLCYXmAxU9F2gv1fxCj_fMW8cmA6Z7pR-9TamLGlTXv9lXR7AbYHpBAAzvs_DlYeXE3Qi6YX32FqBS1zKXAysb0VhryyE7uaMEyS5sN7JYozlOi2FeoMDJEfuk97fTNl8PpS0UoOHtEVzZRObvMx1n7h-nbdiDjHO6iDKTPbrwDXAxDrGePe0PAPtOXAEX4y_sjp1jFelUdDUEu0T2VkHr8SecHPxIXZGc", key: "art2", delay: "d2" },
+  { href: "/blog/southeast-asia", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuB33hTy7fYKCExhmtTn0k_-HKmx_UcrBf8Xwmv2i5rx3djejhVbzzsrQiDl5fegvJJYvCNKiYdSK14zuQ_dUDZ49TtEdA46-VBDErjJay49wo2wxSDCGC8krTJkV7xCOFbY06N3ir2O7av1SEGGOYS1YlvEEZ6vV-d-etUVv5Z6QmPJ6QcSyCfla4LsgBuPM_jcNX04psJfTi0RUiStiDNwEOHfrYn2n-ayFh6a6ueJOT1xeNaE_TLO018jWTFzwSV0WORcvkNUZQI", key: "art3", delay: "d3" },
 ];
 
 export default async function BlogPage({
@@ -58,6 +32,16 @@ export default async function BlogPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("blogPage");
+  const recentArticles = RECENT_ARTICLE_META.map((a) => ({
+    ...a,
+    tag: t(`${a.key}Tag`),
+    title: t(`${a.key}Title`),
+    desc: t(`${a.key}Desc`),
+    alt: t(`${a.key}Alt`),
+    date: t(`${a.key}Date`),
+    read: t(`${a.key}Read`),
+  }));
 
   return (
     <div className="page-blog">
@@ -69,7 +53,7 @@ export default async function BlogPage({
           <div className="hero-bg relative w-full h-full">
             <Image
               src={HERO_IMG}
-              alt="Industrial warehouse"
+              alt={t("heroAlt")}
               fill
               priority
               className="object-cover"
@@ -98,7 +82,7 @@ export default async function BlogPage({
               <span className="material-symbols-outlined" style={{ fontSize: 14 }}>
                 auto_stories
               </span>
-              Giant Intelligence — Industrial Insights
+              {t("heroBadge")}
             </span>
             <h1
               className="hero-text-2 font-black text-white mb-6 leading-[1.08]"
@@ -107,25 +91,23 @@ export default async function BlogPage({
                 letterSpacing: "-.02em",
               }}
             >
-              Knowledge That Drives
+              {t("heroTitle1")}
               <br />
-              <span style={{ color: "#92d5a6" }}>Industrial Excellence</span>
+              <span style={{ color: "#92d5a6" }}>{t("heroTitle2")}</span>
             </h1>
             <p className="hero-text-3 text-white/80 text-lg mb-10 max-w-2xl leading-relaxed">
-              Expert analysis on global logistics, warehouse technology, and
-              corporate milestones driving the future of integrated storage
-              solutions.
+              {t("heroPara")}
             </p>
             <div className="hero-text-4 flex flex-wrap gap-4">
               <a href="#featured" className="btn-primary">
-                Read Latest Articles{" "}
+                {t("readLatest")}{" "}
                 <span className="material-symbols-outlined arr" style={{ fontSize: 18 }}>
                   arrow_downward
                 </span>
               </a>
               <a href="#newsletter" className="btn-outline">
-                Subscribe{" "}
-                <span className="material-symbols-outlined arr" style={{ fontSize: 18 }}>
+                {t("subscribe")}{" "}
+                <span className="material-symbols-outlined arr rtl-flip" style={{ fontSize: 18 }}>
                   arrow_forward
                 </span>
               </a>
@@ -143,7 +125,7 @@ export default async function BlogPage({
           <div className="flex items-center gap-4 mb-10 reveal">
             <div className="h-px flex-1 bg-outline-variant" />
             <span className="text-xs font-bold uppercase tracking-widest text-primary">
-              Featured Article
+              {t("featuredLabel")}
             </span>
             <div className="h-px flex-1 bg-outline-variant" />
           </div>
@@ -155,7 +137,7 @@ export default async function BlogPage({
               <Image
                 className="feat-img object-cover"
                 src={HERO_IMG}
-                alt="Featured article — high-density storage"
+                alt={t("featAlt")}
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
@@ -163,20 +145,17 @@ export default async function BlogPage({
             <div className="p-8 md:p-14 flex flex-col justify-center">
               <div className="flex items-center gap-3 mb-5">
                 <span className="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                  Product Innovations
+                  {t("featTag")}
                 </span>
                 <span className="text-on-surface-variant text-xs font-semibold">
-                  12 MIN READ
+                  {t("featRead")}
                 </span>
               </div>
               <h2 className="font-headline-xl text-headline-lg md:text-headline-xl text-on-surface mb-5 leading-tight">
-                The Evolution of High-Density Storage: 2025 Industry Roadmap
+                {t("featTitle")}
               </h2>
               <p className="text-on-surface-variant text-base leading-relaxed mb-8 line-clamp-3">
-                Discover how integrated AI and semi-automated shelving units are
-                redefining throughput efficiency for global export hubs. Our
-                latest analysis explores the convergence of structural
-                engineering and digital logistics.
+                {t("featDesc")}
               </p>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -187,16 +166,16 @@ export default async function BlogPage({
                   </div>
                   <div>
                     <p className="font-semibold text-sm text-on-surface">
-                      Dr. Marcus Vance
+                      {t("featAuthor")}
                     </p>
                     <p className="text-xs text-on-surface-variant">
-                      Chief Technical Officer
+                      {t("featRole")}
                     </p>
                   </div>
                 </div>
                 <span className="flex items-center gap-1 text-primary text-sm font-bold">
-                  Read Article{" "}
-                  <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
+                  {t("readArticle")}{" "}
+                  <span className="material-symbols-outlined rtl-flip" style={{ fontSize: 16 }}>
                     arrow_forward
                   </span>
                 </span>
@@ -214,10 +193,10 @@ export default async function BlogPage({
           <div className="flex justify-between items-end mb-12">
             <div className="reveal">
               <p className="text-xs font-bold uppercase tracking-widest text-primary mb-2">
-                Latest Updates
+                {t("updatesLabel")}
               </p>
               <h3 className="font-headline-lg text-headline-lg text-on-surface">
-                Recent Articles
+                {t("updatesTitle")}
               </h3>
               <div className="h-1 w-16 bg-primary rounded-full mt-3" />
             </div>
@@ -225,9 +204,9 @@ export default async function BlogPage({
               href="#featured"
               className="hidden md:flex items-center gap-2 text-primary font-bold text-sm group reveal"
             >
-              View All{" "}
+              {t("viewAll")}{" "}
               <span
-                className="material-symbols-outlined group-hover:translate-x-1 transition-transform"
+                className="material-symbols-outlined rtl-flip group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform"
                 style={{ fontSize: 18 }}
               >
                 arrow_forward
@@ -236,7 +215,7 @@ export default async function BlogPage({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
-            {RECENT_ARTICLES.map((article) => (
+            {recentArticles.map((article) => (
               <Link
                 key={article.href}
                 href={article.href}
@@ -313,20 +292,19 @@ export default async function BlogPage({
             <span className="material-symbols-outlined" style={{ fontSize: 14 }}>
               mail
             </span>
-            Industry Intelligence
+            {t("nlBadge")}
           </span>
           <h2
             className="reveal d1 font-black text-white mb-4 leading-tight"
             style={{ fontSize: "clamp(1.75rem,4vw,3rem)", letterSpacing: "-.02em" }}
           >
-            Stay Ahead of the Industry
+            {t("nlTitle")}
           </h2>
           <p className="reveal d2 text-white/75 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
-            Join 5,000+ logistics professionals receiving our monthly digest of
-            industrial trends, engineering breakthroughs, and case studies.
+            {t("nlPara")}
           </p>
           <div className="reveal d2 flex flex-wrap justify-center gap-6 mb-10">
-            {["Monthly digest, no spam", "5,000+ subscribers", "Unsubscribe anytime"].map(
+            {[t("check1"), t("check2"), t("check3")].map(
               (item) => (
                 <div
                   key={item}
@@ -348,10 +326,9 @@ export default async function BlogPage({
           </div>
           <NewsletterForm />
           <p className="reveal d4 text-white/40 text-xs mt-4">
-            By subscribing, you agree to our{" "}
-            {/* TODO: point at a real privacy policy page when one exists (legacy linked the About page). */}
-            <Link href="/about" className="underline hover:text-white/70 transition-colors">
-              Privacy Policy
+            {t("nlAgree")}{" "}
+            <Link href="/privacy-policy" className="underline hover:text-white/70 transition-colors">
+              {t("nlPrivacy")}
             </Link>
             .
           </p>

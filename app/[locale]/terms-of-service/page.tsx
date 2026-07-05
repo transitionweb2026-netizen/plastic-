@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { CONTACT } from "@/lib/nav";
 
-export const metadata: Metadata = {
-  title: "Terms of Service",
-  description:
-    "Terms governing the use of the Giant Storage Integrated Solutions website and services.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta.terms" });
+  return { title: t("title"), description: t("description") };
+}
 
 /**
  * TODO: replace this placeholder with counsel-approved terms text before
@@ -20,30 +24,26 @@ export default async function TermsOfServicePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("legal");
 
   return (
     <div className="max-w-4xl mx-auto px-margin-mobile md:px-margin-tablet py-24">
       <h1 className="font-headline-xl text-headline-lg md:text-headline-xl text-on-background mb-6">
-        Terms of Service
+        {t("termsTitle")}
       </h1>
       <div className="space-y-5 font-body-md text-body-md text-on-surface-variant leading-relaxed">
         <p>
-          By using the Giant Storage Integrated Solutions website you agree to
-          use its content for legitimate business inquiry purposes. Product
-          specifications shown are indicative and confirmed in formal
-          quotations; quotes issued through this site are non-binding until
-          countersigned by both parties.
+          {t("termsP1")}
         </p>
         <p>
-          The complete terms of service are being finalized. For questions
-          regarding orders, warranties, or commercial terms, contact us at{" "}
+          {t("termsP2")}{" "}
           <a
             className="text-primary font-semibold hover:underline"
             href={`mailto:${CONTACT.email}`}
           >
             {CONTACT.email}
           </a>{" "}
-          or call{" "}
+          {t("orCall")}{" "}
           <a
             className="text-primary font-semibold hover:underline"
             href={CONTACT.phoneMain.href}
@@ -54,7 +54,7 @@ export default async function TermsOfServicePage({
         </p>
         <p>
           <Link className="text-primary font-semibold hover:underline" href="/contact">
-            Contact us →
+            {t("contactUsArrow")}
           </Link>
         </p>
       </div>

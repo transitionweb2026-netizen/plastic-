@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { CONTACT } from "@/lib/nav";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description:
-    "How Giant Storage Integrated Solutions collects, uses, and protects your information.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta.privacy" });
+  return { title: t("title"), description: t("description") };
+}
 
 /**
  * TODO: replace this placeholder with counsel-approved privacy policy text
@@ -20,30 +24,26 @@ export default async function PrivacyPolicyPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("legal");
 
   return (
     <div className="max-w-4xl mx-auto px-margin-mobile md:px-margin-tablet py-24">
       <h1 className="font-headline-xl text-headline-lg md:text-headline-xl text-on-background mb-6">
-        Privacy Policy
+        {t("privacyTitle")}
       </h1>
       <div className="space-y-5 font-body-md text-body-md text-on-surface-variant leading-relaxed">
         <p>
-          Giant Storage Integrated Solutions respects your privacy. Information
-          submitted through our contact and quote forms — such as your name,
-          email address, company, and phone number — is used solely to respond
-          to your inquiry and is never sold or shared with third parties for
-          marketing purposes.
+          {t("privacyP1")}
         </p>
         <p>
-          The full privacy policy is being finalized. In the meantime, if you
-          have any questions about how your data is handled, contact us at{" "}
+          {t("privacyP2")}{" "}
           <a
             className="text-primary font-semibold hover:underline"
             href={`mailto:${CONTACT.email}`}
           >
             {CONTACT.email}
           </a>{" "}
-          or call{" "}
+          {t("orCall")}{" "}
           <a
             className="text-primary font-semibold hover:underline"
             href={CONTACT.phoneMain.href}
@@ -54,7 +54,7 @@ export default async function PrivacyPolicyPage({
         </p>
         <p>
           <Link className="text-primary font-semibold hover:underline" href="/contact">
-            Contact us →
+            {t("contactUsArrow")}
           </Link>
         </p>
       </div>

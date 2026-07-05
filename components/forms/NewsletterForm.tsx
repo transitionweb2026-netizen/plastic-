@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const formId = process.env.NEXT_PUBLIC_FORMSPREE_NEWSLETTER_ID;
 
@@ -13,6 +14,7 @@ type Status = "idle" | "loading" | "success" | "error";
  * legacy placeholder endpoint did.
  */
 export default function NewsletterForm() {
+  const t = useTranslations("newsletter");
   const [status, setStatus] = useState<Status>("idle");
   const [email, setEmail] = useState("");
 
@@ -40,7 +42,7 @@ export default function NewsletterForm() {
   if (status === "success") {
     return (
       <p className="reveal in-view text-white font-bold text-lg max-w-md mx-auto py-3">
-        ✓ Subscribed! Check your inbox to confirm.
+        {t("success")}
       </p>
     );
   }
@@ -55,25 +57,24 @@ export default function NewsletterForm() {
           className="nl-input"
           type="email"
           name="email"
-          placeholder="your@company.com"
+          placeholder={t("placeholder")}
+          dir="ltr"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          aria-label="Email address"
+          aria-label={t("emailAria")}
         />
         <button
           type="submit"
           className="nl-btn sm:rounded-r-lg sm:rounded-l-none"
           disabled={status === "loading"}
         >
-          {status === "loading" ? "Subscribing…" : "Subscribe →"}
+          {status === "loading" ? t("subscribing") : t("subscribe")}
         </button>
       </form>
       {status === "error" && (
         <p className="text-white/80 text-sm mt-3">
-          {formId
-            ? "Something went wrong — please try again later."
-            : "Newsletter signup isn't configured yet. Please check back soon."}
+          {formId ? t("error") : t("notConfigured")}
         </p>
       )}
     </>
