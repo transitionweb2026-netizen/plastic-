@@ -1,0 +1,268 @@
+{
+  "meta": {
+    "siteName": "Giant Storage",
+    "siteTitle": "Giant Storage | Integrated Industrial Solutions",
+    "siteDescription": "Giant Storage Integrated Solutions — industrial plastic pallets, crates, and high-density storage systems engineered for warehousing, cold chain, and logistics at scale.",
+    "home": {
+      "title": "Giant Storage | Integrated Industrial Solutions",
+      "description": "Leading Egyptian industrial plastic solutions — precision-engineered pallets, crates, and storage assets for global logistics, exported from Cairo to 22+ markets."
+    },
+    "products": {
+      "title": "Industrial Storage Products",
+      "description": "Browse Giant Storage's catalog of industrial pallets, heavy-duty crates, storage bins, and containers — engineered HDPE solutions for high-density logistics."
+    },
+    "industries": {
+      "title": "Industries & Manufacturing",
+      "description": "Giant Storage manufacturing capabilities: injection molding lines, industrial automation, and certified quality control serving diverse global sectors."
+    },
+    "blog": {
+      "title": "Industrial Insights",
+      "description": "Articles and insights from Giant Storage on high-density storage, sustainability, and global supply chains."
+    },
+    "gallery": {
+      "title": "Gallery",
+      "description": "Inside Giant Storage — manufacturing facilities, production lines, warehouses, product photography, and completed client projects across 22+ markets."
+    },
+    "about": {
+      "title": "About Us",
+      "description": "Meet Giant Storage Integrated Solutions — 20+ years of excellence manufacturing industrial plastic storage solutions in Egypt."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "description": "Reach the Giant Storage team — sales inquiries, technical support, and distribution partnerships. Offices in Nasr City, Cairo."
+    },
+    "quote": {
+      "title": "Request a Quote",
+      "description": "Custom industrial quote request for high-scale storage solutions from Giant Storage."
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "description": "How Giant Storage Integrated Solutions collects, uses, and protects your information."
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "description": "Terms governing the use of the Giant Storage Integrated Solutions website and services."
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "industries": "Industries",
+    "blog": "Blog",
+    "gallery": "Gallery",
+    "about": "About Us",
+    "contact": "Contact",
+    "requestQuote": "Request Quote"
+  },
+  "header": {
+    "brand": "GIANT STORAGE",
+    "callUs": "Call us at {phone}",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mainNavigation": "Main navigation"
+  },
+  "langSwitcher": {
+    "label": "Language",
+    "arabic": "العربية",
+    "english": "English"
+  },
+  "footer": {
+    "blurb": "Innovative plastic solutions for the world's most demanding logistics challenges. Precision engineered in Egypt.",
+    "productsHeading": "Products",
+    "allProducts": "All Products",
+    "palletsCrates": "Pallets & Crates",
+    "binsContainers": "Bins & Containers",
+    "customMolding": "Custom Molding",
+    "companyHeading": "Company",
+    "industriesLink": "Industries",
+    "blogLink": "Blog",
+    "aboutLink": "About Us",
+    "contactLink": "Contact Us",
+    "galleryLink": "Gallery",
+    "contactHeading": "Contact Headquarters",
+    "address": "22 El Tayaran St., Nasr City, Cairo, Egypt",
+    "copyright": "© {year} Giant Storage Integrated Solutions. All rights reserved.",
+    "createdBy": "Created by",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "contactBottom": "Contact"
+  },
+  "widget": {
+    "quickContact": "Quick contact",
+    "callAria": "Call us at {phone}",
+    "callTitle": "Call {phone}",
+    "whatsappAria": "Chat with us on WhatsApp",
+    "whatsappTitle": "Chat on WhatsApp"
+  },
+  "common": {
+    "learnMore": "Learn More",
+    "viewDetails": "View Details",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "sendViaEmail": "Send via Email",
+    "sendViaWhatsApp": "Send via WhatsApp",
+    "loading": "Sending…",
+    "readMore": "Read More",
+    "watchNow": "Watch Now",
+    "exploreProducts": "Explore Products",
+    "contactUs": "Contact Us",
+    "aboutUs": "About Us",
+    "requestAQuote": "Request a Quote",
+    "scroll": "Scroll"
+  },
+  "contactForm": {
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "John Doe",
+    "email": "Professional Email",
+    "emailPlaceholder": "j.doe@company.com",
+    "company": "Company Name",
+    "companyPlaceholder": "Manufacturing Ltd.",
+    "inquiryType": "Inquiry Type",
+    "inquiryTypes": {
+      "warehouse": "Warehouse Automation",
+      "pallets": "Industrial Pallets/Crates",
+      "coldChain": "Cold Chain Logistics",
+      "bulk": "Bulk Storage Systems",
+      "support": "General Support"
+    },
+    "message": "Project Details",
+    "messagePlaceholder": "Tell us about your storage requirements or specific facility challenges...",
+    "terms": "I agree to Giant Storage's privacy policy and terms for data processing.",
+    "sendInquiry": "Send Inquiry",
+    "sending": "Sending…",
+    "sent": "Inquiry Sent ✓",
+    "successMessage": "Thank you — an engineering consultant will contact you within 24 business hours.",
+    "errorConfigured": "Something went wrong sending your inquiry.",
+    "errorNotConfigured": "The contact form isn't configured yet.",
+    "reachDirectly": "Please reach us directly at",
+    "or": "or",
+    "emailSubject": "Website Inquiry — {type} ({name})",
+    "messageIntro": "New inquiry from the Giant Storage website",
+    "fieldName": "Name",
+    "fieldEmail": "Email",
+    "fieldCompany": "Company",
+    "fieldInquiryType": "Inquiry Type",
+    "fieldProjectDetails": "Project Details"
+  },
+  "quoteForm": {
+    "steps": {
+      "project": "Project Details",
+      "logistics": "Logistics",
+      "company": "Company Info"
+    },
+    "productTypes": "Product Types",
+    "productTypeOptions": {
+      "racking": "Automated Racking Systems",
+      "mezzanines": "Heavy-Duty Mezzanines",
+      "shelving": "Industrial Shelving",
+      "custom": "Custom Warehouse Integration"
+    },
+    "quantity": "Estimated Quantity",
+    "quantityPlaceholder": "e.g. 500 units",
+    "environment": "Storage Environment",
+    "environments": {
+      "cold": "Cold Storage",
+      "ambient": "Ambient",
+      "hazardous": "Hazardous",
+      "humidity": "High-Humidity"
+    },
+    "nextLogistics": "Next: Logistics Requirements",
+    "destination": "Destination Port/City",
+    "destinationPlaceholder": "e.g. Rotterdam, NL",
+    "leadTime": "Lead Time Preference",
+    "leadTimes": {
+      "urgent": "Urgent (30 Days)",
+      "standard": "Standard (60-90 Days)",
+      "future": "Future Planning (6+ Months)"
+    },
+    "installation": "Installation Services",
+    "installationLabel": "On-site Assembly Required",
+    "back": "Back",
+    "nextCompany": "Next: Company Information",
+    "companyName": "Company Name",
+    "companyPlaceholder": "Global Logistics Corp",
+    "businessEmail": "Business Email",
+    "businessEmailPlaceholder": "procurement@company.com",
+    "industrySector": "Industry Sector",
+    "industrySectorPlaceholder": "e.g. E-commerce, Manufacturing",
+    "phone": "Phone Number",
+    "phonePlaceholder": "+1 (555) 000-0000",
+    "brief": "Project Brief / Special Instructions",
+    "briefPlaceholder": "Briefly describe your project scope...",
+    "submit": "Direct Inquiry",
+    "sending": "Sending…",
+    "successTitle": "Quote Request Received",
+    "successMessage": "Our engineering team will send your comprehensive technical proposal within 24 hours.",
+    "errorConfigured": "Something went wrong sending your request.",
+    "errorNotConfigured": "The quote form isn't configured yet.",
+    "reachDirectly": "Please contact us directly at",
+    "or": "or",
+    "emailSubject": "Quote Request — {product} ({company})",
+    "messageIntro": "New quote request from the Giant Storage website",
+    "sectionProject": "— Project Details —",
+    "sectionLogistics": "— Logistics —",
+    "sectionCompany": "— Company —",
+    "fieldProductType": "Product Type",
+    "fieldQuantity": "Estimated Quantity",
+    "fieldEnvironment": "Storage Environment",
+    "fieldDestination": "Destination",
+    "fieldLeadTime": "Lead Time",
+    "fieldAssembly": "On-site Assembly",
+    "yes": "Yes",
+    "no": "No",
+    "fieldCompany": "Company",
+    "fieldBusinessEmail": "Business Email",
+    "fieldIndustry": "Industry Sector",
+    "fieldPhone": "Phone",
+    "fieldBrief": "Project Brief"
+  },
+  "newsletter": {
+    "placeholder": "Your professional email",
+    "subscribe": "Subscribe",
+    "subscribing": "Subscribing…",
+    "success": "Subscribed ✓",
+    "error": "Subscription failed. Please try again.",
+    "notConfigured": "The newsletter form isn't configured yet."
+  },
+  "productsUi": {
+    "heroTitle": "Industrial Grade Storage Solutions",
+    "heroDescription": "Premium storage systems designed for high-density environments. Our heavy-duty pallets, crates, and bins are engineered for maximum durability and logistical efficiency.",
+    "quickView": "Quick View",
+    "viewDetails": "View Details",
+    "technicalSpecifications": "Technical Specifications",
+    "material": "Material",
+    "dimensions": "Dimensions",
+    "loadCapacity": "Load Capacity",
+    "availableColors": "Available Colors",
+    "keyFeatures": "Key Features",
+    "applications": "Applications",
+    "availability": "Availability:",
+    "requestAQuote": "Request a Quote",
+    "viewImage": "View image {n} of {total}",
+    "productImages": "{name} images"
+  },
+  "galleryUi": {
+    "heroEyebrow": "Inside Giant Storage",
+    "heroTitle": "Gallery",
+    "heroDescription": "A look inside our manufacturing facilities, production lines, and warehouses — and the products and completed projects we deliver to clients in 22+ markets.",
+    "imagesEyebrow": "Our Work",
+    "imagesTitle": "Facilities, Products & Projects",
+    "imagesDescription": "From the molding floor to the loading bay — a visual record of how Giant Storage builds, tests, and ships industrial plastic solutions.",
+    "videosEyebrow": "Videos",
+    "videosTitle": "See Us in Motion",
+    "videosDescription": "Facility tours, stress tests, and logistics operations — watch how our products perform in the real world.",
+    "viewLarger": "View larger: {caption}",
+    "playVideo": "Play video: {title}",
+    "imageViewer": "Image viewer",
+    "videoPlayer": "Video player",
+    "previousImage": "Previous image",
+    "nextImage": "Next image"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "Sorry, the page you are looking for doesn't exist or has been moved.",
+    "backHome": "Back to Home"
+  }
+}

@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
 import { NAV_LINKS, REQUEST_QUOTE } from "@/lib/nav";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 type MobileDrawerProps = {
   open: boolean;
@@ -12,11 +13,12 @@ type MobileDrawerProps = {
 
 /**
  * Mobile slide-in navigation drawer, unified from the legacy per-page
- * implementations (toggleDrawer/toggleContactDrawer/toggleRqDrawer/...).
- * Matches the legacy look: left drawer with icon rows + dimmed overlay.
+ * implementations. Slides from the inline-start edge (left in LTR, right
+ * in RTL) with the dimmed overlay.
  */
 export default function MobileDrawer({ open, onClose }: MobileDrawerProps) {
   const pathname = usePathname();
+  const t = useTranslations();
 
   // Legacy behavior: lock body scroll while the drawer is open; close on Escape.
   useEffect(() => {
@@ -38,23 +40,23 @@ export default function MobileDrawer({ open, onClose }: MobileDrawerProps) {
       <aside
         id="drawer"
         aria-hidden={!open}
-        className={`fixed left-0 top-0 h-full z-[60] flex flex-col pt-8 bg-surface shadow-xl w-80 max-w-[85vw] transition-transform duration-300 md:hidden ${
-          open ? "translate-x-0" : "-translate-x-full"
+        className={`fixed start-0 top-0 h-full z-[60] flex flex-col pt-8 bg-surface shadow-xl w-80 max-w-[85vw] transition-transform duration-300 md:hidden ${
+          open ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"
         }`}
       >
         <div className="px-6 mb-8 flex justify-between items-center">
           <span className="font-headline-md text-headline-md text-primary font-bold">
-            Giant Storage
+            {t("header.brand")}
           </span>
           <button
             className="text-on-surface-variant"
             onClick={onClose}
-            aria-label="Close menu"
+            aria-label={t("header.closeMenu")}
           >
             <span className="material-symbols-outlined">close</span>
           </button>
         </div>
-        <nav className="flex flex-col" aria-label="Mobile">
+        <nav className="flex flex-col overflow-y-auto" aria-label={t("header.mainNavigation")}>
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
@@ -63,12 +65,14 @@ export default function MobileDrawer({ open, onClose }: MobileDrawerProps) {
               aria-current={isActive(link.href) ? "page" : undefined}
               className={
                 isActive(link.href)
-                  ? "bg-secondary-container text-on-secondary-container rounded-xl m-2 px-4 py-3 flex items-center gap-4 translate-x-1 transition-transform"
+                  ? "bg-secondary-container text-on-secondary-container rounded-xl m-2 px-4 py-3 flex items-center gap-4 translate-x-1 rtl:-translate-x-1 transition-transform"
                   : "text-on-surface-variant m-2 px-4 py-3 flex items-center gap-4 hover:bg-surface-container-high transition-colors"
               }
             >
               <span className="material-symbols-outlined">{link.icon}</span>
-              <span className="font-label-md text-label-md">{link.label}</span>
+              <span className="font-label-md text-label-md">
+                {t(`nav.${link.key}`)}
+              </span>
             </Link>
           ))}
           <Link
@@ -76,8 +80,11 @@ export default function MobileDrawer({ open, onClose }: MobileDrawerProps) {
             onClick={onClose}
             className="btn-primary w-fit mx-4 mt-4"
           >
-            {REQUEST_QUOTE.label}
+            {t("nav.requestQuote")}
           </Link>
+          <div className="px-4 py-6">
+            <LanguageSwitcher />
+          </div>
         </nav>
       </aside>
 

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
 import { RackOutline, CircuitLines } from "@/components/ui/DecorArt";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
 import NewsletterForm from "@/components/forms/NewsletterForm";
 
@@ -50,7 +51,14 @@ const RECENT_ARTICLES = [
   },
 ];
 
-export default function BlogPage() {
+export default async function BlogPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <div className="page-blog">
       <RevealObserver />

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
@@ -6,9 +7,9 @@ import ArticleCounters from "@/components/blog/ArticleCounters";
 import { ARTICLES, getArticle } from "@/lib/articles";
 import { SITE_URL } from "@/lib/site";
 
-type Params = { slug: string };
+type Params = { slug: string; locale: string };
 
-export function generateStaticParams(): Params[] {
+export function generateStaticParams(): { slug: string }[] {
   return ARTICLES.map((a) => ({ slug: a.slug }));
 }
 
@@ -37,15 +38,16 @@ export default async function ArticlePage({
 }: {
   params: Promise<Params>;
 }) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
+  setRequestLocale(locale);
   const article = getArticle(slug);
   if (!article) notFound();
 
   const pageUrl = `${SITE_URL}/blog/${article.slug}`;
-  const bodyHtml = article.bodyHtml.replaceAll(
-    "__PAGE_URL__",
-    encodeURIComponent(pageUrl)
-  );
+  const bodyHtml = article.bodyHtml
+    .replaceAll("__PAGE_URL__", encodeURIComponent(pageUrl))
+    // keep injected legacy links inside the active locale
+    .replaceAll('href="/', locale === "en" ? 'href="/en/' : 'href="/');
 
   const articleJsonLd = {
     "@context": "https://schema.org",

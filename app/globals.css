@@ -2107,6 +2107,169 @@ a[role="button"],
   min-height: 44px;
 }
 
+/* ═══════════════ I18N: LOCALE FADE / ARABIC TYPE / RTL ═══════════════ */
+/* Smooth fade when the language changes (locale layout keys the wrapper) */
+.locale-fade {
+  animation: localeFade 0.4s ease both;
+}
+@keyframes localeFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Arabic typography: IBM Plex Sans Arabic site-wide when lang="ar".
+   Letter-spacing is disabled — tracking breaks joined Arabic script. */
+html[lang="ar"] body {
+  font-family: var(--font-arabic), var(--font-inter), system-ui, sans-serif;
+}
+html[lang="ar"] body :not(.material-symbols-outlined):not(svg):not(path) {
+  letter-spacing: 0 !important;
+}
+/* Keep Latin-only brand/serif snippets on their original faces */
+html[lang="ar"] .font-serif {
+  font-family: var(--font-lora), var(--font-arabic), serif;
+}
+
+/* Language switcher (header + drawer) */
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid rgba(192, 201, 191, 0.7);
+  border-radius: 9999px;
+  background: rgba(245, 243, 245, 0.7);
+}
+.lang-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #404941;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: background 0.25s ease, color 0.25s ease,
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  white-space: nowrap;
+}
+.lang-switch-btn:hover {
+  background: #e9e7ea;
+  transform: translateY(-1px);
+}
+.lang-switch-btn.active {
+  background: #014e2a;
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(1, 78, 42, 0.3);
+}
+.lang-switch-btn:active {
+  transform: scale(0.95);
+}
+/* Header space is tight between md and lg: flags only */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .lang-switch-label {
+    display: none;
+  }
+  .lang-switch-btn {
+    padding: 6px 9px;
+  }
+}
+
+/* ── RTL mirroring for custom (physical-position) CSS ── */
+/* Utility: flip directional glyphs (chevrons/arrows) */
+[dir="rtl"] .rtl-flip {
+  transform: scaleX(-1);
+}
+
+/* Floating contact rail: mirrors to the left edge */
+[dir="rtl"] .fcw {
+  right: auto;
+  left: 16px;
+}
+[dir="rtl"] .fcw-btn {
+  animation-name: fcwEnterRtl;
+}
+@keyframes fcwEnterRtl {
+  from {
+    opacity: 0;
+    transform: translateX(-72px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@media (max-width: 639px) {
+  [dir="rtl"] .fcw {
+    left: 10px;
+    right: auto;
+  }
+}
+
+/* Footer bottom bar: dots fade in from the inline-end edge */
+[dir="rtl"] .fbar-dots {
+  right: auto;
+  left: 0;
+  -webkit-mask-image: linear-gradient(to right, black 20%, transparent);
+  mask-image: linear-gradient(to right, black 20%, transparent);
+}
+[dir="rtl"] .fbar-link::after {
+  transform-origin: right;
+}
+
+/* Nav underline grows from the reading side */
+[dir="rtl"] .nav-link::after {
+  left: auto;
+  right: 0;
+  transform-origin: right;
+}
+
+/* Home hero contact widget: mirrors to the left, slides in from the left */
+[dir="rtl"] .contact-widget {
+  right: auto;
+  left: 1.5rem;
+  animation-name: slideInLeft;
+}
+@media (min-width: 768px) {
+  [dir="rtl"] .contact-widget {
+    left: 3rem;
+  }
+}
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-44px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Gallery captions + lightbox controls */
+[dir="rtl"] .gallery-caption {
+  text-align: right;
+}
+[dir="rtl"] .lightbox-close {
+  right: auto;
+  left: 1.25rem;
+}
+
+/* Scroll progress bar grows from the right in RTL */
+[dir="rtl"] #scroll-progress {
+  left: auto;
+  right: 0;
+}
+
+/* Hero geo shapes + scroll indicator keep positions (purely decorative) */
+
 /* ═══════════════ WHITESPACE DECOR ACCENTS ═══════════════ */
 /* Reusable low-opacity decorations for empty areas around content.
    Palette-only colors, transform/opacity animations (reuses floatY/orbFloat). */

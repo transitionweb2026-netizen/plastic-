@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
 import { PalletBlueprint, DimensionLine } from "@/components/ui/DecorArt";
 import Image from "next/image";
 import QuoteForm from "@/components/forms/QuoteForm";
@@ -30,7 +31,14 @@ const WHY_ITEMS = [
   },
 ];
 
-export default function RequestQuotePage() {
+export default async function RequestQuotePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <div className="min-h-screen">
       {/* Hero */}

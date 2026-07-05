@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
 import { PalletBlueprint, DimensionLine } from "@/components/ui/DecorArt";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 export const metadata: Metadata = {
   title: {
@@ -46,7 +47,14 @@ const FACTORY_CARDS = [
  * scale than the global tokens (16px mobile margins, 24px gutters, 56px
  * display size), preserved here with explicit utilities.
  */
-export default function AboutPage() {
+export default async function AboutPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <>
       {/* Hero */}

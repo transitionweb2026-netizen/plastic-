@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import RevealObserver from "@/components/ui/RevealObserver";
 import ImageGallery from "@/components/gallery/ImageGallery";
@@ -13,7 +14,14 @@ export const metadata: Metadata = {
 
 const HERO_IMG = "/gallery/images/img-01.jpg";
 
-export default function GalleryPage() {
+export default async function GalleryPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <div className="page-gallery">
       <RevealObserver />

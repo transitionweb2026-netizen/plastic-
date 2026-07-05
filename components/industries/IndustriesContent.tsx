@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
 import IndustryModal from "./IndustryModal";
 import { INDUSTRY_MODALS } from "@/lib/industries";

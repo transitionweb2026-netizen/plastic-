@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import CursorGlow from "@/components/ui/CursorGlow";
 import ScrollProgressBar from "@/components/ui/ScrollProgressBar";
 import RevealObserver from "@/components/ui/RevealObserver";
@@ -137,7 +138,14 @@ const CERTIFICATIONS = [
   },
 ];
 
-export default function Home() {
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <>
       <CursorGlow />

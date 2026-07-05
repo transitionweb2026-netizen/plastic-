@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
 import { CircuitLines, CrateSchematic, DimensionLine } from "@/components/ui/DecorArt";
 import Image from "next/image";
 import ContactForm from "@/components/forms/ContactForm";
@@ -19,7 +20,14 @@ const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
   CONTACT.address
 )}`;
 
-export default function ContactPage() {
+export default async function ContactPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <div className="relative overflow-hidden pt-6 pb-20">
       {/* Hero */}

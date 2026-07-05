@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { CONTACT } from "@/lib/nav";
 
 export const metadata: Metadata = {
@@ -12,7 +13,14 @@ export const metadata: Metadata = {
  * TODO: replace this placeholder with counsel-approved terms text before
  * launch. The page exists so the footer legal links never 404.
  */
-export default function TermsOfServicePage() {
+export default async function TermsOfServicePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <div className="max-w-4xl mx-auto px-margin-mobile md:px-margin-tablet py-24">
       <h1 className="font-headline-xl text-headline-lg md:text-headline-xl text-on-background mb-6">

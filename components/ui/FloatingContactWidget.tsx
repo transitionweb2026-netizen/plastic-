@@ -1,22 +1,23 @@
+import { getTranslations } from "next-intl/server";
 import { CONTACT, WHATSAPP_HREF } from "@/lib/nav";
 
 const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 const whatsappHref = envNumber ? `https://wa.me/${envNumber}` : WHATSAPP_HREF;
 
 /**
- * Floating contact rail — fixed to the right edge, vertically centered.
+ * Floating contact rail — fixed to the inline-end edge (right in LTR,
+ * mirrored left in RTL via globals.css), vertically centered.
  * Two circular actions: phone call (main office) and WhatsApp chat.
- * All motion lives in globals.css under "FLOATING CONTACT WIDGET"
- * (entrance stagger, idle float, attention pulse, hover/press states).
  */
-export default function FloatingContactWidget() {
+export default async function FloatingContactWidget() {
+  const t = await getTranslations("widget");
   return (
-    <div className="fcw" aria-label="Quick contact">
+    <div className="fcw" aria-label={t("quickContact")}>
       <a
         href={CONTACT.phoneMain.href}
         className="fcw-btn fcw-btn-phone"
-        aria-label={`Call us at ${CONTACT.phoneMain.display}`}
-        title={`Call ${CONTACT.phoneMain.display}`}
+        aria-label={t("callAria", { phone: CONTACT.phoneMain.display })}
+        title={t("callTitle", { phone: CONTACT.phoneMain.display })}
       >
         <span
           className="material-symbols-outlined fcw-icon"
@@ -32,8 +33,8 @@ export default function FloatingContactWidget() {
         target="_blank"
         rel="noopener noreferrer"
         className="fcw-btn fcw-btn-whatsapp"
-        aria-label="Chat with us on WhatsApp"
-        title="Chat on WhatsApp"
+        aria-label={t("whatsappAria")}
+        title={t("whatsappTitle")}
       >
         {/* WhatsApp glyph (inline SVG — Material Symbols has no WhatsApp icon) */}
         <svg

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import type { IndustryModal as IndustryModalData } from "@/lib/industries";
 
 type IndustryModalProps = {

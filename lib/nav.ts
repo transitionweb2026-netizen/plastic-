@@ -1,4 +1,7 @@
 export type NavLink = {
+  /** Translation key under the "nav" namespace. */
+  key: string;
+  /** English fallback label (canonical copy lives in messages/*.json). */
   label: string;
   href: string;
   /** Material Symbols icon name, shown in the mobile drawer (from legacy drawer markup). */
@@ -10,13 +13,13 @@ export type NavLink = {
  * and footer sitemap links. Order and icons match the legacy site's nav.
  */
 export const NAV_LINKS: NavLink[] = [
-  { label: "Home", href: "/", icon: "home" },
-  { label: "Products", href: "/products", icon: "inventory_2" },
-  { label: "Industries", href: "/industries", icon: "precision_manufacturing" },
-  { label: "Blog", href: "/blog", icon: "article" },
-  { label: "Gallery", href: "/gallery", icon: "photo_library" },
-  { label: "About Us", href: "/about", icon: "factory" },
-  { label: "Contact", href: "/contact", icon: "mail" },
+  { key: "home", label: "Home", href: "/", icon: "home" },
+  { key: "products", label: "Products", href: "/products", icon: "inventory_2" },
+  { key: "industries", label: "Industries", href: "/industries", icon: "precision_manufacturing" },
+  { key: "blog", label: "Blog", href: "/blog", icon: "article" },
+  { key: "gallery", label: "Gallery", href: "/gallery", icon: "photo_library" },
+  { key: "about", label: "About Us", href: "/about", icon: "factory" },
+  { key: "contact", label: "Contact", href: "/contact", icon: "mail" },
 ];
 
 export const REQUEST_QUOTE = { label: "Request Quote", href: "/request-quote" };

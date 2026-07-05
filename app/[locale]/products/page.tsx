@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
 import ProductCatalog from "@/components/products/ProductCatalog";
 import { PalletBlueprint, CrateSchematic, DimensionLine } from "@/components/ui/DecorArt";
 
@@ -8,7 +9,14 @@ export const metadata: Metadata = {
     "Browse Giant Storage's catalog of industrial pallets, heavy-duty crates, storage bins, and containers — engineered HDPE solutions for high-density logistics.",
 };
 
-export default function ProductsPage() {
+export default async function ProductsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <div className="relative overflow-hidden pt-6 pb-20">
       {/* Whitespace decor (palette-only, non-interactive) */}

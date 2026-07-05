@@ -1,0 +1,268 @@
+{
+  "meta": {
+    "siteName": "جاينت ستوريدج",
+    "siteTitle": "جاينت ستوريدج | حلول صناعية متكاملة",
+    "siteDescription": "جاينت ستوريدج للحلول المتكاملة — منصات (بالتات) بلاستيكية صناعية وصناديق وأنظمة تخزين عالية الكثافة، مصممة بدقة لخدمة المخازن وسلاسل التبريد والخدمات اللوجستية على نطاق واسع.",
+    "home": {
+      "title": "جاينت ستوريدج | حلول صناعية متكاملة",
+      "description": "حلول بلاستيكية صناعية مصرية رائدة — منصات وصناديق وأصول تخزين مصممة بدقة هندسية لخدمة اللوجستيات العالمية، تُصدَّر من القاهرة إلى أكثر من 22 سوقًا."
+    },
+    "products": {
+      "title": "منتجات التخزين الصناعي",
+      "description": "تصفح كتالوج جاينت ستوريدج من المنصات الصناعية والصناديق شديدة التحمل وصناديق التخزين والحاويات — حلول HDPE هندسية للتخزين عالي الكثافة."
+    },
+    "industries": {
+      "title": "الصناعات والتصنيع",
+      "description": "قدرات التصنيع لدى جاينت ستوريدج: خطوط قولبة بالحقن، أتمتة صناعية، وضبط جودة معتمد يخدم قطاعات عالمية متعددة."
+    },
+    "blog": {
+      "title": "رؤى صناعية",
+      "description": "مقالات ورؤى من جاينت ستوريدج حول التخزين عالي الكثافة والاستدامة وسلاسل الإمداد العالمية."
+    },
+    "gallery": {
+      "title": "معرض الصور",
+      "description": "داخل جاينت ستوريدج — منشآت التصنيع وخطوط الإنتاج والمخازن وتصوير المنتجات ومشروعات العملاء المنفذة في أكثر من 22 سوقًا."
+    },
+    "about": {
+      "title": "من نحن",
+      "description": "تعرّف على جاينت ستوريدج للحلول المتكاملة — أكثر من 20 عامًا من التميز في تصنيع حلول التخزين البلاستيكية الصناعية في مصر."
+    },
+    "contact": {
+      "title": "اتصل بنا",
+      "description": "تواصل مع فريق جاينت ستوريدج — استفسارات المبيعات والدعم الفني وشراكات التوزيع. مكاتبنا في مدينة نصر، القاهرة."
+    },
+    "quote": {
+      "title": "اطلب عرض سعر",
+      "description": "اطلب عرض سعر مخصص لحلول التخزين الصناعي عالية الكثافة من جاينت ستوريدج."
+    },
+    "privacy": {
+      "title": "سياسة الخصوصية",
+      "description": "كيف تجمع جاينت ستوريدج للحلول المتكاملة بياناتك وتستخدمها وتحميها."
+    },
+    "terms": {
+      "title": "شروط الخدمة",
+      "description": "الشروط المنظمة لاستخدام موقع جاينت ستوريدج للحلول المتكاملة وخدماتها."
+    }
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "products": "المنتجات",
+    "industries": "الصناعات",
+    "blog": "المدونة",
+    "gallery": "المعرض",
+    "about": "من نحن",
+    "contact": "اتصل بنا",
+    "requestQuote": "اطلب عرض سعر"
+  },
+  "header": {
+    "brand": "جاينت ستوريدج",
+    "callUs": "اتصل بنا على {phone}",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة",
+    "mainNavigation": "التنقل الرئيسي"
+  },
+  "langSwitcher": {
+    "label": "اللغة",
+    "arabic": "العربية",
+    "english": "English"
+  },
+  "footer": {
+    "blurb": "حلول بلاستيكية مبتكرة لأكثر تحديات اللوجستيات تطلبًا حول العالم. هندسة دقيقة صُنعت في مصر.",
+    "productsHeading": "المنتجات",
+    "allProducts": "جميع المنتجات",
+    "palletsCrates": "المنصات والصناديق",
+    "binsContainers": "صناديق التخزين والحاويات",
+    "customMolding": "قولبة مخصصة",
+    "companyHeading": "الشركة",
+    "industriesLink": "الصناعات",
+    "blogLink": "المدونة",
+    "aboutLink": "من نحن",
+    "contactLink": "اتصل بنا",
+    "galleryLink": "المعرض",
+    "contactHeading": "مقر الشركة",
+    "address": "22 شارع الطيران، مدينة نصر، القاهرة، مصر",
+    "copyright": "© {year} جاينت ستوريدج للحلول المتكاملة. جميع الحقوق محفوظة.",
+    "createdBy": "تصميم وتطوير",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsOfService": "شروط الخدمة",
+    "contactBottom": "اتصل بنا"
+  },
+  "widget": {
+    "quickContact": "تواصل سريع",
+    "callAria": "اتصل بنا على {phone}",
+    "callTitle": "اتصال {phone}",
+    "whatsappAria": "تحدث معنا عبر واتساب",
+    "whatsappTitle": "محادثة واتساب"
+  },
+  "common": {
+    "learnMore": "اعرف المزيد",
+    "viewDetails": "عرض التفاصيل",
+    "close": "إغلاق",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "sendViaEmail": "إرسال عبر البريد الإلكتروني",
+    "sendViaWhatsApp": "إرسال عبر واتساب",
+    "loading": "جارٍ الإرسال…",
+    "readMore": "اقرأ المزيد",
+    "watchNow": "شاهد الآن",
+    "exploreProducts": "استكشف المنتجات",
+    "contactUs": "اتصل بنا",
+    "aboutUs": "من نحن",
+    "requestAQuote": "اطلب عرض سعر",
+    "scroll": "مرّر لأسفل"
+  },
+  "contactForm": {
+    "fullName": "الاسم الكامل",
+    "fullNamePlaceholder": "أحمد محمد",
+    "email": "البريد الإلكتروني المهني",
+    "emailPlaceholder": "a.mohamed@company.com",
+    "company": "اسم الشركة",
+    "companyPlaceholder": "شركة التصنيع المحدودة",
+    "inquiryType": "نوع الاستفسار",
+    "inquiryTypes": {
+      "warehouse": "أتمتة المخازن",
+      "pallets": "منصات وصناديق صناعية",
+      "coldChain": "لوجستيات سلسلة التبريد",
+      "bulk": "أنظمة التخزين بالجملة",
+      "support": "دعم عام"
+    },
+    "message": "تفاصيل المشروع",
+    "messagePlaceholder": "حدثنا عن متطلبات التخزين لديك أو التحديات الخاصة بمنشأتك...",
+    "terms": "أوافق على سياسة الخصوصية وشروط معالجة البيانات لدى جاينت ستوريدج.",
+    "sendInquiry": "إرسال الاستفسار",
+    "sending": "جارٍ الإرسال…",
+    "sent": "تم إرسال الاستفسار ✓",
+    "successMessage": "شكرًا لك — سيتواصل معك مستشار هندسي خلال 24 ساعة عمل.",
+    "errorConfigured": "حدث خطأ أثناء إرسال استفسارك.",
+    "errorNotConfigured": "نموذج التواصل غير مفعّل بعد.",
+    "reachDirectly": "يرجى التواصل معنا مباشرة على",
+    "or": "أو",
+    "emailSubject": "استفسار من الموقع — {type} ({name})",
+    "messageIntro": "استفسار جديد من موقع جاينت ستوريدج",
+    "fieldName": "الاسم",
+    "fieldEmail": "البريد الإلكتروني",
+    "fieldCompany": "الشركة",
+    "fieldInquiryType": "نوع الاستفسار",
+    "fieldProjectDetails": "تفاصيل المشروع"
+  },
+  "quoteForm": {
+    "steps": {
+      "project": "تفاصيل المشروع",
+      "logistics": "اللوجستيات",
+      "company": "بيانات الشركة"
+    },
+    "productTypes": "أنواع المنتجات",
+    "productTypeOptions": {
+      "racking": "أنظمة أرفف مؤتمتة",
+      "mezzanines": "ميزانين شديد التحمل",
+      "shelving": "أرفف صناعية",
+      "custom": "تكامل مخازن مخصص"
+    },
+    "quantity": "الكمية التقديرية",
+    "quantityPlaceholder": "مثال: 500 وحدة",
+    "environment": "بيئة التخزين",
+    "environments": {
+      "cold": "تخزين مبرد",
+      "ambient": "درجة حرارة عادية",
+      "hazardous": "مواد خطرة",
+      "humidity": "رطوبة عالية"
+    },
+    "nextLogistics": "التالي: متطلبات اللوجستيات",
+    "destination": "ميناء/مدينة الوصول",
+    "destinationPlaceholder": "مثال: جدة، السعودية",
+    "leadTime": "مدة التوريد المفضلة",
+    "leadTimes": {
+      "urgent": "عاجل (30 يومًا)",
+      "standard": "قياسي (60-90 يومًا)",
+      "future": "تخطيط مستقبلي (6+ أشهر)"
+    },
+    "installation": "خدمات التركيب",
+    "installationLabel": "مطلوب تجميع في الموقع",
+    "back": "رجوع",
+    "nextCompany": "التالي: بيانات الشركة",
+    "companyName": "اسم الشركة",
+    "companyPlaceholder": "شركة اللوجستيات العالمية",
+    "businessEmail": "البريد الإلكتروني للشركة",
+    "businessEmailPlaceholder": "procurement@company.com",
+    "industrySector": "قطاع الصناعة",
+    "industrySectorPlaceholder": "مثال: تجارة إلكترونية، تصنيع",
+    "phone": "رقم الهاتف",
+    "phonePlaceholder": "+20 100 000 0000",
+    "brief": "ملخص المشروع / تعليمات خاصة",
+    "briefPlaceholder": "صف نطاق مشروعك باختصار...",
+    "submit": "إرسال الطلب",
+    "sending": "جارٍ الإرسال…",
+    "successTitle": "تم استلام طلب عرض السعر",
+    "successMessage": "سيرسل فريقنا الهندسي عرضًا فنيًا شاملًا خلال 24 ساعة.",
+    "errorConfigured": "حدث خطأ أثناء إرسال طلبك.",
+    "errorNotConfigured": "نموذج عروض الأسعار غير مفعّل بعد.",
+    "reachDirectly": "يرجى التواصل معنا مباشرة على",
+    "or": "أو",
+    "emailSubject": "طلب عرض سعر — {product} ({company})",
+    "messageIntro": "طلب عرض سعر جديد من موقع جاينت ستوريدج",
+    "sectionProject": "— تفاصيل المشروع —",
+    "sectionLogistics": "— اللوجستيات —",
+    "sectionCompany": "— الشركة —",
+    "fieldProductType": "نوع المنتج",
+    "fieldQuantity": "الكمية التقديرية",
+    "fieldEnvironment": "بيئة التخزين",
+    "fieldDestination": "الوجهة",
+    "fieldLeadTime": "مدة التوريد",
+    "fieldAssembly": "تجميع في الموقع",
+    "yes": "نعم",
+    "no": "لا",
+    "fieldCompany": "الشركة",
+    "fieldBusinessEmail": "البريد الإلكتروني",
+    "fieldIndustry": "قطاع الصناعة",
+    "fieldPhone": "الهاتف",
+    "fieldBrief": "ملخص المشروع"
+  },
+  "newsletter": {
+    "placeholder": "بريدك الإلكتروني المهني",
+    "subscribe": "اشترك",
+    "subscribing": "جارٍ الاشتراك…",
+    "success": "تم الاشتراك بنجاح ✓",
+    "error": "تعذر إتمام الاشتراك. حاول مرة أخرى.",
+    "notConfigured": "نموذج النشرة البريدية غير مفعّل بعد."
+  },
+  "productsUi": {
+    "heroTitle": "حلول تخزين بمواصفات صناعية",
+    "heroDescription": "أنظمة تخزين متميزة مصممة للبيئات عالية الكثافة. منصاتنا وصناديقنا شديدة التحمل مصممة هندسيًا لأقصى درجات المتانة والكفاءة اللوجستية.",
+    "quickView": "عرض سريع",
+    "viewDetails": "عرض التفاصيل",
+    "technicalSpecifications": "المواصفات الفنية",
+    "material": "الخامة",
+    "dimensions": "الأبعاد",
+    "loadCapacity": "سعة التحميل",
+    "availableColors": "الألوان المتاحة",
+    "keyFeatures": "أبرز المزايا",
+    "applications": "الاستخدامات",
+    "availability": "التوافر:",
+    "requestAQuote": "اطلب عرض سعر",
+    "viewImage": "عرض الصورة {n} من {total}",
+    "productImages": "صور {name}"
+  },
+  "galleryUi": {
+    "heroEyebrow": "داخل جاينت ستوريدج",
+    "heroTitle": "المعرض",
+    "heroDescription": "نظرة داخل منشآت التصنيع وخطوط الإنتاج والمخازن لدينا — والمنتجات والمشروعات المنفذة التي نقدمها لعملائنا في أكثر من 22 سوقًا.",
+    "imagesEyebrow": "أعمالنا",
+    "imagesTitle": "المنشآت والمنتجات والمشروعات",
+    "imagesDescription": "من أرضية القولبة إلى رصيف الشحن — سجل مرئي لكيفية تصنيع جاينت ستوريدج لحلولها البلاستيكية الصناعية واختبارها وشحنها.",
+    "videosEyebrow": "فيديوهات",
+    "videosTitle": "شاهدنا أثناء العمل",
+    "videosDescription": "جولات في المنشأة واختبارات تحمل وعمليات لوجستية — شاهد كيف تؤدي منتجاتنا في أرض الواقع.",
+    "viewLarger": "عرض أكبر: {caption}",
+    "playVideo": "تشغيل الفيديو: {title}",
+    "imageViewer": "عارض الصور",
+    "videoPlayer": "مشغل الفيديو",
+    "previousImage": "الصورة السابقة",
+    "nextImage": "الصورة التالية"
+  },
+  "notFound": {
+    "title": "الصفحة غير موجودة",
+    "description": "عذرًا، الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+    "backHome": "العودة إلى الرئيسية"
+  }
+}

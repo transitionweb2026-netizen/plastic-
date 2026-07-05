@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
 import { LOGO_SRC, NAV_LINKS, REQUEST_QUOTE } from "@/lib/nav";
+import LanguageSwitcher from "./LanguageSwitcher";
 import MobileDrawer from "./MobileDrawer";
 
 /**
@@ -14,6 +15,7 @@ import MobileDrawer from "./MobileDrawer";
  */
 export default function Header() {
   const pathname = usePathname();
+  const t = useTranslations();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -39,22 +41,25 @@ export default function Header() {
           <Link
             href="/"
             className="flex items-center gap-4"
-            aria-label="Giant Storage — Home"
+            aria-label={t("header.brand")}
           >
             <Image
-              alt="Giant Storage Logo"
+              alt={t("header.brand")}
               className="h-12 w-auto object-contain"
               src={LOGO_SRC}
               width={120}
               height={48}
               priority
             />
-            <span className="font-headline-md text-headline-md font-bold tracking-tighter text-primary uppercase">
-              GIANT STORAGE
+            <span className="font-headline-md text-headline-md font-bold tracking-tighter text-primary uppercase hidden sm:inline">
+              {t("header.brand")}
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8" aria-label="Main">
+          <nav
+            className="hidden md:flex items-center gap-6 lg:gap-8"
+            aria-label={t("header.mainNavigation")}
+          >
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -66,22 +71,23 @@ export default function Header() {
                     : "text-on-surface-variant hover:text-primary transition-colors font-label-lg text-label-lg nav-link"
                 }
               >
-                {link.label}
+                {t(`nav.${link.key}`)}
               </Link>
             ))}
           </nav>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 lg:gap-4">
+            <LanguageSwitcher className="hidden md:flex" />
             <Link
               href={REQUEST_QUOTE.href}
-              className="bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-lg text-label-lg hover:bg-secondary active:scale-95 transition-all premium-shadow hidden md:inline-flex items-center"
+              className="bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-lg text-label-lg hover:bg-secondary active:scale-95 transition-all premium-shadow hidden lg:inline-flex items-center"
               style={{ boxShadow: "0 4px 18px rgba(1,78,42,.3)" }}
             >
-              {REQUEST_QUOTE.label}
+              {t("nav.requestQuote")}
             </Link>
             <button
               className="md:hidden text-primary hover:scale-110 transition-transform"
-              aria-label="Open menu"
+              aria-label={t("header.openMenu")}
               aria-expanded={drawerOpen}
               onClick={() => setDrawerOpen(true)}
             >
