@@ -126,7 +126,9 @@ export default function BlogPage() {
       </section>
 
       {/* ═══ FEATURED ARTICLE ═══ */}
-      <section className="py-20 bg-surface" id="featured">
+      <section className="relative overflow-hidden py-20 bg-surface" id="featured">
+        <div aria-hidden className="decor-orb absolute -top-28 -right-28 w-96 h-96" />
+        <div aria-hidden className="decor-corner-tl absolute top-8 left-4 md:left-8 hidden md:block" />
         <div className="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
           <div className="flex items-center gap-4 mb-10 reveal">
             <div className="h-px flex-1 bg-outline-variant" />

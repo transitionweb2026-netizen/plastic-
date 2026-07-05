@@ -2107,6 +2107,59 @@ a[role="button"],
   min-height: 44px;
 }
 
+/* ═══════════════ WHITESPACE DECOR ACCENTS ═══════════════ */
+/* Reusable low-opacity decorations for empty areas around content.
+   Palette-only colors, transform/opacity animations (reuses floatY/orbFloat). */
+.blueprint-grid {
+  background-image: linear-gradient(rgba(1, 78, 42, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(1, 78, 42, 0.035) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.decor-orb {
+  pointer-events: none;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(1, 78, 42, 0.08) 0%,
+    rgba(146, 213, 166, 0.05) 40%,
+    transparent 70%
+  );
+  animation: orbFloat 10s ease-in-out infinite;
+  will-change: transform;
+}
+.decor-icon {
+  pointer-events: none;
+  user-select: none;
+  font-size: 190px;
+  line-height: 1;
+  color: #014e2a;
+  opacity: 0.04;
+  animation: floatY 12s ease-in-out infinite;
+}
+.decor-corner-tl {
+  pointer-events: none;
+  width: 56px;
+  height: 56px;
+  border-top: 2px solid rgba(1, 78, 42, 0.14);
+  border-left: 2px solid rgba(1, 78, 42, 0.14);
+  border-top-left-radius: 0.5rem;
+}
+.decor-corner-br {
+  pointer-events: none;
+  width: 56px;
+  height: 56px;
+  border-bottom: 2px solid rgba(1, 78, 42, 0.14);
+  border-right: 2px solid rgba(1, 78, 42, 0.14);
+  border-bottom-right-radius: 0.5rem;
+}
+.decor-ring {
+  pointer-events: none;
+  border: 2px solid rgba(1, 78, 42, 0.1);
+  border-radius: 1.25rem;
+  transform: rotate(12deg);
+  animation: floatY 9s ease-in-out infinite;
+}
+
 /* ═══════════════ GALLERY PAGE ═══════════════ */
 /* Masonry items (CSS columns) — hover zoom + elevation, caption slide-up */
 .gallery-item {

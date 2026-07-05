@@ -50,6 +50,8 @@ export default function AboutPage() {
     <>
       {/* Hero */}
       <section className="relative px-4 md:px-margin-desktop py-20 overflow-hidden">
+        <div aria-hidden className="absolute -top-16 -right-16 w-64 h-64 dot-pattern-bg opacity-40 pointer-events-none [mask-image:radial-gradient(circle,#000_40%,transparent_80%)]" />
+        <div aria-hidden className="decor-orb absolute -left-28 bottom-4 w-80 h-80 hidden md:block" />
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
           <div className="z-10">
             <span className="inline-block px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm mb-4">
@@ -101,8 +103,9 @@ export default function AboutPage() {
       </section>
 
       {/* Stats */}
-      <section className="bg-surface-container px-4 md:px-margin-desktop py-12">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <section className="relative overflow-hidden bg-surface-container px-4 md:px-margin-desktop py-12">
+        <div aria-hidden className="absolute inset-0 dot-pattern-light opacity-30 pointer-events-none" />
+        <div className="relative max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {STATS.map((stat) => (
             <div key={stat.label} className="p-6">
               <div className="font-display-lg text-headline-lg text-primary mb-2">

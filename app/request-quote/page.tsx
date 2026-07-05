@@ -34,6 +34,8 @@ export default function RequestQuotePage() {
     <div className="min-h-screen">
       {/* Hero */}
       <section className="relative pt-16 pb-8 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
+        <span aria-hidden className="material-symbols-outlined decor-icon absolute top-6 right-10 hidden lg:block">request_quote</span>
+        <div aria-hidden className="decor-corner-tl absolute top-8 left-2 hidden md:block" />
         <div className="max-w-3xl">
           <h1 className="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-primary mb-4">
             Custom Industrial Quote Request
@@ -47,7 +49,10 @@ export default function RequestQuotePage() {
       </section>
 
       {/* Form + aside */}
-      <section className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto pb-32">
+      <section className="relative px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto pb-32">
+        <div aria-hidden className="decor-orb absolute -right-24 top-16 w-80 h-80 hidden xl:block" />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-56 blueprint-grid [mask-image:linear-gradient(to_top,black,transparent)]" />
+        <div aria-hidden className="decor-corner-br absolute bottom-10 right-2 hidden md:block" />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
           <div className="lg:col-span-8">
             <QuoteForm />

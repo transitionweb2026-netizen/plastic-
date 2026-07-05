@@ -9,9 +9,14 @@ export const metadata: Metadata = {
 
 export default function ProductsPage() {
   return (
-    <div className="pt-6 pb-20">
+    <div className="relative overflow-hidden pt-6 pb-20">
+      {/* Whitespace decor (palette-only, non-interactive) */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-72 blueprint-grid [mask-image:linear-gradient(to_bottom,black,transparent)]" />
+      <span aria-hidden className="material-symbols-outlined decor-icon absolute top-8 right-10 hidden lg:block">inventory_2</span>
+      <div aria-hidden className="decor-orb absolute -left-28 top-[430px] w-72 h-72 hidden md:block" />
+
       {/* Hero */}
-      <section className="px-4 md:px-margin-desktop mb-12">
+      <section className="relative px-4 md:px-margin-desktop mb-12">
         <div className="max-w-4xl">
           <h1 className="font-headline-lg text-[24px] leading-8 md:text-headline-lg text-primary mb-4">
             Industrial Grade Storage Solutions

@@ -20,9 +20,11 @@ const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
 
 export default function ContactPage() {
   return (
-    <div className="pt-6 pb-20">
+    <div className="relative overflow-hidden pt-6 pb-20">
       {/* Hero */}
-      <section className="px-4 md:px-margin-desktop mb-20">
+      <section className="relative px-4 md:px-margin-desktop mb-20">
+        <span aria-hidden className="material-symbols-outlined decor-icon absolute -top-4 right-10 hidden lg:block">support_agent</span>
+        <div aria-hidden className="decor-corner-tl absolute -top-2 left-1 hidden md:block" />
         <div className="max-w-4xl">
           <span className="text-primary font-label-md text-label-md tracking-widest uppercase mb-4 block">
             Connect with our Experts
@@ -40,6 +42,7 @@ export default function ContactPage() {
       </section>
 
       {/* Bento grid */}
+      <div aria-hidden className="decor-orb absolute -left-24 top-[520px] w-80 h-80 hidden lg:block pointer-events-none" />
       <section className="px-4 md:px-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Info cards */}
         <div className="lg:col-span-4 space-y-6">

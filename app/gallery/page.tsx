@@ -46,7 +46,9 @@ export default function GalleryPage() {
       </section>
 
       {/* ═══ IMAGE GALLERY ═══ */}
-      <section className="py-24 bg-surface">
+      <section className="relative overflow-hidden py-24 bg-surface">
+        <div aria-hidden className="decor-orb absolute -left-28 top-72 w-80 h-80 hidden lg:block" />
+        <div aria-hidden className="decor-ring absolute -bottom-10 -right-10 w-40 h-40 hidden lg:block" />
         <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
           <div className="text-center mb-16 reveal">
             <span className="section-eyebrow">Our Work</span>
