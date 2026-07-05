@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import ProductCatalog from "@/components/products/ProductCatalog";
 import { PalletBlueprint, CrateSchematic, DimensionLine } from "@/components/ui/DecorArt";
 
-export const metadata: Metadata = {
-  title: "Industrial Storage Products",
-  description:
-    "Browse Giant Storage's catalog of industrial pallets, heavy-duty crates, storage bins, and containers — engineered HDPE solutions for high-density logistics.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta.products" });
+  return { title: t("title"), description: t("description") };
+}
 
 export default async function ProductsPage({
   params,
@@ -16,6 +20,7 @@ export default async function ProductsPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("productsUi");
 
   return (
     <div className="relative overflow-hidden pt-6 pb-20">
@@ -29,12 +34,10 @@ export default async function ProductsPage({
       <section className="relative px-4 md:px-margin-desktop mb-12">
         <div className="max-w-4xl">
           <h1 className="font-headline-lg text-[24px] leading-8 md:text-headline-lg text-primary mb-4">
-            Industrial Grade Storage Solutions
+            {t("heroTitle")}
           </h1>
           <p className="font-body-md text-body-md text-on-surface-variant max-w-2xl">
-            Premium storage systems designed for high-density environments. Our
-            heavy-duty pallets, crates, and bins are engineered for maximum
-            durability and logistical efficiency.
+            {t("heroDescription")}
           </p>
         </div>
       </section>

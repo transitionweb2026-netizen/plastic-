@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { COLOR_LABELS, productGallery, type Product } from "@/lib/products";
+import { useLocale, useTranslations } from "next-intl";
+import { colorLabel, productGallery, type Product } from "@/lib/products";
 
 type ProductModalProps = {
   product: Product | null;
@@ -12,6 +13,9 @@ type ProductModalProps = {
 
 /** Product detail modal (ported from the legacy openModal renderer). */
 export default function ProductModal({ product, onClose }: ProductModalProps) {
+  const locale = useLocale();
+  const t = useTranslations("productsUi");
+  const tc = useTranslations("common");
   const gallery = useMemo(
     () => (product ? productGallery(product) : []),
     [product]
@@ -65,7 +69,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                 sizes="(max-width: 920px) 100vw, 920px"
               />
             </div>
-            <button className="modal-close" aria-label="Close" onClick={onClose}>
+            <button className="modal-close" aria-label={tc("close")} onClick={onClose}>
               <span
                 className="material-symbols-outlined text-on-surface"
                 style={{ fontSize: 20 }}
@@ -87,14 +91,14 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
             <div
               className="gallery-thumbs"
               role="group"
-              aria-label={`${product.name} images`}
+              aria-label={t("productImages", { name: product.name })}
             >
               {gallery.map((src, i) => (
                 <button
                   key={`${i}-${src}`}
                   type="button"
                   className={`gallery-thumb ${i === activeIdx ? "active" : ""}`}
-                  aria-label={`View image ${i + 1} of ${gallery.length}`}
+                  aria-label={t("viewImage", { n: i + 1, total: gallery.length })}
                   aria-current={i === activeIdx}
                   onClick={() => setActiveIdx(i)}
                 >
@@ -134,12 +138,12 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <p className="modal-section-title">Technical Specifications</p>
+                <p className="modal-section-title">{t("technicalSpecifications")}</p>
                 <div>
                   {[
-                    ["Material", product.material],
-                    ["Dimensions", product.dimensions],
-                    ["Load Capacity", product.loadCapacity],
+                    [t("material"), product.material],
+                    [t("dimensions"), product.dimensions],
+                    [t("loadCapacity"), product.loadCapacity],
                   ].map(([label, value]) => (
                     <div key={label} className="spec-row">
                       <span className="spec-label">{label}</span>
@@ -148,13 +152,13 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                   ))}
                 </div>
 
-                <p className="modal-section-title mt-6">Available Colors</p>
+                <p className="modal-section-title mt-6">{t("availableColors")}</p>
                 <div className="flex flex-wrap gap-2">
                   {product.colors.map((color) => (
                     <div key={color} className="flex items-center gap-2 mr-3 mb-2">
                       <span className="color-dot" style={{ background: color }} />
                       <span className="text-xs font-medium text-on-surface-variant">
-                        {COLOR_LABELS[color] ?? color}
+                        {colorLabel(color, locale)}
                       </span>
                     </div>
                   ))}
@@ -162,7 +166,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
               </div>
 
               <div>
-                <p className="modal-section-title">Key Features</p>
+                <p className="modal-section-title">{t("keyFeatures")}</p>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {product.features.map((feature) => (
                     <span key={feature} className="feature-chip">
@@ -181,7 +185,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                   ))}
                 </div>
 
-                <p className="modal-section-title">Applications</p>
+                <p className="modal-section-title">{t("applications")}</p>
                 <div className="flex flex-wrap gap-2">
                   {product.applications.map((app) => (
                     <span key={app} className="app-tag">
@@ -195,7 +199,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
             <div className="mt-8 pt-6 border-t border-outline-variant flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
               <p className="text-sm text-on-surface-variant">
                 <span className="font-semibold text-on-surface">
-                  Availability:
+                  {t("availability")}
                 </span>{" "}
                 {product.availability}
               </p>
@@ -204,7 +208,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                 className="bg-primary text-on-primary px-8 py-3 rounded-lg font-label-md text-label-md hover:bg-secondary active:scale-95 transition-all inline-flex items-center"
                 style={{ boxShadow: "0 6px 20px rgba(1,78,42,.3)" }}
               >
-                Request a Quote
+                {t("requestAQuote")}
               </Link>
             </div>
           </div>

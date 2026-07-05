@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { PRODUCTS, productCover, type Product } from "@/lib/products";
+import { useLocale, useTranslations } from "next-intl";
+import { localizeProduct, PRODUCTS, productCover, type Product } from "@/lib/products";
 import ProductModal from "./ProductModal";
 
 /** The catalog shows a single grid of exactly six products. */
@@ -16,6 +17,12 @@ const VISIBLE_PRODUCTS = PRODUCTS.slice(0, MAX_VISIBLE_PRODUCTS);
  * modal (no category filters, no pagination).
  */
 export default function ProductCatalog() {
+  const locale = useLocale();
+  const t = useTranslations("productsUi");
+  const visibleProducts = useMemo(
+    () => VISIBLE_PRODUCTS.map((p) => localizeProduct(p, locale)),
+    [locale]
+  );
   const [selected, setSelected] = useState<Product | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -46,7 +53,7 @@ export default function ProductCatalog() {
           ref={gridRef}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {VISIBLE_PRODUCTS.map((product, i) => (
+          {visibleProducts.map((product, i) => (
             <div
               key={product.id}
               className={`prod-card fade-up ${DELAYS[i] ?? ""}`}
@@ -61,7 +68,7 @@ export default function ProductCatalog() {
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
                 <div className="quick-view-overlay">
-                  <span className="quick-view-text">Quick View</span>
+                  <span className="quick-view-text">{t("quickView")}</span>
                 </div>
                 <div className="absolute top-4 left-4">
                   <span className="px-3 py-1 bg-secondary-container text-on-secondary-container font-label-sm text-label-sm rounded-full">
@@ -90,7 +97,7 @@ export default function ProductCatalog() {
                       setSelected(product);
                     }}
                   >
-                    View Details
+                    {t("viewDetails")}
                   </button>
                 </div>
               </div>
