@@ -1123,8 +1123,10 @@ export function productGallery(product: Product): string[] {
   );
   // Deterministic rotation so each product gets a different-looking set.
   const start = product.id % Math.max(peers.length, 1);
-  const extras = [...peers.slice(start), ...peers.slice(0, start)]
-    .slice(0, 4)
-    .map((p) => p.image);
-  return [product.image, ...extras];
+  const extras = [...peers.slice(start), ...peers.slice(0, start)].map(
+    (p) => p.image
+  );
+  // Some legacy products share a photo -- dedupe so a gallery never shows
+  // (or keys) the same URL twice, then cap at 5 images total.
+  return [...new Set([product.image, ...extras])].slice(0, 5);
 }

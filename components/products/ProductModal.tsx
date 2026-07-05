@@ -87,7 +87,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
             >
               {gallery.map((src, i) => (
                 <button
-                  key={src}
+                  key={`${i}-${src}`}
                   type="button"
                   className={`gallery-thumb ${i === activeIdx ? "active" : ""}`}
                   aria-label={`View image ${i + 1} of ${gallery.length}`}
