@@ -39,8 +39,10 @@ export default function ImageGallery() {
     [maxStart]
   );
 
-  const scrollThumbs = (dir: 1 | -1) =>
-    setStartIdx((s) => Math.min(Math.max(s + dir, 0), maxStart));
+  /** Arrows advance the ACTIVE image by one, looping infinitely; the
+   *  featured image and green-bordered thumbnail stay synchronized and the
+   *  window scrolls to keep the active thumbnail visible. */
+  const advance = (dir: 1 | -1) => select((featuredIdx + dir + total) % total);
 
   const step = useCallback(
     (dir: 1 | -1) =>
@@ -101,8 +103,7 @@ export default function ImageGallery() {
         <button
           type="button"
           className="gfeat-arrow"
-          onClick={() => scrollThumbs(-1)}
-          disabled={startIdx === 0}
+          onClick={() => advance(-1)}
           aria-label={t("previousImage")}
         >
           <span className="material-symbols-outlined rtl-flip">chevron_left</span>
@@ -139,8 +140,7 @@ export default function ImageGallery() {
         <button
           type="button"
           className="gfeat-arrow"
-          onClick={() => scrollThumbs(1)}
-          disabled={startIdx >= maxStart}
+          onClick={() => advance(1)}
           aria-label={t("nextImage")}
         >
           <span className="material-symbols-outlined rtl-flip">chevron_right</span>
