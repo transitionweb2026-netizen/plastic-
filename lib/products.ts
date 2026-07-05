@@ -41,14 +41,6 @@ export type Product = {
   availability: string;
 };
 
-export const PRODUCT_CATEGORIES: { id: ProductCategory | 'all'; label: string }[] = [
-  { id: 'all', label: 'All Products' },
-  { id: 'pallets', label: 'Industrial Pallets' },
-  { id: 'crates', label: 'Heavy-Duty Crates' },
-  { id: 'bins', label: 'Storage Bins' },
-  { id: 'containers', label: 'Containers' },
-];
-
 /** Swatch hex -> human-readable name (from the legacy modal renderer). */
 export const COLOR_LABELS: Record<string, string> = {
   '#2d6a4f': 'Forest Green', '#6b7280': 'Industrial Grey', '#1e40af': 'Cobalt Blue', '#92400e': 'Amber Brown',

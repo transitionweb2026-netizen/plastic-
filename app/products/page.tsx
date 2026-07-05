@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import ProductCatalog from "@/components/products/ProductCatalog";
 
 export const metadata: Metadata = {
@@ -25,11 +24,8 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Catalog is client-side (filter/pagination/modal state); Suspense is
-          required because it reads ?category= via useSearchParams. */}
-      <Suspense fallback={<div className="min-h-[60vh]" />}>
-        <ProductCatalog />
-      </Suspense>
+      {/* Catalog is client-side (modal state) */}
+      <ProductCatalog />
     </div>
   );
 }
