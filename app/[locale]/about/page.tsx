@@ -1,44 +1,33 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PalletBlueprint, DimensionLine } from "@/components/ui/DecorArt";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 
-export const metadata: Metadata = {
-  title: {
-    absolute: "About Us | Giant Storage Integrated Solutions",
-  },
-  description:
-    "Since 1984, Giant Storage Integrated Solutions has engineered industrial-grade storage: 40+ years of experience, 1.2M sq ft facility, exporting to 85 countries.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta.about" });
+  return { title: t("title"), description: t("description") };
+}
 
 const HERO_IMG =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBz7QZ_kL3IeykdpqgX6okEIbX4C78Vw1YX_52h2cnrS3ZyUghmQh911YI26l3Ywp1lM9HwgsOKT66vSRnqVTDYmu0JIZZfDv9pGg2_M8g--eq6CqUzc4NTPPXHtoWcxD4BRjfUp8VHzOigpPSYVOkAmSAdFvzTgYI6uelwuXSqYBa3RgfVNSpQa_9BFhI3AVFdg85QcN7ygqfmXlTlirqeK-20zfJ6J8NNDRFT0_jzwNnSHBRx0ud0n3amqNJZXPhbY-0V7-NxYG3E";
 
-const STATS = [
-  { value: "40+", label: "Years Experience" },
-  { value: "1.2M", label: "Sq Ft Facility" },
-  { value: "50k+", label: "Tons/Year Capacity" },
-  { value: "85", label: "Countries Served" },
-];
-
-const VALUES = ["Unyielding Integrity", "Engineering Rigor", "Circular Sustainability"];
+const STAT_VALUES = ["40+", "1.2M", "50k+", "85"];
 
 const FACTORY_CARDS = [
   {
-    title: "Robotic Assembly",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDTuYQF-HR6iUXicaAHG2fqdlUmrlY4wbqhiv8LeLZvHv4fKzYd55dYZM7lTGQwojT8M396LqbcqqPtXSpO6zlBIy39X_jEHnaPUhFa1UETehe_PIKNzWNc6pb_lV6XJOmyc0fj8Z4mPdBYzkqsOMnCaxXREgYEoVPfsCCfxhtg4KndLjr_WznZ2dFQMdy3K4jEzAWRyCGOaTabVcJzUM6mk1E_uSqnzNKJJ7BuclkHtdozk6SilAiPc1bDyTeqgPT2LZN67gSFN_jB",
-    alt: "Robotic welding arm precisely joining components in a clean manufacturing plant",
   },
   {
-    title: "Quality Assurance",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCpJHEoy-P6fYVY3GQn0-azgwyL3x2xyKkic36x5lTMDj8VdoUi4tc_t0d3yVaqvNGLxQroQtNZqtSsBLuH1mzJrjCgkK9tBOPc15fklhcLO8yVGBP41C3DdxdI1eJyr4UzyDwduvGSEZfgbJoVl3mv53flU_gxD3W8ERcwVC1Q8ls1rmafTJ02sZPWZoQNXCZdUNZ1uuuoQqMEp0hPx08wC98XHWlUQc2TIt6Zjt-ykPH7DMyTkk-Klu-HMvPFjMn6PD7Z8VtfF_bc",
-    alt: "Technician using a laser scanner to measure structural integrity of an industrial pallet",
   },
   {
-    title: "Scale Capacity",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAuIePElBxhVt48XqlFqlqBsk3g1mwziD_BkF1-bMHP5-QjUJygm6yUEEA0hDUPOIF6LbJ4r7_YDHwtD8OGzWVQdlfEwUxlbrSGDS-a0YBN9Fprtq10M2ZIP1oWAbnF84niJD_-WmP9Lae6-0Q4WZevp9gD3p3Re37XTEAPyL9sbV78XGUSl94jjEBJXFL1KKtNLVtkoP9uINBAFUWAiKILlXeTOaDh4hKP01r6q1Fo5a2QHWK8aK_F5h6oYcnmmh40ScP4-OmUzxKS",
-    alt: "Vast logistics staging area with rows of manufactured crates ready for shipment",
   },
 ];
 
@@ -54,6 +43,14 @@ export default async function AboutPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("aboutPage");
+  const stats = STAT_VALUES.map((value, i) => ({ value, label: t(`stat${i + 1}`) }));
+  const values = [t("value1"), t("value2"), t("value3")];
+  const factoryCards = FACTORY_CARDS.map((card, i) => ({
+    ...card,
+    title: t(`factory${i + 1}`),
+    alt: t(`factory${i + 1}Alt`),
+  }));
 
   return (
     <>
@@ -65,7 +62,7 @@ export default async function AboutPage({
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
           <div className="z-10">
             <span className="inline-block px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm mb-4">
-              SINCE 1984
+              {t("since")}
             </span>
             <h1
               className="font-display-lg text-primary mb-6 leading-tight"
@@ -74,27 +71,24 @@ export default async function AboutPage({
                 letterSpacing: "-.02em",
               }}
             >
-              Engineering Global <br />
-              <span className="text-outline">Storage Legacies.</span>
+              {t("heroTitle1")} <br />
+              <span className="text-outline">{t("heroTitle2")}</span>
             </h1>
             <p className="font-body-lg text-body-lg text-on-surface-variant mb-8 max-w-lg">
-              Giant Storage Integrated Solutions is more than a manufacturer. We
-              are the backbone of global supply chains, providing the structural
-              integrity required for the world&apos;s most demanding logistics
-              operations.
+              {t("heroPara")}
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
                 href="/products"
                 className="bg-primary px-8 py-4 text-on-primary rounded-xl font-label-md text-label-md hover:shadow-lg hover:-translate-y-0.5 transition-all inline-flex items-center min-h-[44px]"
               >
-                Explore Products
+                {t("exploreProducts")}
               </Link>
               <Link
                 href="/contact"
                 className="border-2 border-primary px-8 py-4 text-primary rounded-xl font-label-md text-label-md hover:bg-primary/5 hover:-translate-y-0.5 transition-all inline-flex items-center min-h-[44px]"
               >
-                Contact Us
+                {t("contactUs")}
               </Link>
             </div>
           </div>
@@ -102,7 +96,7 @@ export default async function AboutPage({
             <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent z-10" />
             <Image
               src={HERO_IMG}
-              alt="Sprawling ultra-modern automated warehouse facility with green industrial racking"
+              alt={t("heroAlt")}
               fill
               priority
               className="object-cover"
@@ -116,7 +110,7 @@ export default async function AboutPage({
       <section className="relative overflow-hidden bg-surface-container px-4 md:px-margin-desktop py-12">
         <div aria-hidden className="absolute inset-0 dot-pattern-light opacity-30 pointer-events-none" />
         <div className="relative max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {STATS.map((stat) => (
+          {stats.map((stat) => (
             <div key={stat.label} className="p-6">
               <div className="font-display-lg text-headline-lg text-primary mb-2">
                 {stat.value}
@@ -139,13 +133,10 @@ export default async function AboutPage({
                   rocket_launch
                 </span>
                 <h2 className="font-headline-lg text-headline-lg text-primary mb-4">
-                  Our Mission
+                  {t("missionTitle")}
                 </h2>
                 <p className="font-body-lg text-body-lg text-on-surface-variant">
-                  To revolutionize industrial storage through systematic
-                  precision and sustainable engineering, ensuring that every
-                  pallet, crate, and bin we produce contributes to a more
-                  efficient global economy.
+                  {t("missionPara")}
                 </p>
               </div>
               <div className="mt-8 border-t border-surface-variant pt-8 flex items-center gap-4">
@@ -153,7 +144,7 @@ export default async function AboutPage({
                   <span className="material-symbols-outlined">verified</span>
                 </div>
                 <span className="font-label-md text-label-md text-primary">
-                  Certified Industrial Excellence
+                  {t("certified")}
                 </span>
               </div>
             </div>
@@ -163,11 +154,10 @@ export default async function AboutPage({
                   visibility
                 </span>
                 <h3 className="font-headline-md text-headline-md mb-2">
-                  The Vision
+                  {t("visionTitle")}
                 </h3>
                 <p className="font-body-md text-body-md text-on-primary/80">
-                  Becoming the global standard for zero-waste, high-density
-                  storage infrastructure by 2030.
+                  {t("visionPara")}
                 </p>
               </div>
               <div className="bg-surface-container-high p-6 rounded-3xl">
@@ -175,10 +165,10 @@ export default async function AboutPage({
                   handshake
                 </span>
                 <h3 className="font-headline-md text-headline-md text-primary mb-2">
-                  Our Values
+                  {t("valuesTitle")}
                 </h3>
                 <ul className="space-y-2">
-                  {VALUES.map((value) => (
+                  {values.map((value) => (
                     <li
                       key={value}
                       className="flex items-center gap-2 font-label-md text-label-md text-on-surface-variant"
@@ -202,23 +192,21 @@ export default async function AboutPage({
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
             <div className="max-w-2xl">
               <h2 className="font-headline-lg text-headline-lg text-inverse-on-surface mb-4">
-                Precision Manufacturing at Scale
+                {t("mfgTitle")}
               </h2>
               <p className="font-body-lg text-body-lg text-inverse-on-surface/70">
-                Our flagship production facility in the industrial heartland
-                utilizes advanced robotics and AI-driven quality control to
-                maintain 99.9% structural accuracy across all product lines.
+                {t("mfgPara")}
               </p>
             </div>
             <Link
               href="/industries"
               className="bg-primary text-on-primary px-8 py-4 rounded-xl font-label-md text-label-md hover:bg-primary-container hover:-translate-y-0.5 transition-all inline-flex items-center min-h-[44px]"
             >
-              Take a Virtual Tour
+              {t("virtualTour")}
             </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {FACTORY_CARDS.map((card) => (
+            {factoryCards.map((card) => (
               <div
                 key={card.title}
                 className="group relative aspect-video rounded-2xl overflow-hidden"
@@ -249,17 +237,16 @@ export default async function AboutPage({
           <div className="relative z-10">
             {/* Legacy page-local sizes: headline-lg-mobile 24/32, display-lg 56/64 */}
             <h2 className="font-display-lg text-[24px] leading-8 md:text-[56px] md:leading-[64px] md:tracking-[-0.02em] font-bold mb-6">
-              Build Your Infrastructure with the Best.
+              {t("ctaTitle")}
             </h2>
             <p className="font-body-lg text-body-lg mb-8 max-w-2xl mx-auto opacity-90">
-              Ready to optimize your storage footprint with industrial-grade
-              precision? Our consultants are ready to design your solution.
+              {t("ctaPara")}
             </p>
             <Link
               href="/request-quote"
               className="bg-white text-primary px-10 py-4 rounded-xl font-headline-md text-headline-md hover:bg-surface-container-low hover:-translate-y-0.5 transition-all inline-flex items-center min-h-[44px]"
             >
-              Get a Custom Quote
+              {t("ctaBtn")}
             </Link>
           </div>
         </div>

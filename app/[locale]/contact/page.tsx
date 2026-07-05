@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CircuitLines, CrateSchematic, DimensionLine } from "@/components/ui/DecorArt";
 import Image from "next/image";
 import ContactForm from "@/components/forms/ContactForm";
 import { CONTACT } from "@/lib/nav";
 
-export const metadata: Metadata = {
-  title: {
-    absolute: "Contact Us | Giant Storage Integrated Solutions",
-  },
-  description:
-    "Connect with Giant Storage's Cairo-based engineering team — technical inquiries, warehouse automation, cold chain logistics, and bulk storage consultations.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta.contact" });
+  return { title: t("title"), description: t("description") };
+}
 
 const MAP_IMG =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuAgvTljDfpm5vdwOxt5YpPXyz6xER5qgSXF6dDaZ79iz-kz7ePQWF_O8kBSsiZvZ5OFdhGSvxBxG5aL2jR4b93DZHeib8J-x2Tx73QsZaLg82vrG6jo3uhxePwjmpTQeDEQRBB62pAn44sbNE6fy9q4xvuCnw-RCv26idq29XO6h8Y9juWS5zL8gRmMj-UpPF0p8G2Gfje6xenL-DRx84Oe_76rIdWqYztjDLZWIjR-QZIaUg_QgGEC9nNeKx1ziUAEJ60BYYG8krCO";
@@ -27,6 +29,7 @@ export default async function ContactPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("contactPage");
 
   return (
     <div className="relative overflow-hidden pt-6 pb-20">
@@ -38,16 +41,14 @@ export default async function ContactPage({
         <CircuitLines className="decor-breathe absolute top-14 right-64 w-[280px] hidden 2xl:block" />
         <div className="max-w-4xl">
           <span className="text-primary font-label-md text-label-md tracking-widest uppercase mb-4 block">
-            Connect with our Experts
+            {t("eyebrow")}
           </span>
           <h1 className="font-display-lg text-4xl md:text-display-lg text-on-surface mb-6 leading-tight">
-            Global Storage Solutions, <br />
-            <span className="text-primary">Local Support.</span>
+            {t("heroTitle1")} <br />
+            <span className="text-primary">{t("heroTitle2")}</span>
           </h1>
           <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
-            Whether you&apos;re streamlining a pharmaceutical warehouse or
-            optimizing heavy industrial logistics, our Cairo-based team is ready
-            to engineer your efficiency.
+            {t("heroPara")}
           </p>
         </div>
       </section>
@@ -64,11 +65,11 @@ export default async function ContactPage({
                 location_on
               </span>
             </div>
-            <h3 className="font-headline-md text-xl mb-2">Regional HQ</h3>
+            <h3 className="font-headline-md text-xl mb-2">{t("regionalHq")}</h3>
             <p className="text-on-surface-variant leading-relaxed mb-4">
-              22 El Tayaran St., Nasr City,
+              {t("addressL1")}
               <br />
-              Cairo, Egypt
+              {t("addressL2")}
             </p>
             <a
               className="text-primary font-label-md text-label-md flex items-center gap-2 hover:underline"
@@ -76,8 +77,8 @@ export default async function ContactPage({
               target="_blank"
               rel="noopener noreferrer"
             >
-              Get Directions{" "}
-              <span className="material-symbols-outlined text-sm">
+              {t("getDirections")}{" "}
+              <span className="material-symbols-outlined text-sm rtl-flip">
                 arrow_forward
               </span>
             </a>
@@ -87,19 +88,20 @@ export default async function ContactPage({
             <div className="w-12 h-12 bg-primary-fixed rounded-lg flex items-center justify-center mb-6">
               <span className="material-symbols-outlined text-primary">call</span>
             </div>
-            <h3 className="font-headline-md text-xl mb-2">Direct Lines</h3>
+            <h3 className="font-headline-md text-xl mb-2">{t("directLines")}</h3>
             <div className="space-y-2">
               <p className="text-on-surface-variant flex flex-wrap items-center justify-between gap-1">
-                <span>Main Office</span>
-                <a className="font-bold text-primary" href={CONTACT.phoneMain.href}>
+                <span>{t("mainOffice")}</span>
+                <a className="font-bold text-primary" href={CONTACT.phoneMain.href} dir="ltr">
                   {CONTACT.phoneMain.display}
                 </a>
               </p>
               <p className="text-on-surface-variant flex flex-wrap items-center justify-between gap-1">
-                <span>Logistics Dept.</span>
+                <span>{t("logisticsDept")}</span>
                 <a
                   className="font-bold text-primary"
                   href={CONTACT.phoneLogistics.href}
+                  dir="ltr"
                 >
                   {CONTACT.phoneLogistics.display}
                 </a>
@@ -114,20 +116,20 @@ export default async function ContactPage({
               </span>
             </div>
             <h3 className="font-headline-md text-xl mb-4 text-white">
-              Business Hours
+              {t("businessHours")}
             </h3>
             <ul className="space-y-3 font-label-md text-label-md">
               <li className="flex justify-between border-b border-white/10 pb-2">
-                <span>Sun — Thu</span>
-                <span>08:00 — 18:00</span>
+                <span>{t("sunThu")}</span>
+                <span dir="ltr">08:00 — 18:00</span>
               </li>
               <li className="flex justify-between border-b border-white/10 pb-2">
-                <span>Saturday</span>
-                <span>10:00 — 14:00</span>
+                <span>{t("saturday")}</span>
+                <span dir="ltr">10:00 — 14:00</span>
               </li>
               <li className="flex justify-between text-white/60">
-                <span>Friday</span>
-                <span>Closed</span>
+                <span>{t("friday")}</span>
+                <span>{t("closed")}</span>
               </li>
             </ul>
           </div>
@@ -137,11 +139,10 @@ export default async function ContactPage({
         <div className="lg:col-span-8 bg-surface-container-lowest p-6 md:p-12 rounded-xl border border-outline-variant/30 industrial-shadow">
           <div className="mb-12">
             <h3 className="font-headline-lg text-headline-lg mb-2">
-              Technical Inquiry
+              {t("formTitle")}
             </h3>
             <p className="text-on-surface-variant">
-              Fill out the form below and an engineering consultant will contact
-              you within 24 business hours.
+              {t("formSub")}
             </p>
           </div>
           <ContactForm />
@@ -157,7 +158,7 @@ export default async function ContactPage({
           <div className="absolute inset-0 z-10">
             <Image
               src={MAP_IMG}
-              alt="Stylized map of Nasr City, Cairo, marking Giant Storage's headquarters at 22 El Tayaran Street"
+              alt={t("mapAlt")}
               fill
               className="object-cover"
               sizes="100vw"
@@ -169,11 +170,11 @@ export default async function ContactPage({
                 location_on
               </span>
               <h4 className="font-headline-md text-primary text-lg">
-                Main Logistics Hub
+                {t("hubTitle")}
               </h4>
             </div>
             <p className="text-on-surface-variant text-sm mb-4">
-              Strategic location for rapid deployment across the MENA region.
+              {t("hubDesc")}
             </p>
             {/* Legacy button had no handler — now a real maps link */}
             <a
@@ -182,7 +183,7 @@ export default async function ContactPage({
               rel="noopener noreferrer"
               className="block w-full py-2 bg-primary/10 text-primary font-label-md text-label-md rounded hover:bg-primary/20 transition-colors text-center"
             >
-              Open in Maps
+              {t("openInMaps")}
             </a>
           </div>
         </div>

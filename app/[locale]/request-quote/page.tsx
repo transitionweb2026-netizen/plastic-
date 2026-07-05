@@ -1,35 +1,23 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PalletBlueprint, DimensionLine } from "@/components/ui/DecorArt";
 import Image from "next/image";
 import QuoteForm from "@/components/forms/QuoteForm";
 
-export const metadata: Metadata = {
-  title: "Request a Quote",
-  description:
-    "Custom Industrial Quote Request for high-scale storage solutions. Provide your project specifications to receive a comprehensive technical proposal within 24 hours.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta.quote" });
+  return { title: t("title"), description: t("description") };
+}
 
 const SPOTLIGHT_IMG =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuCu-r1AtSl49qnI-a6NpF3tIMe9S-lR-_cjAB-1B1UFjSmtwMjuChO8r_vHNeznJ12flZiGZ4SxWZ8hD6TGOulSfBizqWR9qxtIJY52SlcUX1Mbk_7JJGm5n7rwbflv7mWhPhh6LBAqkdIc70TCCcuCPfd_hvvH2WiPZLU-qSWh2krADab1dLpe8oZl16qEn98rf1MTStEiM_YPxBIJSdPGtm31NnmvEbgU0j7AymSOMtp4_TySD5AhRTnoUwHxZpWeQNr9Ri9ZfAg";
 
-const WHY_ITEMS = [
-  {
-    icon: "verified",
-    title: "ISO 9001 Certified",
-    desc: "Highest manufacturing standards for seismic and heavy-duty load capacities.",
-  },
-  {
-    icon: "public",
-    title: "Global Distribution",
-    desc: "Strategic manufacturing hubs in 4 continents ensuring rapid deployment.",
-  },
-  {
-    icon: "engineering",
-    title: "Expert Consultation",
-    desc: "Free CAD design and facility optimization analysis included with every quote.",
-  },
-];
+const WHY_ICONS = ["verified", "public", "engineering"] as const;
 
 export default async function RequestQuotePage({
   params,
@@ -38,6 +26,12 @@ export default async function RequestQuotePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("quotePage");
+  const whyItems = WHY_ICONS.map((icon, i) => ({
+    icon,
+    title: t(`why${i + 1}Title`),
+    desc: t(`why${i + 1}Desc`),
+  }));
 
   return (
     <div className="min-h-screen">
@@ -48,12 +42,10 @@ export default async function RequestQuotePage({
         <DimensionLine className="absolute bottom-0 left-2 w-[400px] hidden lg:block" />
         <div className="max-w-3xl">
           <h1 className="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-primary mb-4">
-            Custom Industrial Quote Request
+            {t("heroTitle")}
           </h1>
           <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
-            Tailored logistics solutions for global infrastructure. Provide your
-            project specifications below to receive a comprehensive technical
-            proposal within 24 hours.
+            {t("heroPara")}
           </p>
         </div>
       </section>
@@ -72,10 +64,10 @@ export default async function RequestQuotePage({
           <aside className="lg:col-span-4 space-y-gutter">
             <div className="bg-surface-container-low rounded-xl p-8 space-y-6">
               <h3 className="font-headline-md text-headline-md text-primary">
-                Why Giant Storage?
+                {t("whyTitle")}
               </h3>
               <ul className="space-y-4">
-                {WHY_ITEMS.map((item) => (
+                {whyItems.map((item) => (
                   <li key={item.title} className="flex gap-3">
                     <span className="material-symbols-outlined text-secondary shrink-0">
                       {item.icon}
@@ -95,28 +87,25 @@ export default async function RequestQuotePage({
               <Image
                 className="object-cover"
                 src={SPOTLIGHT_IMG}
-                alt="Modern industrial warehouse interior with automated shelving systems"
+                alt={t("spotlightAlt")}
                 fill
                 sizes="(max-width: 1024px) 100vw, 33vw"
               />
               <div className="absolute inset-0 bg-primary/20 group-hover:bg-primary/10 transition-all" />
               <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm p-4 rounded-lg">
                 <p className="text-label-sm font-bold text-primary mb-1">
-                  PROJECT SPOTLIGHT
+                  {t("spotlightLabel")}
                 </p>
                 <p className="text-sm font-medium">
-                  1.2M Sq Ft Logistic Hub, Singapore
+                  {t("spotlightText")}
                 </p>
               </div>
             </div>
 
-            <div className="border-l-4 border-primary p-6 bg-surface-container-high/50 italic text-on-surface-variant">
-              &quot;The technical precision provided in the initial quote phase
-              was the deciding factor. Giant Storage understood our unique
-              seismic requirements for our Tokyo facility better than anyone
-              else.&quot;
+            <div className="border-s-4 border-primary p-6 bg-surface-container-high/50 italic text-on-surface-variant">
+              {t("testimonial")}
               <p className="not-italic font-bold text-on-surface mt-4 text-sm">
-                — Director of Operations, TechLogistics APAC
+                {t("testimonialBy")}
               </p>
             </div>
           </aside>
