@@ -1061,45 +1061,6 @@ iframe {
   }
 }
 
-/* ═══════════════ MANUFACTURING BADGE ═══════════════ */
-.mfg-badge {
-  position: absolute;
-  top: 1.5rem;
-  left: 1.5rem;
-  z-index: 10;
-  background: rgba(255, 255, 255, 0.13);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 9999px;
-  padding: 0.5rem 1.1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #fff;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-}
-
-/* ═══════════════ INDUSTRIES HOVER ═══════════════ */
-@keyframes iconBounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  35% {
-    transform: translateY(-5px);
-  }
-  65% {
-    transform: translateY(-2px);
-  }
-}
-.industry-card:hover .ind-icon {
-  animation: iconBounce 0.5s ease;
-}
-
 /* ═══════════════ MOBILE PERFORMANCE / VISIBILITY (from legacy) ═══════════════ */
 @media (max-width: 479px) {
   .contact-widget {

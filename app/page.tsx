@@ -21,9 +21,6 @@ const HERO_BG =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuCvUppSIUhiLWIyyd-8B9t1tvTbccTRdXY9Nl-ZoAMQrVOWoSEOBUPOzR4MChZDQSGPBzoURAW5wiRz03UypGYnBhWRbL2bHFzLdP4oa__H5VSKHFILgRqm0OOjKI_7w5MoM1iXx21UsvZl9WUzk4UcYgTUkk9G0PPt690qiXU3pWB6FeHpoaWkfiQZQFt4WubDwOjG6SAiXOfUv6idi7QaGe3ZpmEqEMdT0z2YUXQlyT0Jtm9qCq9LAAc0s580PKk41Bbw42nyesw";
 const ABOUT_IMG =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuD1kpyOH_iWnAUZX8-RTg76vb4zbqZ4iP47eRO4mAHmjwp8dQT9IjGWzmq3jAk1XItktWoHE2kkRymnoB8jRwEF4INzD_7Y2_PS0wkkt2233pj6Cz9JkXj3BxSe5K8ACtSTQmkDyuSITv8x1zJU36sRXWuIra4y1GQvE65kh5Gl3-t_Jexsy5tuaIfv6WV1mPWHSubrOuhaDGrJogMrTJo1DbZUIwZkcslAGl68yoW_YUy4dDTlqTz7nBcucm11d95hnYR5zJFHvz8";
-const MFG_TEASER_BG =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuAdJc6ylJWEXyzDimYyjnQ00x9XeNWK9KPZjA140wr00AvC3HpOha8CRMQffb43tWBWd5yxbzkA-ixSLkuKY-r2HOXfkEq-vYsKBp1s9aFYbGRwcmy7Q9KkED-wQcDJ2NgzMQKLq_t9VitW_ahLz27Kn2QyAWRETwkE07VNOdNwXMx_-nQZ-BEd0MsWAXmE56g9obqnPkfvTznouerMn7vRreb0zQc0xU7-gv3HdLRYmhCXA3gzBhycrRJx9C8DTc05i0FwVAMl8MM";
-
 /* Five of the legacy Wikimedia logo URLs had gone dead (404/400/429);
    replaced with the current Commons file locations (verified 200). */
 const CLIENT_LOGOS = [
@@ -89,15 +86,6 @@ const PRODUCT_CATEGORIES = [
     href: "/request-quote",
     ctaStyle: "solid" as const,
   },
-];
-
-const INDUSTRIES = [
-  { icon: "local_shipping", label: "Logistics", stagger: "stagger-1" },
-  { icon: "restaurant", label: "Food & Bev", stagger: "stagger-2" },
-  { icon: "medication", label: "Pharma", stagger: "stagger-3" },
-  { icon: "agriculture", label: "Agri-Tech", stagger: "stagger-4" },
-  { icon: "precision_manufacturing", label: "Automotive", stagger: "stagger-1" },
-  { icon: "shopping_basket", label: "Retail", stagger: "stagger-2" },
 ];
 
 const FEATURES = [
@@ -466,49 +454,6 @@ export default function Home() {
       {/* ═══ 6. VIDEOS ═══ */}
       <VideoSection />
 
-      <SectionSeparator label="Industries We Serve" bgClassName="bg-surface-container-low" />
-
-      {/* ═══ INDUSTRIES SERVED ═══ */}
-      <section className="pb-24 bg-surface-container-low">
-        <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 reveal">
-            <div className="max-w-xl">
-              <span className="section-eyebrow">Sectors</span>
-              <h2 className="font-headline-xl text-headline-xl mb-4">
-                Industries Served
-              </h2>
-              <p className="text-on-surface-variant font-body-lg text-body-lg">
-                Our products are engineered to meet the specific sanitation,
-                temperature, and weight requirements of diverse global sectors.
-              </p>
-            </div>
-            <Link
-              href="/industries"
-              className="border-2 border-primary text-primary px-8 py-3 rounded-full font-label-lg text-label-lg hover:bg-primary hover:text-on-primary transition-all hover:scale-105 inline-flex items-center self-start md:self-auto"
-            >
-              Industry Partnerships
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
-            {INDUSTRIES.map((industry) => (
-              <Link
-                key={industry.label}
-                href="/industries"
-                className={`industry-card p-7 bg-surface rounded-xl text-center hover:bg-primary hover:text-on-primary transition-all group reveal ${industry.stagger} cursor-pointer block`}
-                style={{ boxShadow: "0 2px 14px rgba(0,0,0,.06)" }}
-              >
-                <span className="ind-icon material-symbols-outlined text-4xl mb-4 block transition-all duration-300 group-hover:scale-110">
-                  {industry.icon}
-                </span>
-                <p className="font-label-lg text-label-lg font-bold">
-                  {industry.label}
-                </p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ═══ WHY CHOOSE US ═══ */}
       <section className="py-24 bg-on-background text-on-primary relative overflow-hidden">
         <div
@@ -567,57 +512,6 @@ export default function Home() {
                 </p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ MANUFACTURING TEASER ═══ */}
-      <section className="py-24 bg-surface">
-        <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto reveal">
-          <div className="relative rounded-3xl overflow-hidden h-[520px] group">
-            <Image
-              src={MFG_TEASER_BG}
-              alt="Giant Storage production floor"
-              fill
-              className="object-cover transition-transform duration-1000 group-hover:scale-105"
-              sizes="(max-width: 1440px) 100vw, 1440px"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-on-background/65 via-on-background/45 to-on-background/35 flex flex-col justify-center items-center text-center p-8">
-              <h2 className="text-on-primary font-display-lg text-headline-xl mb-6">
-                Precision. Scale. Impact.
-              </h2>
-              <p className="text-on-primary max-w-xl font-body-lg text-body-lg mb-8">
-                Take a virtual tour of our state-of-the-art facility in Nasr
-                City and witness the future of industrial molding.
-              </p>
-              {/* TODO: link to the facility tour video when a URL exists (was a no-op button in the legacy site too). */}
-              <button
-                type="button"
-                aria-label="Play facility tour video"
-                className="bg-on-primary text-primary p-6 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-2xl relative group/play"
-              >
-                <span className="absolute inset-0 rounded-full border-2 border-white/40 scale-100 group-hover/play:scale-125 group-hover/play:opacity-0 transition-all duration-500" />
-                <span
-                  className="material-symbols-outlined text-4xl"
-                  style={{
-                    fontVariationSettings: "'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24",
-                  }}
-                >
-                  play_arrow
-                </span>
-              </button>
-            </div>
-            <div className="mfg-badge">
-              <span
-                className="material-symbols-outlined text-sm"
-                style={{
-                  fontVariationSettings: "'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24",
-                }}
-              >
-                location_on
-              </span>
-              Nasr City, Cairo, Egypt
-            </div>
           </div>
         </div>
       </section>
