@@ -1,10 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import SocialIcon from "@/components/ui/SocialIcon";
 import { CONTACT, WHATSAPP_HREF } from "@/lib/nav";
 
+const formId = process.env.NEXT_PUBLIC_FORMSPREE_CONTACT_ID;
 const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 const whatsappBase = envNumber ? `https://wa.me/${envNumber}` : WHATSAPP_HREF;
+
+type Status = "idle" | "loading" | "success" | "error";
 
 const INQUIRY_TYPES = [
   "Warehouse Automation",
@@ -17,11 +21,11 @@ const INQUIRY_TYPES = [
 const inputClass =
   "w-full h-12 px-4 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md form-input-focus transition-all";
 
-/** Shared sizing/typography for both action buttons (matches the legacy single button). */
-const actionBtnClass =
-  "h-14 rounded-lg font-label-md text-label-md active:scale-95 transition-all industrial-shadow whitespace-nowrap flex items-center justify-center gap-3 w-full sm:w-56";
+/** Shared sizing/typography for the two channel buttons (mirrors the submit button). */
+const channelBtnClass =
+  "h-14 rounded-lg font-label-md text-label-md active:scale-95 transition-all industrial-shadow whitespace-nowrap flex items-center justify-center gap-3 w-full sm:flex-1";
 
-/** Reads the form into a plain object after native validation passes. */
+/** Reads the form into a plain object after the same native validation the submit uses. */
 function collectForm(form: HTMLFormElement | null): Record<string, string> | null {
   if (!form || !form.reportValidity()) return null;
   const data = new FormData(form);
@@ -46,12 +50,37 @@ function formatInquiry(d: Record<string, string>): string {
 }
 
 /**
- * Contact inquiry form (from legacy contact.html). Submission opens the
- * visitor's own channel: "Send via Email" opens their mail client with the
- * form data pre-filled (mailto:), "Send via WhatsApp" opens a wa.me chat to
- * the business number with the same formatted message.
+ * Contact inquiry form (from legacy contact.html). "Send Inquiry" posts
+ * FormData to Formspree via NEXT_PUBLIC_FORMSPREE_CONTACT_ID (shows a clear
+ * not-configured message until a real ID is provided). The two channel
+ * buttons above the consent row send the same validated form data through
+ * the visitor's own client instead: mailto: draft or wa.me chat message.
  */
 export default function ContactForm() {
+  const [status, setStatus] = useState<Status>("idle");
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    if (!formId) {
+      setStatus("error");
+      return;
+    }
+    setStatus("loading");
+    try {
+      const res = await fetch(`https://formspree.io/f/${formId}`, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new FormData(form),
+      });
+      if (!res.ok) throw new Error(`Formspree responded ${res.status}`);
+      setStatus("success");
+      form.reset();
+    } catch {
+      setStatus("error");
+    }
+  };
+
   const sendViaEmail = (e: React.MouseEvent<HTMLButtonElement>) => {
     const d = collectForm(e.currentTarget.form);
     if (!d) return;
@@ -72,10 +101,7 @@ export default function ContactForm() {
   };
 
   return (
-    <form
-      className="grid grid-cols-1 md:grid-cols-2 gap-6"
-      onSubmit={(e) => e.preventDefault()}
-    >
+    <form className="grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={onSubmit}>
       <div className="space-y-2">
         <label
           className="font-label-md text-label-md text-on-surface-variant block"
@@ -155,7 +181,31 @@ export default function ContactForm() {
           rows={4}
         />
       </div>
-      <div className="md:col-span-2 flex flex-col lg:flex-row lg:items-center justify-between gap-6 pt-4">
+
+      {/* Channel buttons — send the same validated form data via the
+          visitor's email client or WhatsApp */}
+      <div className="md:col-span-2 flex flex-col sm:flex-row gap-3 pt-2">
+        <button
+          className={`${channelBtnClass} bg-primary text-on-primary hover:bg-secondary`}
+          type="button"
+          onClick={sendViaEmail}
+        >
+          Send via Email
+          <span className="material-symbols-outlined" aria-hidden>
+            mail
+          </span>
+        </button>
+        <button
+          className={`${channelBtnClass} bg-[#25D366] text-white hover:bg-[#1eb857]`}
+          type="button"
+          onClick={sendViaWhatsApp}
+        >
+          Send via WhatsApp
+          <SocialIcon brand="whatsapp" size={20} />
+        </button>
+      </div>
+
+      <div className="md:col-span-2 flex flex-col md:flex-row md:items-center justify-between gap-6 pt-4">
         <div className="flex items-start gap-3">
           <input
             className="mt-1 w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary"
@@ -173,27 +223,43 @@ export default function ContactForm() {
             processing.
           </label>
         </div>
-        <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-          <button
-            className={`${actionBtnClass} bg-primary text-on-primary hover:bg-secondary`}
-            type="button"
-            onClick={sendViaEmail}
-          >
-            Send via Email
-            <span className="material-symbols-outlined" aria-hidden>
-              mail
-            </span>
-          </button>
-          <button
-            className={`${actionBtnClass} bg-[#25D366] text-white hover:bg-[#1eb857]`}
-            type="button"
-            onClick={sendViaWhatsApp}
-          >
-            Send via WhatsApp
-            <SocialIcon brand="whatsapp" size={20} />
-          </button>
-        </div>
+        <button
+          className="bg-primary text-on-primary h-14 px-10 rounded-lg font-label-md text-label-md active:scale-95 transition-all industrial-shadow whitespace-nowrap flex items-center justify-center gap-3 disabled:opacity-70"
+          type="submit"
+          disabled={status === "loading"}
+        >
+          {status === "loading"
+            ? "Sending…"
+            : status === "success"
+              ? "Inquiry Sent ✓"
+              : "Send Inquiry"}
+          {status === "idle" && (
+            <span className="material-symbols-outlined">send</span>
+          )}
+        </button>
       </div>
+      {status === "error" && (
+        <p className="md:col-span-2 text-error text-sm">
+          {formId
+            ? "Something went wrong sending your inquiry."
+            : "The contact form isn't configured yet."}{" "}
+          Please reach us directly at{" "}
+          <a className="underline font-semibold" href={`mailto:${CONTACT.email}`}>
+            {CONTACT.email}
+          </a>{" "}
+          or{" "}
+          <a className="underline font-semibold" href={CONTACT.phoneMain.href}>
+            {CONTACT.phoneMain.display}
+          </a>
+          .
+        </p>
+      )}
+      {status === "success" && (
+        <p className="md:col-span-2 text-primary text-sm font-semibold">
+          Thank you — an engineering consultant will contact you within 24
+          business hours.
+        </p>
+      )}
     </form>
   );
 }
