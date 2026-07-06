@@ -268,8 +268,12 @@
     "backHome": "Back to Home"
   },
   "home": {
+    "heroBadge": "Excellence in Cairo, Egypt",
     "heroTitle": "Leading Egyptian Industrial Plastic Solutions",
     "heroPara": "Pioneering precision-engineered storage and logistics assets for global industries. Scaling your operations with reliability and Egyptian craftsmanship.",
+    "heroGlass1": "20+ Years of Excellence",
+    "heroGlass2": "50k+ Monthly Capacity",
+    "heroGlass3": "ISO 9001:2015 Certified",
     "exploreProducts": "Explore Products",
     "contactUs": "Contact Us",
     "connectWithUs": "Connect With Us",

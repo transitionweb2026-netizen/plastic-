@@ -144,7 +144,7 @@ export default async function Home({
               sizes="100vw"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-r rtl:bg-gradient-to-l from-on-background/88 via-on-background/55 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r rtl:bg-gradient-to-l from-on-background/78 via-on-background/42 to-transparent" />
         </div>
 
         <div className="hero-geo hero-geo-1 hidden lg:block" />
@@ -153,6 +153,15 @@ export default async function Home({
 
         <div className="relative z-10 w-full px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
           <div className="max-w-2xl text-on-primary">
+            <span className="hero-badge inline-flex items-center gap-2 bg-on-primary/10 backdrop-blur-md border border-on-primary/15 text-on-primary px-4 py-2 rounded-full font-bold text-label-sm uppercase tracking-widest mb-5">
+              <span
+                className="material-symbols-outlined text-inverse-primary"
+                style={{ fontSize: 16 }}
+              >
+                location_on
+              </span>
+              {t("heroBadge")}
+            </span>
             <h1 className="hero-title font-display-lg text-headline-xl-mobile md:text-display-lg mb-6 leading-tight">
               {t("heroTitle")}
             </h1>
@@ -177,6 +186,11 @@ export default async function Home({
               >
                 {t("contactUs")}
               </Link>
+            </div>
+            <div className="hero-stats flex flex-wrap gap-3 mt-10">
+              <div className="glass-badge">{t("heroGlass1")}</div>
+              <div className="glass-badge">{t("heroGlass2")}</div>
+              <div className="glass-badge">{t("heroGlass3")}</div>
             </div>
           </div>
         </div>
