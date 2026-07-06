@@ -28,8 +28,7 @@ export async function generateMetadata({
   return cmsMetadata("home", locale as "en" | "ar");
 }
 
-const HERO_BG =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuCvUppSIUhiLWIyyd-8B9t1tvTbccTRdXY9Nl-ZoAMQrVOWoSEOBUPOzR4MChZDQSGPBzoURAW5wiRz03UypGYnBhWRbL2bHFzLdP4oa__H5VSKHFILgRqm0OOjKI_7w5MoM1iXx21UsvZl9WUzk4UcYgTUkk9G0PPt690qiXU3pWB6FeHpoaWkfiQZQFt4WubDwOjG6SAiXOfUv6idi7QaGe3ZpmEqEMdT0z2YUXQlyT0Jtm9qCq9LAAc0s580PKk41Bbw42nyesw";
+const HERO_BG = "/images/home-hero.webp";
 const ABOUT_IMG =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuD1kpyOH_iWnAUZX8-RTg76vb4zbqZ4iP47eRO4mAHmjwp8dQT9IjGWzmq3jAk1XItktWoHE2kkRymnoB8jRwEF4INzD_7Y2_PS0wkkt2233pj6Cz9JkXj3BxSe5K8ACtSTQmkDyuSITv8x1zJU36sRXWuIra4y1GQvE65kh5Gl3-t_Jexsy5tuaIfv6WV1mPWHSubrOuhaDGrJogMrTJo1DbZUIwZkcslAGl68yoW_YUy4dDTlqTz7nBcucm11d95hnYR5zJFHvz8";
 
@@ -84,7 +83,7 @@ export default async function Home({
       desc: t("cat2Desc"),
       descClass: "",
       cta: t("cat2Cta"),
-      href: "/products",
+      href: "/industries",
       ctaStyle: "solid" as const,
     },
     {
@@ -96,7 +95,7 @@ export default async function Home({
       desc: "",
       descClass: "",
       cta: t("cat3Cta"),
-      href: "/products",
+      href: "/blog",
       ctaStyle: "underline" as const,
     },
     {
@@ -108,7 +107,7 @@ export default async function Home({
       desc: t("cat4Desc"),
       descClass: "",
       cta: t("cat4Cta"),
-      href: "/request-quote",
+      href: "/gallery",
       ctaStyle: "solid" as const,
     },
   ];
@@ -331,6 +330,7 @@ export default async function Home({
                     alt={i >= CLIENT_LOGOS.length ? "" : logo.alt}
                     width={120}
                     height={40}
+                    style={{ width: "auto", height: "auto" }}
                     unoptimized
                     aria-hidden={i >= CLIENT_LOGOS.length}
                   />
@@ -342,7 +342,14 @@ export default async function Home({
           <div className="grid grid-cols-3 gap-4 md:hidden">
             {CLIENT_LOGOS.slice(0, 6).map((logo) => (
               <div key={logo.alt} className="logo-item">
-                <Image src={logo.src} alt={logo.alt} width={120} height={40} unoptimized />
+                <Image
+                  src={logo.src}
+                  alt={logo.alt}
+                  width={120}
+                  height={40}
+                  style={{ width: "auto", height: "auto" }}
+                  unoptimized
+                />
               </div>
             ))}
           </div>
