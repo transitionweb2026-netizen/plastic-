@@ -86,8 +86,8 @@ export default function IndustriesContent() {
               sizes="100vw"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/75 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r rtl:bg-gradient-to-l from-background/85 via-background/52 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/45 via-transparent to-transparent" />
         </div>
         <div className="absolute top-20 right-[15%] w-24 h-24 border-2 border-primary/20 rounded-full animate-float-slow hidden lg:block" />
         <div
@@ -140,7 +140,7 @@ export default function IndustriesContent() {
             </div>
           </div>
 
-          <div className="absolute right-8 bottom-12 hidden xl:flex flex-col gap-3">
+          <div className="absolute right-8 bottom-12 rtl:right-auto rtl:left-8 hidden xl:flex flex-col gap-3">
             <div className="glass-badge">{t("glass1")}</div>
             <div className="glass-badge">{t("glass2")}</div>
             <div className="glass-badge">{t("glass3")}</div>
