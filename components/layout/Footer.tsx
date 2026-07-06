@@ -173,7 +173,6 @@ export default async function Footer() {
             <p className="font-body-md text-body-md">
               {t("copyright", { year: new Date().getFullYear() })}
             </p>
-            {/* TODO: point the credit at the agency's site when a URL is available. */}
             <span className="fbar-credit">
               <span className="font-body-md text-body-md opacity-90">
                 {t("createdBy")}
@@ -181,9 +180,14 @@ export default async function Footer() {
               <span className="fbar-t-badge" aria-hidden>
                 T
               </span>
-              <span className="text-[17px] font-bold tracking-tight">
+              <a
+                href="https://transitioneg.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[17px] font-bold tracking-tight"
+              >
                 Transition
-              </span>
+              </a>
             </span>
           </div>
 
