@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { cmsMetadata } from "@/lib/cms/seo";
+import { setRequestLocale } from "next-intl/server";
 import IndustriesContent from "@/components/industries/IndustriesContent";
 
 export async function generateMetadata({
@@ -8,8 +9,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta.industries" });
-  return { title: t("title"), description: t("description") };
+  return cmsMetadata("industries", locale as "en" | "ar");
 }
 
 export default async function IndustriesPage({

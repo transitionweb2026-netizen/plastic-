@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { breadcrumbJsonLd, cmsMetadata, productJsonLd } from "@/lib/cms/seo";
+import { SITE_URL } from "@/lib/site";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import ProductCatalog from "@/components/products/ProductCatalog";
 import { PalletBlueprint, CrateSchematic, DimensionLine } from "@/components/ui/DecorArt";
@@ -9,8 +11,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta.products" });
-  return { title: t("title"), description: t("description") };
+  return cmsMetadata("products", locale as "en" | "ar");
 }
 
 export default async function ProductsPage({
@@ -42,6 +43,21 @@ export default async function ProductsPage({
         </div>
       </section>
 
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd(locale as "en" | "ar")) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: locale === "ar" ? "الرئيسية" : "Home", url: `${SITE_URL}${locale === "en" ? "/en" : "/"}` },
+              { name: locale === "ar" ? "المنتجات" : "Products", url: `${SITE_URL}${locale === "en" ? "/en" : ""}/products` },
+            ])
+          ),
+        }}
+      />
       {/* Catalog is client-side (modal state) */}
       <ProductCatalog />
       <CrateSchematic className="absolute -bottom-4 -right-4 w-[260px] hidden lg:block" />

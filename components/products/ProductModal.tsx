@@ -22,10 +22,14 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
   );
   const [activeIdx, setActiveIdx] = useState(0);
 
-  // Each product starts its gallery on the main (first) image.
-  useEffect(() => {
+  // Each product starts its gallery on the main (first) image. Adjusted
+  // during render (React's recommended pattern for resetting state when a
+  // prop changes) rather than in an effect.
+  const [prevProduct, setPrevProduct] = useState(product);
+  if (product !== prevProduct) {
+    setPrevProduct(product);
     setActiveIdx(0);
-  }, [product]);
+  }
 
   // Legacy behavior: lock body scroll while open, close on Escape.
   useEffect(() => {

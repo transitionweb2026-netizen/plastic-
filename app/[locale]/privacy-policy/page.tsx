@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cmsMetadata } from "@/lib/cms/seo";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { CONTACT } from "@/lib/nav";
@@ -9,8 +10,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta.privacy" });
-  return { title: t("title"), description: t("description") };
+  return cmsMetadata("privacy", locale as "en" | "ar");
 }
 
 /**

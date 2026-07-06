@@ -11,6 +11,12 @@ import {
   localizeArticle,
 } from "@/lib/articles";
 import { SITE_URL } from "@/lib/site";
+import {
+  articleSlug,
+  breadcrumbJsonLd,
+  cmsMetadata,
+  resolveArticleSlug,
+} from "@/lib/cms/seo";
 
 type Params = { slug: string; locale: string };
 
@@ -24,18 +30,13 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { slug, locale } = await params;
-  const base = getArticle(slug);
-  if (!base) return {};
-  const article = localizeArticle(base, locale);
+  const loc = locale as "en" | "ar";
+  const baseSlug = resolveArticleSlug(slug, loc);
+  if (!baseSlug) return {};
+  const meta = cmsMetadata(`article:${baseSlug}`, loc);
   return {
-    title: article.title,
-    description: article.description,
-    openGraph: {
-      type: "article",
-      title: article.title,
-      description: article.description,
-      images: [article.heroImg],
-    },
+    ...meta,
+    openGraph: { ...meta.openGraph, type: "article" },
   };
 }
 
@@ -46,12 +47,16 @@ export default async function ArticlePage({
 }) {
   const { slug, locale } = await params;
   setRequestLocale(locale);
-  const base = getArticle(slug);
+  const loc = locale as "en" | "ar";
+  const baseSlug = resolveArticleSlug(slug, loc);
+  if (!baseSlug) notFound();
+  const base = getArticle(baseSlug);
   if (!base) notFound();
   const article = localizeArticle(base, locale);
-  const bodyLocalized = articleBodyLocalized(slug, locale);
+  const bodyLocalized = articleBodyLocalized(baseSlug, locale);
 
-  const pageUrl = `${SITE_URL}/blog/${article.slug}`;
+  const urlSlug = articleSlug(baseSlug, loc);
+  const pageUrl = `${SITE_URL}${locale === "en" ? "/en" : ""}/blog/${urlSlug}`;
   const bodyHtml = article.bodyHtml
     .replaceAll("__PAGE_URL__", encodeURIComponent(pageUrl))
     // keep injected legacy links inside the active locale
@@ -77,6 +82,18 @@ export default async function ArticlePage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: locale === "ar" ? "الرئيسية" : "Home", url: `${SITE_URL}${locale === "en" ? "/en" : "/"}` },
+              { name: locale === "ar" ? "المدونة" : "Blog", url: `${SITE_URL}${locale === "en" ? "/en" : ""}/blog` },
+              { name: article.h1, url: pageUrl },
+            ])
+          ),
+        }}
       />
       <RevealObserver />
       {article.hasCounters && <ArticleCounters />}

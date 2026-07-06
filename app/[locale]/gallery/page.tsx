@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { cmsMetadata, galleryImageJsonLd, galleryImageSeo } from "@/lib/cms/seo";
+import { galleryImages } from "@/lib/gallery";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import RevealObserver from "@/components/ui/RevealObserver";
@@ -12,8 +14,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta.gallery" });
-  return { title: t("title"), description: t("description") };
+  return cmsMetadata("gallery", locale as "en" | "ar");
 }
 
 const HERO_IMG = "/gallery/images/img-01.jpg";
@@ -26,6 +27,16 @@ export default async function GalleryPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("galleryUi");
+  const loc = locale as "en" | "ar";
+  // Gallery images with CMS per-image SEO overrides (alt/title/caption)
+  const images = galleryImages(loc).map((img) => {
+    const cms = galleryImageSeo(img.src, loc);
+    return {
+      ...img,
+      alt: cms?.alt?.trim() || img.alt,
+      caption: cms?.caption?.trim() || img.caption,
+    };
+  });
 
   return (
     <div className="page-gallery">
@@ -72,7 +83,11 @@ export default async function GalleryPage({
               {t("imagesDescription")}
             </p>
           </div>
-          <ImageGallery />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(galleryImageJsonLd(loc, images)) }}
+          />
+          <ImageGallery images={images} />
         </div>
       </section>
 

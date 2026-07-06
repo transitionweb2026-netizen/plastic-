@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cmsMetadata } from "@/lib/cms/seo";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { RackOutline, CircuitLines } from "@/components/ui/DecorArt";
 import Image from "next/image";
@@ -12,8 +13,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta.blog" });
-  return { title: t("title"), description: t("description") };
+  return cmsMetadata("blog", locale as "en" | "ar");
 }
 
 const HERO_IMG =

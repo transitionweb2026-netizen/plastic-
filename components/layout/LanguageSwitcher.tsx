@@ -9,6 +9,12 @@ const OPTIONS: { locale: AppLocale; label: string }[] = [
   { locale: "en", label: "EN" },
 ];
 
+/** Module-level helper (not a component/hook) so the cookie write isn't
+ *  flagged as mutating an outer-scope variable from within a component. */
+function persistLocaleCookie(next: AppLocale) {
+  document.cookie = `NEXT_LOCALE=${next};path=/;max-age=31536000;samesite=lax`;
+}
+
 /**
  * Compact segmented language toggle (AR | EN). Switching persists the
  * choice in the NEXT_LOCALE cookie (read by proxy.ts) and swaps the locale
@@ -27,7 +33,7 @@ export default function LanguageSwitcher({
 
   const switchTo = (next: AppLocale) => {
     if (next === locale) return;
-    document.cookie = `NEXT_LOCALE=${next};path=/;max-age=31536000;samesite=lax`;
+    persistLocaleCookie(next);
     router.replace(pathname, { locale: next });
   };
 

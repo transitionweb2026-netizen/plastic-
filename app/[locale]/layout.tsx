@@ -8,8 +8,8 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import FloatingContactWidget from "@/components/ui/FloatingContactWidget";
 import { routing } from "@/i18n/routing";
-import { CONTACT } from "@/lib/nav";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { SITE_URL } from "@/lib/site";
+import { faviconLinks, organizationJsonLd } from "@/lib/cms/seo";
 import "../globals.css";
 
 const inter = Inter({
@@ -55,8 +55,18 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
+  const icons = faviconLinks();
   return {
     metadataBase: new URL(SITE_URL),
+    // Deliberately no app/favicon.ico special file: Next.js always injects
+    // that as its own <link rel="icon">, alongside (not replacing) this
+    // one, so a CMS-uploaded favicon couldn't reliably win over it. This
+    // field is the single source of truth, falling back to the build-time
+    // default until the CMS sets an override.
+    icons: {
+      icon: icons.favicon || "/favicon-default.ico",
+      ...(icons.appleTouchIcon ? { apple: icons.appleTouchIcon } : {}),
+    },
     title: {
       default: t("siteTitle"),
       template: `%s | ${t("siteName")}`,
@@ -74,21 +84,7 @@ export async function generateMetadata({
   };
 }
 
-/** Organization structured data (site-wide). */
-const organizationJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: SITE_NAME,
-  url: SITE_URL,
-  email: CONTACT.email,
-  telephone: CONTACT.phoneMain.display,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "22 El Tayaran St., Nasr City",
-    addressLocality: "Cairo",
-    addressCountry: "EG",
-  },
-};
+/* Organization structured data is CMS-driven (lib/cms/seo.ts). */
 
 export default async function LocaleLayout({
   children,
@@ -110,7 +106,7 @@ export default async function LocaleLayout({
       <body className="min-h-screen bg-background text-on-background antialiased">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}
         />
         <NextIntlClientProvider>
           {/* key={locale} remounts on language change → smooth fade-in */}

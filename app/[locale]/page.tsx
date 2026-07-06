@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cmsMetadata } from "@/lib/cms/seo";
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import CursorGlow from "@/components/ui/CursorGlow";
@@ -24,8 +25,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta.home" });
-  return { title: t("title"), description: t("description") };
+  return cmsMetadata("home", locale as "en" | "ar");
 }
 
 const HERO_BG =

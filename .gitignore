@@ -39,3 +39,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# SEO CMS runtime data (mutable "database" — see lib/cms/storage.ts).
+# The directory ships via .gitkeep; seo.json is created on first admin save.
+/content/cms/seo.json
+
+# CMS media uploads (OG images, favicons). Deliberately NOT under public/ —
+# Next.js's production server scans public/ once at startup and won't see
+# files written there at runtime, so uploads are served instead by
+# app/uploads/[...path]/route.ts, which reads this directory fresh per request.
+/content/uploads/*
+!/content/uploads/.gitkeep

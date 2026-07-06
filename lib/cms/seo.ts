@@ -1,0 +1,323 @@
+import "server-only";
+import type { Metadata } from "next";
+import enMessages from "@/messages/en.json";
+import arMessages from "@/messages/ar.json";
+import { ARTICLES } from "@/lib/articles";
+import { AR_ARTICLES } from "@/lib/articles-ar";
+import { PRODUCTS } from "@/lib/products";
+import { AR_PRODUCTS } from "@/lib/products-ar";
+import { SITE_URL } from "@/lib/site";
+import { CONTACT, SOCIAL_LINKS, LOGO_SRC } from "@/lib/nav";
+import { readCms } from "./storage";
+import type { Locale, OrgSchema, PageSeo, SeoFields } from "./types";
+
+/* ─────────────────────────── Page registry ───────────────────────────
+ * Every public surface gets a stable pageKey. Static routes keep their
+ * structural paths (slug not editable — like core pages in Yoast/RankMath);
+ * article slugs ARE editable per locale via the CMS. */
+
+export type RegistryEntry = {
+  pageKey: string;
+  /** Route path without locale prefix; articles use the base slug. */
+  path: string;
+  label: string;
+  group: "Core" | "Blog" | "Products" | "Legal" | "System";
+  slugEditable: boolean;
+};
+
+const MSG = { en: enMessages, ar: arMessages } as const;
+
+function metaNs(locale: Locale) {
+  return (MSG[locale] as typeof enMessages).meta as Record<
+    string,
+    { title: string; description: string } | string
+  >;
+}
+
+const STATIC_PAGES: Omit<RegistryEntry, "pageKey">[] = [
+  { path: "/", label: "Home", group: "Core", slugEditable: false },
+  { path: "/products", label: "Products", group: "Core", slugEditable: false },
+  { path: "/industries", label: "Industries", group: "Core", slugEditable: false },
+  { path: "/gallery", label: "Gallery", group: "Core", slugEditable: false },
+  { path: "/blog", label: "Blog", group: "Blog", slugEditable: false },
+  { path: "/about", label: "About Us", group: "Core", slugEditable: false },
+  { path: "/contact", label: "Contact", group: "Core", slugEditable: false },
+  { path: "/request-quote", label: "Request Quote", group: "Core", slugEditable: false },
+  { path: "/privacy-policy", label: "Privacy Policy", group: "Legal", slugEditable: false },
+  { path: "/terms-of-service", label: "Terms of Service", group: "Legal", slugEditable: false },
+];
+
+const STATIC_KEY_BY_PATH: Record<string, string> = {
+  "/": "home",
+  "/products": "products",
+  "/industries": "industries",
+  "/gallery": "gallery",
+  "/blog": "blog",
+  "/about": "about",
+  "/contact": "contact",
+  "/request-quote": "quote",
+  "/privacy-policy": "privacy",
+  "/terms-of-service": "terms",
+};
+
+export function pageRegistry(): RegistryEntry[] {
+  const fixed = STATIC_PAGES.map((p) => ({
+    ...p,
+    pageKey: STATIC_KEY_BY_PATH[p.path],
+  }));
+  const articles = ARTICLES.map((a) => ({
+    pageKey: `article:${a.slug}`,
+    path: `/blog/${a.slug}`,
+    label: `Article — ${a.title}`,
+    group: "Blog" as const,
+    slugEditable: true,
+  }));
+  return [...fixed, ...articles];
+}
+
+/* ─────────────────────────── Defaults ─────────────────────────── */
+
+/** Built-in SEO values (what the site ships with, pre-CMS). */
+export function defaultSeo(pageKey: string, locale: Locale): Required<Pick<SeoFields, "metaTitle" | "metaDescription">> & SeoFields {
+  if (pageKey.startsWith("article:")) {
+    const slug = pageKey.slice("article:".length);
+    const base = ARTICLES.find((a) => a.slug === slug);
+    const ar = AR_ARTICLES[slug];
+    const src = locale === "ar" && ar ? { ...base, ...ar } : base;
+    return {
+      metaTitle: src?.title ?? "",
+      metaDescription: src?.description ?? "",
+      slug,
+      ogImage: base?.heroImg,
+    };
+  }
+  const ns = metaNs(locale)[pageKey] as { title: string; description: string } | undefined;
+  return {
+    metaTitle: ns?.title ?? "",
+    metaDescription: ns?.description ?? "",
+  };
+}
+
+/* ─────────────────────────── Effective values ─────────────────────────── */
+
+function published(rec?: PageSeo): PageSeo | undefined {
+  return rec && rec.published ? rec : undefined;
+}
+
+export function effectiveSeo(pageKey: string, locale: Locale): SeoFields & { metaTitle: string; metaDescription: string } {
+  const cms = published(readCms().pages[pageKey])?.[locale] ?? {};
+  const dft = defaultSeo(pageKey, locale);
+  return {
+    metaTitle: cms.metaTitle?.trim() || dft.metaTitle,
+    metaDescription: cms.metaDescription?.trim() || dft.metaDescription,
+    slug: cms.slug?.trim() || dft.slug,
+    canonical: cms.canonical?.trim() || undefined,
+    ogImage: cms.ogImage || dft.ogImage,
+  };
+}
+
+/** Localized article slug (CMS override falls back to the base slug). */
+export function articleSlug(baseSlug: string, locale: Locale): string {
+  return effectiveSeo(`article:${baseSlug}`, locale).slug || baseSlug;
+}
+
+/** Resolve an incoming article URL slug to the base slug, per locale. */
+export function resolveArticleSlug(urlSlug: string, locale: Locale): string | undefined {
+  for (const a of ARTICLES) {
+    if (articleSlug(a.slug, locale) === urlSlug || a.slug === urlSlug) return a.slug;
+  }
+  return undefined;
+}
+
+function localePath(path: string, locale: Locale): string {
+  return locale === "en" ? (path === "/" ? "/en" : `/en${path}`) : path;
+}
+
+/**
+ * Build Next Metadata for a page from CMS + defaults: title, description,
+ * canonical (deduped, auto-derived when not set), hreflang alternates, and
+ * OG image/title/description. One call per page = no duplicate tags.
+ */
+export function cmsMetadata(pageKey: string, locale: Locale, pathOverride?: string): Metadata {
+  const seo = effectiveSeo(pageKey, locale);
+  const entry = pageRegistry().find((p) => p.pageKey === pageKey);
+  const basePath = pathOverride ?? entry?.path ?? "/";
+  const arPath =
+    pageKey.startsWith("article:")
+      ? `/blog/${articleSlug(pageKey.slice(8), "ar")}`
+      : basePath;
+  const enPath =
+    pageKey.startsWith("article:")
+      ? `/blog/${articleSlug(pageKey.slice(8), "en")}`
+      : basePath;
+  const canonical =
+    seo.canonical || `${SITE_URL}${localePath(locale === "ar" ? arPath : enPath, locale)}`;
+
+  const og = seo.ogImage
+    ? [seo.ogImage.startsWith("http") ? seo.ogImage : `${SITE_URL}${seo.ogImage}`]
+    : undefined;
+
+  return {
+    title: seo.metaTitle,
+    description: seo.metaDescription,
+    alternates: {
+      canonical,
+      languages: {
+        ar: `${SITE_URL}${localePath(arPath, "ar")}`,
+        en: `${SITE_URL}${localePath(enPath, "en")}`,
+        "x-default": `${SITE_URL}${localePath(arPath, "ar")}`,
+      },
+    },
+    openGraph: {
+      title: seo.metaTitle,
+      description: seo.metaDescription,
+      ...(og ? { images: og } : {}),
+    },
+  };
+}
+
+/* ─────────────────────────── Global / org ─────────────────────────── */
+
+export function orgSettings(): OrgSchema {
+  const cms = readCms().global.org;
+  return {
+    companyName: cms.companyName || "Giant Storage Integrated Solutions",
+    logoUrl: cms.logoUrl || LOGO_SRC,
+    website: cms.website || SITE_URL,
+    phone: cms.phone || CONTACT.phoneMain.display,
+    email: cms.email || CONTACT.email,
+    address: {
+      street: cms.address.street || "22 El Tayaran St., Nasr City",
+      city: cms.address.city || "Cairo",
+      country: cms.address.country || "EG",
+    },
+    social: Object.keys(cms.social).length
+      ? cms.social
+      : Object.fromEntries(SOCIAL_LINKS.map((s) => [s.brand, s.href])),
+  };
+}
+
+/** Organization JSON-LD, CMS-driven (single source — rendered once in layout). */
+export function organizationJsonLd() {
+  const org = orgSettings();
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: org.companyName,
+    url: org.website,
+    logo: org.logoUrl,
+    email: org.email,
+    telephone: org.phone,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: org.address.street,
+      addressLocality: org.address.city,
+      addressCountry: org.address.country,
+    },
+    sameAs: Object.values(org.social).filter(Boolean),
+  };
+}
+
+export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      item: it.url,
+    })),
+  };
+}
+
+/* ─────────────────────────── Gallery image SEO ─────────────────────────── */
+
+export function galleryImageSeo(file: string, locale: Locale) {
+  const rec = readCms().images[file];
+  if (!rec || !rec.published) return undefined;
+  return rec[locale];
+}
+
+export function galleryImageJsonLd(locale: Locale, images: { src: string; alt: string; caption: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ImageGallery",
+    name: locale === "ar" ? "معرض جاينت ستوريدج" : "Giant Storage Gallery",
+    image: images.map((img) => ({
+      "@type": "ImageObject",
+      contentUrl: img.src.startsWith("http") ? img.src : `${SITE_URL}${img.src}`,
+      name: img.caption,
+      description: img.alt,
+    })),
+  };
+}
+
+/* ─────────────────────────── Product SEO / schema ─────────────────────────── */
+
+export function productJsonLd(locale: Locale) {
+  const cms = readCms();
+  const org = orgSettings();
+  const visible = PRODUCTS.slice(0, 6);
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: visible.map((p, i) => {
+      const loc = locale === "ar" ? { ...p, ...AR_PRODUCTS[p.id] } : p;
+      const extra = cms.products[String(p.id)];
+      const pub = extra && extra.published ? extra : undefined;
+      return {
+        "@type": "ListItem",
+        position: i + 1,
+        item: {
+          "@type": "Product",
+          name: pub?.[locale]?.metaTitle || loc.name,
+          description: pub?.[locale]?.metaDescription || loc.shortDesc,
+          sku: pub?.productCode || undefined,
+          material: loc.material,
+          weight: pub?.weight || undefined,
+          brand: { "@type": "Brand", name: org.companyName },
+          additionalProperty: [
+            { "@type": "PropertyValue", name: "Dimensions", value: loc.dimensions },
+            { "@type": "PropertyValue", name: "Load Capacity", value: loc.loadCapacity },
+            ...(pub?.staticLoad
+              ? [{ "@type": "PropertyValue", name: "Static Load", value: pub.staticLoad }]
+              : []),
+            ...(pub?.dynamicLoad
+              ? [{ "@type": "PropertyValue", name: "Dynamic Load", value: pub.dynamicLoad }]
+              : []),
+            ...(pub?.rackingLoad
+              ? [{ "@type": "PropertyValue", name: "Racking Load", value: pub.rackingLoad }]
+              : []),
+          ],
+        },
+      };
+    }),
+  };
+}
+
+/* ─────────────────────────── 404 / favicon / robots / redirects ─────────────────────────── */
+
+export function notFoundSeo(locale: Locale) {
+  const g = readCms().global.notFound;
+  const cms = g.published ? g[locale] : {};
+  const fallback =
+    locale === "ar"
+      ? { metaTitle: "الصفحة غير موجودة", metaDescription: "الصفحة التي تبحث عنها غير موجودة." }
+      : { metaTitle: "Page Not Found", metaDescription: "The page you are looking for does not exist." };
+  return {
+    metaTitle: cms.metaTitle || fallback.metaTitle,
+    metaDescription: cms.metaDescription || fallback.metaDescription,
+    ogImage: cms.ogImage,
+  };
+}
+
+export function faviconLinks() {
+  const g = readCms().global;
+  return { favicon: g.favicon, appleTouchIcon: g.appleTouchIcon };
+}
+
+/* findRedirect lives in ./redirects.ts (kept lean — it's called on every
+   request from proxy.ts). Re-exported here so existing call sites that
+   import it from "./seo" keep working. */
+export { findRedirect } from "./redirects";
