@@ -29,8 +29,7 @@ export async function generateMetadata({
 }
 
 const HERO_BG = "/images/home-hero.webp";
-const ABOUT_IMG =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuD1kpyOH_iWnAUZX8-RTg76vb4zbqZ4iP47eRO4mAHmjwp8dQT9IjGWzmq3jAk1XItktWoHE2kkRymnoB8jRwEF4INzD_7Y2_PS0wkkt2233pj6Cz9JkXj3BxSe5K8ACtSTQmkDyuSITv8x1zJU36sRXWuIra4y1GQvE65kh5Gl3-t_Jexsy5tuaIfv6WV1mPWHSubrOuhaDGrJogMrTJo1DbZUIwZkcslAGl68yoW_YUy4dDTlqTz7nBcucm11d95hnYR5zJFHvz8";
+const ABOUT_IMG = "/images/about-us.webp";
 
 /* Five of the legacy Wikimedia logo URLs had gone dead (404/400/429);
    replaced with the current Commons file locations (verified 200). */
