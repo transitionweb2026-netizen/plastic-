@@ -132,7 +132,7 @@ export default async function Home({
       <RevealObserver />
 
       {/* ═══ 1. HERO ═══ */}
-      <section className="relative h-[90vh] min-h-[600px] flex items-center overflow-hidden">
+      <section className="relative min-h-[600px] md:h-[90vh] flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <div className="hero-bg relative w-full h-full">
             <Image
@@ -192,11 +192,53 @@ export default async function Home({
               <div className="glass-badge">{t("heroGlass2")}</div>
               <div className="glass-badge">{t("heroGlass3")}</div>
             </div>
+
+            {/* Mobile-only "Connect With Us" card: flows normally below the
+                stats row so it can never overlap other Hero content (unlike
+                the md+ version, which floats absolutely). Same inner markup
+                and classes as the md+ card, so the visual design (glass,
+                colors, borders, shadows, icons) is byte-identical. */}
+            <div className="contact-widget-mobile md:hidden mt-8 max-w-[260px] me-auto">
+              <div className="contact-widget-inner rounded-2xl p-4 flex flex-col gap-3">
+                <p className="text-white/60 text-xs font-semibold uppercase tracking-widest px-1">
+                  {t("connectWithUs")}
+                </p>
+                <div className="flex items-center justify-center gap-2.5">
+                  {SOCIAL_LINKS.map((s, i) => (
+                    <a
+                      key={s.label}
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={s.label}
+                      className="widget-social"
+                      style={{ animationDelay: `${1.3 + i * 0.12}s` }}
+                    >
+                      <SocialIcon brand={s.brand} size={18} />
+                    </a>
+                  ))}
+                </div>
+                <a
+                  href={CONTACT.phoneMain.href}
+                  aria-label={tw("callAria", { phone: CONTACT.phoneMain.display })}
+                  className="widget-phone"
+                >
+                  <span className="icon-wrap">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+                    </svg>
+                  </span>
+                  <span dir="ltr">{CONTACT.phoneMain.display}</span>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Floating contact widget */}
-        <div className="contact-widget absolute bottom-8 right-6 md:right-12 rtl:right-auto rtl:left-6 md:rtl:left-12 z-20">
+        {/* Floating contact widget (tablet/desktop only — see the in-flow
+            mobile-only version above, which avoids absolute-position
+            overlap on short mobile viewports) */}
+        <div className="contact-widget hidden md:block absolute bottom-8 right-6 md:right-12 rtl:right-auto rtl:left-6 md:rtl:left-12 z-20">
           <div className="contact-widget-inner rounded-2xl p-4 flex flex-col gap-3 min-w-[200px]">
             <p className="text-white/60 text-xs font-semibold uppercase tracking-widest px-1">
               {t("connectWithUs")}

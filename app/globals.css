@@ -462,13 +462,15 @@ iframe {
 .contact-widget {
   animation: slideInRight 0.9s ease-out 1.1s both;
 }
+.contact-widget-mobile {
+  animation: fadeInUp 0.7s ease-out 1.2s both;
+}
 
 .scroll-indicator {
   position: absolute;
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.35rem;
@@ -1068,11 +1070,6 @@ iframe {
 }
 
 /* ═══════════════ MOBILE PERFORMANCE / VISIBILITY (from legacy) ═══════════════ */
-@media (max-width: 479px) {
-  .contact-widget {
-    display: none !important;
-  }
-}
 @media (max-width: 639px) {
   .font-display-lg.text-headline-xl-mobile {
     font-size: clamp(1.6rem, 7vw, 2rem) !important;
@@ -2242,6 +2239,18 @@ html[lang="ar"] .font-serif {
     left: 3rem;
   }
 }
+/* Between md and lg, .fcw is also bottom-anchored (see the mobile/tablet
+   .fcw repositioning below), landing in the same corner as this card.
+   Push the card further from the edge so the two never overlap
+   horizontally at these widths, regardless of either one's exact height. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .contact-widget {
+    right: 7rem;
+  }
+  [dir="rtl"] .contact-widget {
+    left: 7rem;
+  }
+}
 @keyframes slideInLeft {
   from {
     opacity: 0;
@@ -2845,6 +2854,17 @@ html[lang="ar"] .font-serif {
   100% {
     opacity: 0;
     transform: scale(1.55);
+  }
+}
+
+/* Anchor lower on phones/small tablets: vertical-centering crowds the
+   Hero heading/paragraph once badge + stats were added, so the rail sits
+   near the bottom instead (size and horizontal side untouched here). */
+@media (max-width: 1023px) {
+  .fcw {
+    top: auto;
+    bottom: 28px;
+    transform: none;
   }
 }
 
