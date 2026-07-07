@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import SocialIcon from "@/components/ui/SocialIcon";
-import { CONTACT, WHATSAPP_HREF } from "@/lib/nav";
+import { WHATSAPP_HREF, resolveContact, type ResolvedContact } from "@/lib/nav";
 
 const formId = process.env.NEXT_PUBLIC_FORMSPREE_QUOTE_ID;
 const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
@@ -29,7 +29,13 @@ const channelBtnClass =
  * picker actually selects. Posts to Formspree; the channel buttons send
  * the same validated data via email client / WhatsApp.
  */
-export default function QuoteForm() {
+export default function QuoteForm({
+  contact = resolveContact(),
+}: {
+  /** Resolved contact info (CMS override applied) — passed from the
+   *  server-rendered parent page since CMS reads are server-only. */
+  contact?: ResolvedContact;
+}) {
   const t = useTranslations("quoteForm");
   const tc = useTranslations("common");
   const [step, setStep] = useState(1);
@@ -99,7 +105,7 @@ export default function QuoteForm() {
       product: d.product_type,
       company: d.company || d.email,
     });
-    window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(
+    window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(formatQuote(d))}`;
   };
@@ -455,17 +461,17 @@ export default function QuoteForm() {
                 {t("reachDirectly")}{" "}
                 <a
                   className="underline font-semibold"
-                  href={`mailto:${CONTACT.email}`}
+                  href={`mailto:${contact.email}`}
                 >
-                  {CONTACT.email}
+                  {contact.email}
                 </a>{" "}
                 {t("or")}{" "}
                 <a
                   className="underline font-semibold"
-                  href={CONTACT.phoneMain.href}
+                  href={contact.phoneMain.href}
                   dir="ltr"
                 >
-                  {CONTACT.phoneMain.display}
+                  {contact.phoneMain.display}
                 </a>
                 .
               </p>

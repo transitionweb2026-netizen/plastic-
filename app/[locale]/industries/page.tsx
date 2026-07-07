@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { cmsMetadata } from "@/lib/cms/seo";
+import { allIndustryOverrides } from "@/lib/cms/content-overlay";
 import { setRequestLocale } from "next-intl/server";
 import IndustriesContent from "@/components/industries/IndustriesContent";
 
@@ -20,5 +21,5 @@ export default async function IndustriesPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  return <IndustriesContent />;
+  return <IndustriesContent overrides={allIndustryOverrides(locale as "en" | "ar")} />;
 }

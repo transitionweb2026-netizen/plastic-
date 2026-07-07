@@ -24,13 +24,46 @@ export const NAV_LINKS: NavLink[] = [
 
 export const REQUEST_QUOTE = { label: "Request Quote", href: "/request-quote" };
 
-/** Canonical contact details (standardized on the legacy contact.html set). */
+/** Canonical contact details (standardized on the legacy contact.html set).
+ *  These are the built-in defaults; the CMS can override email/phones (see
+ *  resolveContact() below) — address stays translation-driven (messages/*.json). */
 export const CONTACT = {
   email: "info@giantstorage.com",
   phoneMain: { display: "+20 102 515 1199", href: "tel:+201025151199" },
   phoneLogistics: { display: "+20 127 013 7779", href: "tel:+201270137779" },
   address: "22 El Tayaran St., Nasr City, Cairo, Egypt",
 } as const;
+
+/** Resolves CONTACT with an optional CMS override layered on top
+ *  (trim-or-fallback per field, same discipline as the rest of the CMS).
+ *  Plain/no "server-only" import here so client components (ContactForm,
+ *  QuoteForm) can receive the resolved object as a prop from their parent
+ *  server page without pulling in fs-based code. */
+export type ResolvedContact = {
+  email: string;
+  phoneMain: { display: string; href: string };
+  phoneLogistics: { display: string; href: string };
+};
+
+export function resolveContact(override?: {
+  email?: string;
+  phoneMainDisplay?: string;
+  phoneMainHref?: string;
+  phoneLogisticsDisplay?: string;
+  phoneLogisticsHref?: string;
+}): ResolvedContact {
+  return {
+    email: override?.email?.trim() || CONTACT.email,
+    phoneMain: {
+      display: override?.phoneMainDisplay?.trim() || CONTACT.phoneMain.display,
+      href: override?.phoneMainHref?.trim() || CONTACT.phoneMain.href,
+    },
+    phoneLogistics: {
+      display: override?.phoneLogisticsDisplay?.trim() || CONTACT.phoneLogistics.display,
+      href: override?.phoneLogisticsHref?.trim() || CONTACT.phoneLogistics.href,
+    },
+  };
+}
 
 /** WhatsApp chat deep link derived from the real main office number. */
 export const WHATSAPP_HREF = `https://wa.me/${CONTACT.phoneMain.href.replace(/\D/g, "")}`;

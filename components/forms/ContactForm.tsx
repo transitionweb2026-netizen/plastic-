@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import SocialIcon from "@/components/ui/SocialIcon";
-import { CONTACT, WHATSAPP_HREF } from "@/lib/nav";
+import { WHATSAPP_HREF, resolveContact, type ResolvedContact } from "@/lib/nav";
 
 const formId = process.env.NEXT_PUBLIC_FORMSPREE_CONTACT_ID;
 const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
@@ -32,7 +32,13 @@ function collectForm(form: HTMLFormElement | null): Record<string, string> | nul
  * FormData to Formspree; the two channel buttons above the consent row
  * send the same validated data via the visitor's email client or WhatsApp.
  */
-export default function ContactForm() {
+export default function ContactForm({
+  contact = resolveContact(),
+}: {
+  /** Resolved contact info (CMS override applied) — passed from the
+   *  server-rendered parent page since CMS reads are server-only. */
+  contact?: ResolvedContact;
+}) {
   const t = useTranslations("contactForm");
   const tc = useTranslations("common");
   const [status, setStatus] = useState<Status>("idle");
@@ -77,7 +83,7 @@ export default function ContactForm() {
     const d = collectForm(e.currentTarget.form);
     if (!d) return;
     const subject = t("emailSubject", { type: d.inquiry_type, name: d.name });
-    window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(
+    window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(formatInquiry(d))}`;
   };
@@ -234,16 +240,16 @@ export default function ContactForm() {
         <p className="md:col-span-2 text-error text-sm">
           {formId ? t("errorConfigured") : t("errorNotConfigured")}{" "}
           {t("reachDirectly")}{" "}
-          <a className="underline font-semibold" href={`mailto:${CONTACT.email}`}>
-            {CONTACT.email}
+          <a className="underline font-semibold" href={`mailto:${contact.email}`}>
+            {contact.email}
           </a>{" "}
           {t("or")}{" "}
           <a
             className="underline font-semibold"
-            href={CONTACT.phoneMain.href}
+            href={contact.phoneMain.href}
             dir="ltr"
           >
-            {CONTACT.phoneMain.display}
+            {contact.phoneMain.display}
           </a>
           .
         </p>

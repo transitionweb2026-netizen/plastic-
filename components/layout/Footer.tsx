@@ -1,7 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import SocialIcon from "@/components/ui/SocialIcon";
 import { Link } from "@/i18n/navigation";
-import { CONTACT, SOCIAL_LINKS } from "@/lib/nav";
+import { SOCIAL_LINKS, resolveContact } from "@/lib/nav";
+import { siteContactOverride } from "@/lib/cms/content-overlay";
 
 /**
  * Canonical site footer: home.html's 4-column layout and styling, with the
@@ -11,6 +12,7 @@ import { CONTACT, SOCIAL_LINKS } from "@/lib/nav";
 export default async function Footer() {
   const t = await getTranslations("footer");
   const th = await getTranslations("header");
+  const CONTACT = resolveContact(siteContactOverride());
 
   return (
     <footer className="bg-surface-container-highest text-on-surface border-t border-outline-variant relative overflow-hidden">

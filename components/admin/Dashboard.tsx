@@ -8,6 +8,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import WebsiteContentTab from "./WebsiteContentTab";
 
 /* ────────────── types mirrored from lib/cms (client-safe copies) ────────────── */
 type Locale = "en" | "ar";
@@ -57,7 +58,7 @@ type Payload = {
   galleryImages: Record<Locale, { src: string; alt: string; caption: string }[]>;
 };
 
-const TABS = ["Pages", "Blog", "Products", "Gallery", "Global", "Robots", "Redirects", "Health"] as const;
+const TABS = ["Website Content", "Pages", "Blog", "Products", "Gallery", "Global", "Robots", "Redirects", "Health"] as const;
 type Tab = (typeof TABS)[number];
 
 const TITLE = { min: 50, max: 60 };
@@ -365,7 +366,7 @@ function RecordCard({
 
 export default function Dashboard() {
   const [data, setData] = useState<Payload | null>(null);
-  const [tab, setTab] = useState<Tab>("Pages");
+  const [tab, setTab] = useState<Tab>("Website Content");
   const [error, setError] = useState("");
 
   const load = useCallback(async () => {
@@ -433,9 +434,9 @@ export default function Dashboard() {
     <div className="max-w-6xl mx-auto p-6 md:p-10">
       <header className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="font-headline-lg text-headline-lg text-primary">SEO CMS</h1>
+          <h1 className="font-headline-lg text-headline-lg text-primary">Admin Dashboard</h1>
           <p className="text-sm text-on-surface-variant">
-            Giant Storage — enterprise SEO management · {data.siteUrl}
+            Giant Storage — website content &amp; SEO management · {data.siteUrl}
           </p>
         </div>
         <button
@@ -500,6 +501,7 @@ export default function Dashboard() {
       {tab === "Robots" && <RobotsTab data={data} reload={load} />}
       {tab === "Redirects" && <RedirectsTab data={data} reload={load} />}
       {tab === "Health" && <HealthTab data={data} />}
+      {tab === "Website Content" && <WebsiteContentTab />}
     </div>
   );
 }

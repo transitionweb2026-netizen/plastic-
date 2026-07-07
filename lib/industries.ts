@@ -20,15 +20,19 @@ export type IndustryModal = {
 };
 
 import { AR_INDUSTRY_MODALS } from './industries-ar';
+import { applyContentOverride } from './cms/deep-merge';
 
-/** Modal data with locale-appropriate text (codes/standards preserved). */
+/** Modal data with locale-appropriate text (codes/standards preserved),
+ *  then an optional CMS override layered on top (trim-or-fallback). */
 export function localizeIndustryModal(
   id: string,
   data: IndustryModal,
-  locale: string
+  locale: string,
+  cmsOverride?: Partial<IndustryModal>
 ): IndustryModal {
-  if (locale !== 'ar') return data;
-  return { ...data, ...AR_INDUSTRY_MODALS[id] };
+  const arMerged: IndustryModal =
+    locale !== 'ar' ? data : { ...data, ...AR_INDUSTRY_MODALS[id] };
+  return applyContentOverride(arMerged, cmsOverride);
 }
 
 export const INDUSTRY_MODALS: Record<string, IndustryModal> = {

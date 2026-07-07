@@ -75,3 +75,36 @@ export function readCms(): CmsData {
 export function writeCms(data: CmsData): void {
   driver.write(data);
 }
+
+/**
+ * Generic version of the pattern above, for new CMS domains that need
+ * their own file (kept separate from seo.json so it doesn't grow
+ * unbounded — see lib/cms/translations-storage.ts, content-storage.ts).
+ * Same no-cache-by-design rationale as readCms()/writeCms() above.
+ */
+export interface FileDriver<T> {
+  read(): T;
+  write(data: T): void;
+}
+
+export function createJsonFileDriver<T>(
+  fileName: string,
+  emptyValue: () => T
+): FileDriver<T> {
+  const filePath = path.join(process.cwd(), "content", "cms", fileName);
+  return {
+    read(): T {
+      try {
+        return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
+      } catch {
+        return emptyValue();
+      }
+    },
+    write(data: T): void {
+      fs.mkdirSync(path.dirname(filePath), { recursive: true });
+      const tmp = filePath + ".tmp";
+      fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
+      fs.renameSync(tmp, filePath);
+    },
+  };
+}

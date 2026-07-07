@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { cmsMetadata } from "@/lib/cms/seo";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { CONTACT } from "@/lib/nav";
+import { resolveContact } from "@/lib/nav";
+import { siteContactOverride } from "@/lib/cms/content-overlay";
 
 export async function generateMetadata({
   params,
@@ -25,6 +26,7 @@ export default async function TermsOfServicePage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("legal");
+  const CONTACT = resolveContact(siteContactOverride());
 
   return (
     <div className="max-w-4xl mx-auto px-margin-mobile md:px-margin-tablet py-24">

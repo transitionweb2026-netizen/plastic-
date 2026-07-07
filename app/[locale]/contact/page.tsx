@@ -4,7 +4,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CircuitLines, CrateSchematic, DimensionLine } from "@/components/ui/DecorArt";
 import Image from "next/image";
 import ContactForm from "@/components/forms/ContactForm";
-import { CONTACT } from "@/lib/nav";
+import { CONTACT, resolveContact } from "@/lib/nav";
+import { siteContactOverride } from "@/lib/cms/content-overlay";
 
 export async function generateMetadata({
   params,
@@ -30,6 +31,7 @@ export default async function ContactPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("contactPage");
+  const contact = resolveContact(siteContactOverride());
 
   return (
     <div className="relative overflow-hidden pt-6 pb-20">
@@ -92,18 +94,18 @@ export default async function ContactPage({
             <div className="space-y-2">
               <p className="text-on-surface-variant flex flex-wrap items-center justify-between gap-1">
                 <span>{t("mainOffice")}</span>
-                <a className="font-bold text-primary" href={CONTACT.phoneMain.href} dir="ltr">
-                  {CONTACT.phoneMain.display}
+                <a className="font-bold text-primary" href={contact.phoneMain.href} dir="ltr">
+                  {contact.phoneMain.display}
                 </a>
               </p>
               <p className="text-on-surface-variant flex flex-wrap items-center justify-between gap-1">
                 <span>{t("logisticsDept")}</span>
                 <a
                   className="font-bold text-primary"
-                  href={CONTACT.phoneLogistics.href}
+                  href={contact.phoneLogistics.href}
                   dir="ltr"
                 >
-                  {CONTACT.phoneLogistics.display}
+                  {contact.phoneLogistics.display}
                 </a>
               </p>
             </div>
@@ -145,7 +147,7 @@ export default async function ContactPage({
               {t("formSub")}
             </p>
           </div>
-          <ContactForm />
+          <ContactForm contact={contact} />
         </div>
 
         {/* Map */}

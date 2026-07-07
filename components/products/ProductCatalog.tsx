@@ -16,12 +16,18 @@ const VISIBLE_PRODUCTS = PRODUCTS.slice(0, MAX_VISIBLE_PRODUCTS);
  * Client-side product catalog: a single six-product grid with the detail
  * modal (no category filters, no pagination).
  */
-export default function ProductCatalog() {
+export default function ProductCatalog({
+  overrides,
+}: {
+  /** CMS content overrides, keyed by product id (server-fetched by the
+   *  parent page — see app/[locale]/products/page.tsx). */
+  overrides?: Record<number, Partial<Product>>;
+}) {
   const locale = useLocale();
   const t = useTranslations("productsUi");
   const visibleProducts = useMemo(
-    () => VISIBLE_PRODUCTS.map((p) => localizeProduct(p, locale)),
-    [locale]
+    () => VISIBLE_PRODUCTS.map((p) => localizeProduct(p, locale, overrides?.[p.id])),
+    [locale, overrides]
   );
   const [selected, setSelected] = useState<Product | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);

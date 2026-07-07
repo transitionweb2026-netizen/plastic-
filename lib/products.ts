@@ -1121,11 +1121,18 @@ export function productCover(product: Product): string {
 
 /** Gallery for the expanded card: explicit `images`, else the generated set, else the single catalog photo. */
 import { AR_PRODUCTS, AR_COLOR_LABELS } from './products-ar';
+import { applyContentOverride } from './cms/deep-merge';
 
-/** Product with locale-appropriate text fields (codes/specs preserved). */
-export function localizeProduct(product: Product, locale: string): Product {
-  if (locale !== 'ar') return product;
-  return { ...product, ...AR_PRODUCTS[product.id] };
+/** Product with locale-appropriate text fields (codes/specs preserved),
+ *  then an optional CMS override layered on top (trim-or-fallback). */
+export function localizeProduct(
+  product: Product,
+  locale: string,
+  cmsOverride?: Partial<Product>
+): Product {
+  const arMerged: Product =
+    locale !== 'ar' ? product : { ...product, ...AR_PRODUCTS[product.id] };
+  return applyContentOverride(arMerged, cmsOverride);
 }
 
 /** Color swatch label in the active locale. */

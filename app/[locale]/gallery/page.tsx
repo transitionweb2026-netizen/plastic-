@@ -28,13 +28,18 @@ export default async function GalleryPage({
   setRequestLocale(locale);
   const t = await getTranslations("galleryUi");
   const loc = locale as "en" | "ar";
-  // Gallery images with CMS per-image SEO overrides (alt/title/caption)
+  // Gallery images with CMS per-image overrides (alt/caption always shown;
+  // title/category/description carried through for any consumer that wants
+  // them — same trim-or-fallback discipline as the rest of the CMS).
   const images = galleryImages(loc).map((img) => {
     const cms = galleryImageSeo(img.src, loc);
     return {
       ...img,
       alt: cms?.alt?.trim() || img.alt,
       caption: cms?.caption?.trim() || img.caption,
+      title: cms?.title?.trim() || undefined,
+      category: cms?.category?.trim() || undefined,
+      description: cms?.description?.trim() || undefined,
     };
   });
 

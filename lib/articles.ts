@@ -21,17 +21,29 @@ export type Article = {
 };
 
 import { AR_ARTICLES } from './articles-ar';
+import { applyContentOverride } from './cms/deep-merge';
 
 /** Article with locale-appropriate metadata/hero (body falls back to
- * English until AR_ARTICLES provides a translated bodyHtml). */
-export function localizeArticle(article: Article, locale: string): Article {
-  if (locale !== 'ar') return article;
-  return { ...article, ...AR_ARTICLES[article.slug] };
+ * English until AR_ARTICLES provides a translated bodyHtml), then an
+ * optional CMS override layered on top (trim-or-fallback). */
+export function localizeArticle(
+  article: Article,
+  locale: string,
+  cmsOverride?: Partial<Article>
+): Article {
+  const arMerged: Article =
+    locale !== 'ar' ? article : { ...article, ...AR_ARTICLES[article.slug] };
+  return applyContentOverride(arMerged, cmsOverride);
 }
 
-/** True when the article body itself is available in the locale. */
-export function articleBodyLocalized(slug: string, locale: string): boolean {
-  return locale !== 'ar' || Boolean(AR_ARTICLES[slug]?.bodyHtml);
+/** True when the article body itself is available in the locale — a
+ *  published CMS bodyHtml override counts as localized too. */
+export function articleBodyLocalized(
+  slug: string,
+  locale: string,
+  cmsBodyHtml?: string
+): boolean {
+  return locale !== 'ar' || Boolean(AR_ARTICLES[slug]?.bodyHtml) || Boolean(cmsBodyHtml?.trim());
 }
 
 export const ARTICLES: Article[] = [

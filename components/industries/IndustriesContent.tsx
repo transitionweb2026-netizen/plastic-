@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
 import IndustryModal from "./IndustryModal";
-import { INDUSTRY_MODALS, localizeIndustryModal } from "@/lib/industries";
+import { INDUSTRY_MODALS, localizeIndustryModal, type IndustryModal as IndustryModalData } from "@/lib/industries";
 
 const HERO_IMG =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuD9tA-rr56TAmeLUnSIaFKlqLG4WOQHKeKl--QJeyBeW4FocUP0_70tEj7xLqMSxysGDlXeHbbhUEYKgQDUx4Bobd1-tTTOPJbQ-sBlHT8xEeBEuI246As9lEE9_tN8TpHTJADF-JYWyVqKw8d_Y9FUF9rfzQdccymjHv0TkPA9KCAip3cT_w1e5ZaTtgmlFM5xlQ17smw7Xjp3FFIyb6tOk2YOJGs4PnucZmYwhk3bSsUt8q0LPvZ0eKBY8BA4-mxFCSsjFeZyefM";
@@ -47,7 +47,14 @@ const STEP_IMAGES: Record<string, string> = Object.fromEntries(
   STEP_DEFS.map((s) => [s.id, INDUSTRY_MODALS[s.id].image])
 );
 
-export default function IndustriesContent() {
+export default function IndustriesContent({
+  overrides,
+}: {
+  /** CMS content overrides for the detail modals, keyed by modal id
+   *  (server-fetched by the parent page). Card-grid text above stays
+   *  translation-driven — see the "industriesPage" namespace. */
+  overrides?: Record<string, Partial<IndustryModalData>>;
+}) {
   const t = useTranslations("industriesPage");
   const locale = useLocale();
   const [openId, setOpenId] = useState<string | null>(null);
@@ -384,7 +391,7 @@ export default function IndustriesContent() {
       <IndustryModal
         data={
           openId && INDUSTRY_MODALS[openId]
-            ? localizeIndustryModal(openId, INDUSTRY_MODALS[openId], locale)
+            ? localizeIndustryModal(openId, INDUSTRY_MODALS[openId], locale, overrides?.[openId])
             : null
         }
         onClose={() => setOpenId(null)}

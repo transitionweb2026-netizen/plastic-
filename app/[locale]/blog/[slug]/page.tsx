@@ -17,6 +17,7 @@ import {
   cmsMetadata,
   resolveArticleSlug,
 } from "@/lib/cms/seo";
+import { articleOverride } from "@/lib/cms/content-overlay";
 
 type Params = { slug: string; locale: string };
 
@@ -52,8 +53,9 @@ export default async function ArticlePage({
   if (!baseSlug) notFound();
   const base = getArticle(baseSlug);
   if (!base) notFound();
-  const article = localizeArticle(base, locale);
-  const bodyLocalized = articleBodyLocalized(baseSlug, locale);
+  const cmsOverride = articleOverride(baseSlug, loc);
+  const article = localizeArticle(base, locale, cmsOverride);
+  const bodyLocalized = articleBodyLocalized(baseSlug, locale, cmsOverride?.bodyHtml);
 
   const urlSlug = articleSlug(baseSlug, loc);
   const pageUrl = `${SITE_URL}${locale === "en" ? "/en" : ""}/blog/${urlSlug}`;

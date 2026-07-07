@@ -4,6 +4,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PalletBlueprint, DimensionLine } from "@/components/ui/DecorArt";
 import Image from "next/image";
 import QuoteForm from "@/components/forms/QuoteForm";
+import { resolveContact } from "@/lib/nav";
+import { siteContactOverride } from "@/lib/cms/content-overlay";
 
 export async function generateMetadata({
   params,
@@ -58,7 +60,7 @@ export default async function RequestQuotePage({
         <PalletBlueprint className="decor-breathe absolute bottom-6 left-6 w-[320px] hidden xl:block" />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
           <div className="lg:col-span-8">
-            <QuoteForm />
+            <QuoteForm contact={resolveContact(siteContactOverride())} />
           </div>
 
           <aside className="lg:col-span-4 space-y-gutter">
