@@ -296,21 +296,27 @@ function RecordCard({
   defaults: { en: SeoFields; ar: SeoFields };
   siteUrl: string;
   otherSlugs: Record<Locale, string[]>;
-  onSave: (rec: PageSeo, publish: boolean) => Promise<void>;
+  onSave: (rec: PageSeo, publish: boolean) => Promise<boolean>;
   extra?: React.ReactNode;
 }) {
   const [rec, setRec] = useState<PageSeo>(record);
   const [openLocale, setOpenLocale] = useState<Locale>("en");
   const [busy, setBusy] = useState<"" | "draft" | "publish">("");
   const [saved, setSaved] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const doSave = async (publish: boolean) => {
     setBusy(publish ? "publish" : "draft");
-    await onSave({ ...rec, published: publish }, publish);
-    setRec((r) => ({ ...r, published: publish }));
+    const ok = await onSave({ ...rec, published: publish }, publish);
     setBusy("");
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2200);
+    if (ok) {
+      setRec((r) => ({ ...r, published: publish }));
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2200);
+    } else {
+      setFailed(true);
+      setTimeout(() => setFailed(false), 4000);
+    }
   };
 
   return (
@@ -352,6 +358,7 @@ function RecordCard({
             {busy === "publish" ? "Publishing…" : "Publish"}
           </button>
           {saved && <span className="text-primary text-sm font-bold">Saved ✓</span>}
+          {failed && <span className="text-error text-sm font-bold">Save failed — check connection and try again</span>}
           {rec.published && (
             <a className="text-xs underline text-on-surface-variant ms-auto" href={entry.slugEditable ? `/blog/${rec.en.slug || defaults.en.slug}` : entry.path} target="_blank" rel="noreferrer">
               Preview →
@@ -424,8 +431,9 @@ export default function Dashboard() {
   });
 
   const savePage = (pageKey: string) => async (rec: PageSeo) => {
-    await saveSection({ section: "page", pageKey, record: rec });
-    void load();
+    const ok = await saveSection({ section: "page", pageKey, record: rec });
+    if (ok) void load();
+    return ok;
   };
 
   const groups: Record<string, Registry[]> = {};
@@ -535,8 +543,9 @@ function ProductsTab({ data, reload }: { data: Payload; reload: () => Promise<vo
             siteUrl={data.siteUrl}
             otherSlugs={{ en: [], ar: [] }}
             onSave={async (rec) => {
-              await saveSection({ section: "product", id: key, record: rec as ProductSeo });
-              await reload();
+              const ok = await saveSection({ section: "product", id: key, record: rec as ProductSeo });
+              if (ok) await reload();
+              return ok;
             }}
             extra={
               <ProductExtras
@@ -573,6 +582,7 @@ function ProductExtras({
     rackingLoad: record.rackingLoad ?? "",
   });
   const [saved, setSaved] = useState(false);
+  const [failed, setFailed] = useState(false);
   return (
     <div className="mt-5 border-t border-outline-variant/50 pt-4">
       <p className="font-label-md text-label-md mb-3">Technical data (Product schema)</p>
@@ -600,14 +610,20 @@ function ProductExtras({
       <button
         className="mt-3 px-4 py-2 border border-outline-variant rounded-lg text-xs font-bold"
         onClick={async () => {
-          await saveSection({ section: "product", id: String(info.id), record: { ...record, ...extras } });
-          setSaved(true);
-          setTimeout(() => setSaved(false), 2000);
+          const ok = await saveSection({ section: "product", id: String(info.id), record: { ...record, ...extras } });
+          if (ok) {
+            setSaved(true);
+            setTimeout(() => setSaved(false), 2000);
+          } else {
+            setFailed(true);
+            setTimeout(() => setFailed(false), 4000);
+          }
         }}
       >
         Save technical data
       </button>
       {saved && <span className="text-primary text-xs font-bold ms-2">Saved ✓</span>}
+      {failed && <span className="text-error text-xs font-bold ms-2">Save failed</span>}
     </div>
   );
 }
@@ -626,8 +642,9 @@ function GalleryTab({ data, reload }: { data: Payload; reload: () => Promise<voi
               data.cms.images[img.src] ?? { file: img.src, published: false, en: {}, ar: {} };
             return (
               <ImageCard key={img.src} img={img} arCaption={arImg?.caption ?? ""} record={record} onSave={async (rec) => {
-                await saveSection({ section: "image", file: img.src, record: rec });
-                await reload();
+                const ok = await saveSection({ section: "image", file: img.src, record: rec });
+                if (ok) await reload();
+                return ok;
               }} />
             );
           })}
@@ -638,8 +655,9 @@ function GalleryTab({ data, reload }: { data: Payload; reload: () => Promise<voi
         <div className="grid md:grid-cols-2 gap-3">
           {data.galleryVideos.map((video) => (
             <VideoCard key={video.id} video={video} onSave={async (rec) => {
-              await saveSection({ section: "galleryVideo", id: video.id, record: rec });
-              await reload();
+              const ok = await saveSection({ section: "galleryVideo", id: video.id, record: rec });
+              if (ok) await reload();
+              return ok;
             }} />
           ))}
         </div>
@@ -652,7 +670,7 @@ function VideoCard({
   video, onSave,
 }: {
   video: { id: string; titleEn: string; descEn: string; titleAr: string; descAr: string; thumb: string };
-  onSave: (rec: { titleEn: string; descEn: string; titleAr: string; descAr: string }) => Promise<void>;
+  onSave: (rec: { titleEn: string; descEn: string; titleAr: string; descAr: string }) => Promise<boolean>;
 }) {
   const [v, setV] = useState({
     titleEn: video.titleEn, descEn: video.descEn, titleAr: video.titleAr, descAr: video.descAr,
@@ -660,6 +678,7 @@ function VideoCard({
   const [loc, setLoc] = useState<Locale>("en");
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [failed, setFailed] = useState(false);
   const titleKey = loc === "en" ? "titleEn" : "titleAr";
   const descKey = loc === "en" ? "descEn" : "descAr";
 
@@ -690,15 +709,21 @@ function VideoCard({
           className="px-4 py-1.5 bg-primary text-white rounded-lg text-xs font-bold disabled:opacity-60"
           onClick={async () => {
             setBusy(true);
-            await onSave(v);
+            const ok = await onSave(v);
             setBusy(false);
-            setSaved(true);
-            setTimeout(() => setSaved(false), 2000);
+            if (ok) {
+              setSaved(true);
+              setTimeout(() => setSaved(false), 2000);
+            } else {
+              setFailed(true);
+              setTimeout(() => setFailed(false), 4000);
+            }
           }}
         >
           {busy ? "Saving…" : "Save"}
         </button>
         {saved && <span className="text-primary text-xs font-bold">Saved ✓</span>}
+        {failed && <span className="text-error text-xs font-bold">Save failed</span>}
       </div>
     </div>
   );
@@ -710,11 +735,12 @@ function ImageCard({
   img: { src: string; alt: string; caption: string };
   arCaption: string;
   record: ImageSeo;
-  onSave: (rec: ImageSeo) => Promise<void>;
+  onSave: (rec: ImageSeo) => Promise<boolean>;
 }) {
   const [rec, setRec] = useState(record);
   const [loc, setLoc] = useState<Locale>("en");
   const [saved, setSaved] = useState(false);
+  const [failed, setFailed] = useState(false);
   const side = rec[loc];
   const set = (k: keyof ImageSeoSide, v: string) =>
     setRec((r) => ({ ...r, [loc]: { ...r[loc], [k]: v } }));
@@ -749,13 +775,22 @@ function ImageCard({
         <textarea className={`${inputCls} col-span-2`} rows={2} placeholder="Description (optional)" value={side.description ?? ""} onChange={(e) => set("description", e.target.value)} />
       </div>
       <div className="flex items-center gap-2 mt-3">
-        <button className="px-4 py-1.5 bg-primary text-white rounded-lg text-xs font-bold" onClick={async () => { await onSave({ ...rec, published: true }); setSaved(true); setTimeout(() => setSaved(false), 2000); }}>
+        <button className="px-4 py-1.5 bg-primary text-white rounded-lg text-xs font-bold" onClick={async () => {
+          const ok = await onSave({ ...rec, published: true });
+          if (ok) { setSaved(true); setTimeout(() => setSaved(false), 2000); }
+          else { setFailed(true); setTimeout(() => setFailed(false), 4000); }
+        }}>
           Publish
         </button>
-        <button className="px-4 py-1.5 border border-outline-variant rounded-lg text-xs font-bold" onClick={async () => { await onSave({ ...rec, published: false }); }}>
+        <button className="px-4 py-1.5 border border-outline-variant rounded-lg text-xs font-bold" onClick={async () => {
+          const ok = await onSave({ ...rec, published: false });
+          if (ok) { setSaved(true); setTimeout(() => setSaved(false), 2000); }
+          else { setFailed(true); setTimeout(() => setFailed(false), 4000); }
+        }}>
           Save Draft
         </button>
         {saved && <span className="text-primary text-xs font-bold">Saved ✓</span>}
+        {failed && <span className="text-error text-xs font-bold">Save failed</span>}
       </div>
     </div>
   );
@@ -766,6 +801,7 @@ function ImageCard({
 function GlobalTab({ data, reload }: { data: Payload; reload: () => Promise<void> }) {
   const [g, setG] = useState(data.cms.global);
   const [saved, setSaved] = useState(false);
+  const [failed, setFailed] = useState(false);
   const org = g.org;
   const setOrg = (patch: Partial<typeof org>) => setG((x) => ({ ...x, org: { ...x.org, ...patch } }));
   const iconUpload = async (kind: "favicon" | "apple", file: File) => {
@@ -862,15 +898,21 @@ function GlobalTab({ data, reload }: { data: Payload; reload: () => Promise<void
       <button
         className="px-6 py-3 bg-primary text-white rounded-lg text-sm font-bold"
         onClick={async () => {
-          await saveSection({ section: "global", record: g });
-          await reload();
-          setSaved(true);
-          setTimeout(() => setSaved(false), 2200);
+          const ok = await saveSection({ section: "global", record: g });
+          if (ok) {
+            await reload();
+            setSaved(true);
+            setTimeout(() => setSaved(false), 2200);
+          } else {
+            setFailed(true);
+            setTimeout(() => setFailed(false), 4000);
+          }
         }}
       >
         Save global settings
       </button>
       {saved && <span className="text-primary text-sm font-bold ms-3">Saved ✓</span>}
+      {failed && <span className="text-error text-sm font-bold ms-3">Save failed — check connection and try again</span>}
     </div>
   );
 }
@@ -878,6 +920,7 @@ function GlobalTab({ data, reload }: { data: Payload; reload: () => Promise<void
 function RobotsTab({ data, reload }: { data: Payload; reload: () => Promise<void> }) {
   const [cfg, setCfg] = useState(data.cms.global.robots);
   const [saved, setSaved] = useState(false);
+  const [failed, setFailed] = useState(false);
   const setRule = (i: number, patch: Partial<RobotsRule>) =>
     setCfg((c) => ({ ...c, rules: c.rules.map((r, j) => (j === i ? { ...r, ...patch } : r)) }));
   return (
@@ -897,11 +940,16 @@ function RobotsTab({ data, reload }: { data: Payload; reload: () => Promise<void
         + Add rule
       </button>
       <div className="flex gap-3">
-        <button className="px-6 py-3 bg-primary text-white rounded-lg text-sm font-bold" onClick={async () => { await saveSection({ section: "global", record: { ...data.cms.global, robots: cfg } }); await reload(); setSaved(true); setTimeout(() => setSaved(false), 2200); }}>
+        <button className="px-6 py-3 bg-primary text-white rounded-lg text-sm font-bold" onClick={async () => {
+          const ok = await saveSection({ section: "global", record: { ...data.cms.global, robots: cfg } });
+          if (ok) { await reload(); setSaved(true); setTimeout(() => setSaved(false), 2200); }
+          else { setFailed(true); setTimeout(() => setFailed(false), 4000); }
+        }}>
           Save robots.txt
         </button>
         <a className="px-6 py-3 border border-outline-variant rounded-lg text-sm font-bold" href="/robots.txt" target="_blank" rel="noreferrer">View live</a>
         {saved && <span className="self-center text-primary text-sm font-bold">Saved ✓</span>}
+        {failed && <span className="self-center text-error text-sm font-bold">Save failed</span>}
       </div>
     </div>
   );
@@ -911,6 +959,7 @@ function RedirectsTab({ data, reload }: { data: Payload; reload: () => Promise<v
   const [rows, setRows] = useState<Redirect[]>(data.cms.redirects);
   const [q, setQ] = useState("");
   const [saved, setSaved] = useState(false);
+  const [failed, setFailed] = useState(false);
   const filtered = rows.filter((r) => r.from.includes(q) || r.to.includes(q));
   const set = (id: string, patch: Partial<Redirect>) =>
     setRows((rs) => rs.map((r) => (r.id === id ? { ...r, ...patch } : r)));
@@ -952,10 +1001,15 @@ function RedirectsTab({ data, reload }: { data: Payload; reload: () => Promise<v
           </tbody>
         </table>
       </div>
-      <button className="px-6 py-3 bg-primary text-white rounded-lg text-sm font-bold" onClick={async () => { await saveSection({ section: "redirects", records: rows }); await reload(); setSaved(true); setTimeout(() => setSaved(false), 2200); }}>
+      <button className="px-6 py-3 bg-primary text-white rounded-lg text-sm font-bold" onClick={async () => {
+        const ok = await saveSection({ section: "redirects", records: rows });
+        if (ok) { await reload(); setSaved(true); setTimeout(() => setSaved(false), 2200); }
+        else { setFailed(true); setTimeout(() => setFailed(false), 4000); }
+      }}>
         Save redirects
       </button>
       {saved && <span className="text-primary text-sm font-bold ms-3">Saved ✓</span>}
+      {failed && <span className="text-error text-sm font-bold ms-3">Save failed</span>}
     </div>
   );
 }

@@ -94,12 +94,13 @@ function ProductCard({
   id: number; nameEn: string; nameAr: string;
   base: { en: ProductFields; ar: ProductFields };
   record: ContentRecord<ProductFields>;
-  onSave: (rec: ContentRecord<ProductFields>) => Promise<void>;
+  onSave: (rec: ContentRecord<ProductFields>) => Promise<boolean>;
 }) {
   const [rec, setRec] = useState(record);
   const [loc, setLoc] = useState<Locale>("en");
   const [busy, setBusy] = useState<"" | "draft" | "publish">("");
   const [saved, setSaved] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const f = rec[loc];
   const b = base[loc];
@@ -108,11 +109,16 @@ function ProductCard({
 
   const doSave = async (publish: boolean) => {
     setBusy(publish ? "publish" : "draft");
-    await onSave({ ...rec, published: publish });
-    setRec((r) => ({ ...r, published: publish }));
+    const ok = await onSave({ ...rec, published: publish });
     setBusy("");
-    setSaved(true);
-    setTimeout(() => setSaved(false), 1800);
+    if (ok) {
+      setRec((r) => ({ ...r, published: publish }));
+      setSaved(true);
+      setTimeout(() => setSaved(false), 1800);
+    } else {
+      setFailed(true);
+      setTimeout(() => setFailed(false), 4000);
+    }
   };
 
   return (
@@ -166,6 +172,7 @@ function ProductCard({
             {busy === "publish" ? "Publishing…" : "Publish"}
           </button>
           {saved && <span className="text-primary text-sm font-bold">Saved ✓</span>}
+          {failed && <span className="text-error text-sm font-bold">Save failed — check connection and try again</span>}
         </div>
       </div>
     </details>
@@ -180,12 +187,13 @@ function IndustryCard({
   id: string; titleEn: string; titleAr: string;
   base: { en: IndustryFields; ar: IndustryFields };
   record: ContentRecord<IndustryFields>;
-  onSave: (rec: ContentRecord<IndustryFields>) => Promise<void>;
+  onSave: (rec: ContentRecord<IndustryFields>) => Promise<boolean>;
 }) {
   const [rec, setRec] = useState(record);
   const [loc, setLoc] = useState<Locale>("en");
   const [busy, setBusy] = useState<"" | "draft" | "publish">("");
   const [saved, setSaved] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const f = rec[loc];
   const set = (patch: Partial<IndustryFields>) =>
@@ -193,11 +201,16 @@ function IndustryCard({
 
   const doSave = async (publish: boolean) => {
     setBusy(publish ? "publish" : "draft");
-    await onSave({ ...rec, published: publish });
-    setRec((r) => ({ ...r, published: publish }));
+    const ok = await onSave({ ...rec, published: publish });
     setBusy("");
-    setSaved(true);
-    setTimeout(() => setSaved(false), 1800);
+    if (ok) {
+      setRec((r) => ({ ...r, published: publish }));
+      setSaved(true);
+      setTimeout(() => setSaved(false), 1800);
+    } else {
+      setFailed(true);
+      setTimeout(() => setFailed(false), 4000);
+    }
   };
 
   return (
@@ -245,6 +258,7 @@ function IndustryCard({
             {busy === "publish" ? "Publishing…" : "Publish"}
           </button>
           {saved && <span className="text-primary text-sm font-bold">Saved ✓</span>}
+          {failed && <span className="text-error text-sm font-bold">Save failed — check connection and try again</span>}
         </div>
       </div>
     </details>
@@ -259,12 +273,13 @@ function ArticleCard({
   slug: string; titleEn: string; titleAr: string;
   base: { en: ArticleFields; ar: ArticleFields };
   record: ContentRecord<ArticleFields>;
-  onSave: (rec: ContentRecord<ArticleFields>) => Promise<void>;
+  onSave: (rec: ContentRecord<ArticleFields>) => Promise<boolean>;
 }) {
   const [rec, setRec] = useState(record);
   const [loc, setLoc] = useState<Locale>("en");
   const [busy, setBusy] = useState<"" | "draft" | "publish">("");
   const [saved, setSaved] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const f = rec[loc];
   const b = base[loc];
@@ -273,11 +288,16 @@ function ArticleCard({
 
   const doSave = async (publish: boolean) => {
     setBusy(publish ? "publish" : "draft");
-    await onSave({ ...rec, published: publish });
-    setRec((r) => ({ ...r, published: publish }));
+    const ok = await onSave({ ...rec, published: publish });
     setBusy("");
-    setSaved(true);
-    setTimeout(() => setSaved(false), 1800);
+    if (ok) {
+      setRec((r) => ({ ...r, published: publish }));
+      setSaved(true);
+      setTimeout(() => setSaved(false), 1800);
+    } else {
+      setFailed(true);
+      setTimeout(() => setFailed(false), 4000);
+    }
   };
 
   return (
@@ -417,6 +437,7 @@ function ArticleCard({
             {busy === "publish" ? "Publishing…" : "Publish"}
           </button>
           {saved && <span className="text-primary text-sm font-bold">Saved ✓</span>}
+          {failed && <span className="text-error text-sm font-bold">Save failed — check connection and try again</span>}
         </div>
       </div>
     </details>
@@ -425,17 +446,23 @@ function ArticleCard({
 
 /* ─────────────────────── Site contact editor ─────────────────────── */
 
-function SiteContactEditor({ initial, onSave }: { initial: SiteContact; onSave: (v: SiteContact) => Promise<void> }) {
+function SiteContactEditor({ initial, onSave }: { initial: SiteContact; onSave: (v: SiteContact) => Promise<boolean> }) {
   const [v, setV] = useState(initial);
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const doSave = async () => {
     setBusy(true);
-    await onSave(v);
+    const ok = await onSave(v);
     setBusy(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 1800);
+    if (ok) {
+      setSaved(true);
+      setTimeout(() => setSaved(false), 1800);
+    } else {
+      setFailed(true);
+      setTimeout(() => setFailed(false), 4000);
+    }
   };
 
   return (
@@ -468,6 +495,7 @@ function SiteContactEditor({ initial, onSave }: { initial: SiteContact; onSave: 
           {busy ? "Saving…" : "Save"}
         </button>
         {saved && <span className="text-primary text-sm font-bold">Saved ✓</span>}
+        {failed && <span className="text-error text-sm font-bold">Save failed — check connection and try again</span>}
       </div>
     </div>
   );
@@ -526,8 +554,9 @@ export default function ContentTab() {
               base={p.base}
               record={data.overrides.products[String(p.id)] ?? emptyProduct()}
               onSave={async (rec) => {
-                await saveContent({ section: "product", id: String(p.id), record: rec });
-                load();
+                const ok = await saveContent({ section: "product", id: String(p.id), record: rec });
+                if (ok) load();
+                return ok;
               }}
             />
           ))}
@@ -545,8 +574,9 @@ export default function ContentTab() {
               base={ind.base}
               record={data.overrides.industries[ind.id] ?? emptyIndustry()}
               onSave={async (rec) => {
-                await saveContent({ section: "industry", id: ind.id, record: rec });
-                load();
+                const ok = await saveContent({ section: "industry", id: ind.id, record: rec });
+                if (ok) load();
+                return ok;
               }}
             />
           ))}
@@ -564,8 +594,9 @@ export default function ContentTab() {
               base={a.base}
               record={data.overrides.articles[a.slug] ?? emptyArticle()}
               onSave={async (rec) => {
-                await saveContent({ section: "article", slug: a.slug, record: rec });
-                load();
+                const ok = await saveContent({ section: "article", slug: a.slug, record: rec });
+                if (ok) load();
+                return ok;
               }}
             />
           ))}
@@ -576,8 +607,9 @@ export default function ContentTab() {
         <SiteContactEditor
           initial={data.overrides.siteContact}
           onSave={async (v) => {
-            await saveContent({ section: "siteContact", record: v });
-            load();
+            const ok = await saveContent({ section: "siteContact", record: v });
+            if (ok) load();
+            return ok;
           }}
         />
       )}
