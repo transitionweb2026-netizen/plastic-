@@ -3,8 +3,9 @@
 import { useState } from "react";
 import TranslationsTab from "./TranslationsTab";
 import ContentTab from "./ContentTab";
+import SiteImagesTab from "./SiteImagesTab";
 
-const SUBTABS = ["Text & Labels", "Products / Industries / Articles / Contact Info"] as const;
+const SUBTABS = ["Text & Labels", "Products / Industries / Articles / Contact Info", "Site Images"] as const;
 
 /**
  * Single entry point for editing every visible word on the site, without
@@ -46,6 +47,7 @@ export default function WebsiteContentTab() {
 
       {sub === "Text & Labels" && <TranslationsTab />}
       {sub === "Products / Industries / Articles / Contact Info" && <ContentTab />}
+      {sub === "Site Images" && <SiteImagesTab />}
     </div>
   );
 }

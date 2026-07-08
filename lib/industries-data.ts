@@ -1,5 +1,5 @@
 import "server-only";
-import { unstable_cache } from "next/cache";
+import { unstable_cache, revalidateTag } from "next/cache";
 import { supabase } from "./supabase/client";
 import { applyContentOverride } from "./cms/deep-merge";
 import type { IndustryModal } from "./industries";
@@ -69,4 +69,11 @@ export async function getIndustryModalsBase(locale: string): Promise<Record<stri
   const out: Record<string, IndustryModal> = {};
   for (const r of rows) out[r.id] = localizedBase(r, locale);
   return out;
+}
+
+/** Base (locale-invariant) image field — not part of the override layer. */
+export async function writeIndustryImage(id: string, image: string): Promise<void> {
+  const { error } = await supabase().from("content_industries").update({ image }).eq("id", id);
+  if (error) throw error;
+  revalidateTag("content-industries", { expire: 0 });
 }

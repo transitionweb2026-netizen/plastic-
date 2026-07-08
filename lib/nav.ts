@@ -80,6 +80,6 @@ export const SOCIAL_LINKS: { label: string; brand: string; href: string }[] = [
   { label: "TikTok", brand: "tiktok", href: "https://www.tiktok.com/@giantstorage.eg" },
 ];
 
-/** Legacy header logo (remote; see README note about re-hosting images locally). */
-export const LOGO_SRC =
+/** Legacy header logo default (remote); admin-overridable via cms_images "header.logo". */
+export const LOGO_SRC_DEFAULT =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuCj4u6eML-VML6aKQcXtxb0-jOV3u1iXfJNa-EvWgzCrnMxbfQ-Oyp6AIhgn7skN7e1VBFT0m1_y25J_achw8C8VGwu2hYIRkj_-Z4tGVsicyfHfp2eUuL7b85R42Z6SN2SSXBK32LZwn2Kto6kBpvRQQLvCWNQvjmgi4jvkNoF8ENyzA-IYJy5VUL8fHiqC0JMLa2QE8gj4OTzL5WBaa--marZfs7hzEMDSHM_kkw1KNUoOq4uZo-jPdB1RofpF5i1CSO3W96uTys";

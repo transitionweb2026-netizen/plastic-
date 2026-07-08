@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PalletBlueprint, DimensionLine } from "@/components/ui/DecorArt";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
+import { siteImage } from "@/lib/cms/images-data";
 
 export async function generateMetadata({
   params,
@@ -14,19 +15,22 @@ export async function generateMetadata({
   return cmsMetadata("about", locale as "en" | "ar");
 }
 
-const HERO_IMG =
+const HERO_IMG_DEFAULT =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBz7QZ_kL3IeykdpqgX6okEIbX4C78Vw1YX_52h2cnrS3ZyUghmQh911YI26l3Ywp1lM9HwgsOKT66vSRnqVTDYmu0JIZZfDv9pGg2_M8g--eq6CqUzc4NTPPXHtoWcxD4BRjfUp8VHzOigpPSYVOkAmSAdFvzTgYI6uelwuXSqYBa3RgfVNSpQa_9BFhI3AVFdg85QcN7ygqfmXlTlirqeK-20zfJ6J8NNDRFT0_jzwNnSHBRx0ud0n3amqNJZXPhbY-0V7-NxYG3E";
 
 const STAT_VALUES = ["40+", "1.2M", "50k+", "85"];
 
-const FACTORY_CARDS = [
+const FACTORY_CARDS_DEFAULT = [
   {
+    key: "1",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDTuYQF-HR6iUXicaAHG2fqdlUmrlY4wbqhiv8LeLZvHv4fKzYd55dYZM7lTGQwojT8M396LqbcqqPtXSpO6zlBIy39X_jEHnaPUhFa1UETehe_PIKNzWNc6pb_lV6XJOmyc0fj8Z4mPdBYzkqsOMnCaxXREgYEoVPfsCCfxhtg4KndLjr_WznZ2dFQMdy3K4jEzAWRyCGOaTabVcJzUM6mk1E_uSqnzNKJJ7BuclkHtdozk6SilAiPc1bDyTeqgPT2LZN67gSFN_jB",
   },
   {
+    key: "2",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCpJHEoy-P6fYVY3GQn0-azgwyL3x2xyKkic36x5lTMDj8VdoUi4tc_t0d3yVaqvNGLxQroQtNZqtSsBLuH1mzJrjCgkK9tBOPc15fklhcLO8yVGBP41C3DdxdI1eJyr4UzyDwduvGSEZfgbJoVl3mv53flU_gxD3W8ERcwVC1Q8ls1rmafTJ02sZPWZoQNXCZdUNZ1uuuoQqMEp0hPx08wC98XHWlUQc2TIt6Zjt-ykPH7DMyTkk-Klu-HMvPFjMn6PD7Z8VtfF_bc",
   },
   {
+    key: "3",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAuIePElBxhVt48XqlFqlqBsk3g1mwziD_BkF1-bMHP5-QjUJygm6yUEEA0hDUPOIF6LbJ4r7_YDHwtD8OGzWVQdlfEwUxlbrSGDS-a0YBN9Fprtq10M2ZIP1oWAbnF84niJD_-WmP9Lae6-0Q4WZevp9gD3p3Re37XTEAPyL9sbV78XGUSl94jjEBJXFL1KKtNLVtkoP9uINBAFUWAiKILlXeTOaDh4hKP01r6q1Fo5a2QHWK8aK_F5h6oYcnmmh40ScP4-OmUzxKS",
   },
 ];
@@ -46,11 +50,15 @@ export default async function AboutPage({
   const t = await getTranslations("aboutPage");
   const stats = STAT_VALUES.map((value, i) => ({ value, label: t(`stat${i + 1}`) }));
   const values = [t("value1"), t("value2"), t("value3")];
-  const factoryCards = FACTORY_CARDS.map((card, i) => ({
-    ...card,
-    title: t(`factory${i + 1}`),
-    alt: t(`factory${i + 1}Alt`),
-  }));
+  const HERO_IMG = await siteImage("about.hero", HERO_IMG_DEFAULT);
+  const factoryCards = await Promise.all(
+    FACTORY_CARDS_DEFAULT.map(async (card, i) => ({
+      ...card,
+      img: await siteImage(`about.factoryCard.${card.key}`, card.img),
+      title: t(`factory${i + 1}`),
+      alt: t(`factory${i + 1}Alt`),
+    }))
+  );
 
   return (
     <>

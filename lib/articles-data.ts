@@ -1,5 +1,5 @@
 import "server-only";
-import { unstable_cache } from "next/cache";
+import { unstable_cache, revalidateTag } from "next/cache";
 import { supabase } from "./supabase/client";
 import { applyContentOverride } from "./cms/deep-merge";
 import type { Article } from "./articles";
@@ -93,4 +93,17 @@ export async function articleBodyLocalized(slug: string, locale: string): Promis
   if (!row) return false;
   const overrideBody = row.published ? row.override_ar?.bodyHtml : undefined;
   return Boolean(row.base_ar?.bodyHtml) || Boolean(overrideBody?.trim());
+}
+
+/** Base (locale-invariant) hero image fields — not part of the override layer. */
+export async function writeArticleHeroImage(
+  slug: string,
+  patch: { heroImg?: string; heroAlt?: string }
+): Promise<void> {
+  const update: Record<string, unknown> = {};
+  if (patch.heroImg !== undefined) update.hero_img = patch.heroImg;
+  if (patch.heroAlt !== undefined) update.hero_alt = patch.heroAlt;
+  const { error } = await supabase().from("content_articles").update(update).eq("slug", slug);
+  if (error) throw error;
+  revalidateTag("content-articles", { expire: 0 });
 }

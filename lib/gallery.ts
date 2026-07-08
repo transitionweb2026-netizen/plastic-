@@ -5,6 +5,11 @@
  * needed by client components (ImageGallery.tsx, VideoGallery.tsx).
  */
 export type GalleryImage = {
+  /** Stable manifest key (matches gallery_images.file) — identifies this
+   *  slot regardless of whether its photo has been overridden. */
+  file: string;
+  /** Effective display URL: the admin-uploaded override if set, else the
+   *  static manifest file itself. */
   src: string;
   width: number;
   height: number;

@@ -19,6 +19,7 @@ import {
 import { Link } from "@/i18n/navigation";
 import { SOCIAL_LINKS, resolveContact } from "@/lib/nav";
 import { siteContact } from "@/lib/cms/content-storage";
+import { siteImage } from "@/lib/cms/images-data";
 
 export async function generateMetadata({
   params,
@@ -29,22 +30,28 @@ export async function generateMetadata({
   return cmsMetadata("home", locale as "en" | "ar");
 }
 
-const HERO_BG = "/images/home-hero.webp";
-const ABOUT_IMG = "/images/about-us.webp";
+const HERO_BG_DEFAULT = "/images/home-hero.webp";
+const ABOUT_IMG_DEFAULT = "/images/about-us.webp";
+
+const VIDEO_IMGS_DEFAULT = [
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuCvUppSIUhiLWIyyd-8B9t1tvTbccTRdXY9Nl-ZoAMQrVOWoSEOBUPOzR4MChZDQSGPBzoURAW5wiRz03UypGYnBhWRbL2bHFzLdP4oa__H5VSKHFILgRqm0OOjKI_7w5MoM1iXx21UsvZl9WUzk4UcYgTUkk9G0PPt690qiXU3pWB6FeHpoaWkfiQZQFt4WubDwOjG6SAiXOfUv6idi7QaGe3ZpmEqEMdT0z2YUXQlyT0Jtm9qCq9LAAc0s580PKk41Bbw42nyesw",
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuAdJc6ylJWEXyzDimYyjnQ00x9XeNWK9KPZjA140wr00AvC3HpOha8CRMQffb43tWBWd5yxbzkA-ixSLkuKY-r2HOXfkEq-vYsKBp1s9aFYbGRwcmy7Q9KkED-wQcDJ2NgzMQKLq_t9VitW_ahLz27Kn2QyAWRETwkE07VNOdNwXMx_-nQZ-BEd0MsWAXmE56g9obqnPkfvTznouerMn7vRreb0zQc0xU7-gv3HdLRYmhCXA3gzBhycrRJx9C8DTc05i0FwVAMl8MM",
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuD1kpyOH_iWnAUZX8-RTg76vb4zbqZ4iP47eRO4mAHmjwp8dQT9IjGWzmq3jAk1XItktWoHE2kkRymnoB8jRwEF4INzD_7Y2_PS0wkkt2233pj6Cz9JkXj3BxSe5K8ACtSTQmkDyuSITv8x1zJU36sRXWuIra4y1GQvE65kh5Gl3-t_Jexsy5tuaIfv6WV1mPWHSubrOuhaDGrJogMrTJo1DbZUIwZkcslAGl68yoW_YUy4dDTlqTz7nBcucm11d95hnYR5zJFHvz8",
+];
 
 /* Five of the legacy Wikimedia logo URLs had gone dead (404/400/429);
    replaced with the current Commons file locations (verified 200). */
-const CLIENT_LOGOS = [
-  { src: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", alt: "Amazon" },
-  { src: "https://upload.wikimedia.org/wikipedia/commons/0/09/Grupo_Carrefour_Brasil_logo.svg", alt: "Carrefour" },
-  { src: "https://upload.wikimedia.org/wikipedia/commons/9/91/Lidl-Logo.svg", alt: "Lidl" },
-  { src: "https://upload.wikimedia.org/wikipedia/commons/4/48/Dell_Logo.svg", alt: "Dell" },
-  { src: "https://upload.wikimedia.org/wikipedia/commons/5/5d/Airbus_Logo_2017.svg", alt: "Airbus" },
-  { src: "https://upload.wikimedia.org/wikipedia/commons/5/50/Nestle_textlogo_blue.svg", alt: "Nestlé" },
-  { src: "https://upload.wikimedia.org/wikipedia/commons/8/87/Unilever_text_logo.svg", alt: "Unilever" },
+const CLIENT_LOGOS_DEFAULT = [
+  { key: "amazon", src: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", alt: "Amazon" },
+  { key: "carrefour", src: "https://upload.wikimedia.org/wikipedia/commons/0/09/Grupo_Carrefour_Brasil_logo.svg", alt: "Carrefour" },
+  { key: "lidl", src: "https://upload.wikimedia.org/wikipedia/commons/9/91/Lidl-Logo.svg", alt: "Lidl" },
+  { key: "dell", src: "https://upload.wikimedia.org/wikipedia/commons/4/48/Dell_Logo.svg", alt: "Dell" },
+  { key: "airbus", src: "https://upload.wikimedia.org/wikipedia/commons/5/5d/Airbus_Logo_2017.svg", alt: "Airbus" },
+  { key: "nestle", src: "https://upload.wikimedia.org/wikipedia/commons/5/50/Nestle_textlogo_blue.svg", alt: "Nestlé" },
+  { key: "unilever", src: "https://upload.wikimedia.org/wikipedia/commons/8/87/Unilever_text_logo.svg", alt: "Unilever" },
 ];
 
-const CATEGORY_IMAGES = {
+const CATEGORY_IMAGES_DEFAULT = {
   cat1: "https://lh3.googleusercontent.com/aida-public/AB6AXuAF7K_7bxI6zZEwCDg0qwrfYNZTQ6cd4O6D1ZlTJErRG9xY4mE0_JUMGJVBZapnc1bGbgWKyN_gYKtmM7IjTLqPKHTuj81b4SV72jPsX1pUfu7Nw5pFvkzRLcGBwOHx67pmEtiOGBNCK4tyebHi3mk9cEQsvSkqoBi2o7Q35EQ5WdF8v92AYzQprZKNQ0ZA2xrcQS5caPRGT_JOgy6CVsfmYf1m6aoVB5_ODkjHhYhIrAz96Su8peHEkWLB_KXyT-NBw-Gg8CVQYug",
   cat2: "https://lh3.googleusercontent.com/aida-public/AB6AXuBq5RaPEnQ-nVljl3gMJjyk9Ci9IB2ANDnUZlM8YoMBkLBrWL1jAa3576FGEca3sFj68a1EXm6xqzhc2K62Oti6UOMG_rYwJ00rvrOgWSgHqo0WUYE7lAwAPfJEcChweyaHmU-juKmHArlQl51D7ioeazXCnItYwd6Rha06-AM0WdGdNPgBR6UDYS0VgBtUs6U9t5OQ8t62lXf0O9DkPVHr0MDGjAeswNL4M45mES3t0W9jFzyKkpKhXWxdoZ0EtNhFnnKtLqONpas",
   cat3: "https://lh3.googleusercontent.com/aida-public/AB6AXuAi7lX7MXKrbHrWBmmjBIrDOr-GkiDn11wjBI-4tJzzLTByVB4pLWgl03p7OzrUAv1z55KSeIbovkI1iGr1KPXaL8GtfZ3d5msswFDWb4Q7ypGNNjOorErYM85QzZdecEFaizTGKtW5V8Tj_RlLbpnLGqmrmy_IuXDAqUh379HVhVEgk-r3wsUg-lv_J_WMFfTWGa4wsaPX1e0Tn1wGhisKLuIdFP96aqybf2Zq01F-wI8Wbk6qbUubNsum4rTk2kX4KRwzRj5kjtQ",
@@ -61,6 +68,34 @@ export default async function Home({
   const t = await getTranslations("home");
   const tw = await getTranslations("widget");
   const CONTACT = resolveContact(await siteContact());
+
+  const [
+    HERO_BG,
+    ABOUT_IMG,
+    CLIENT_LOGOS,
+    CATEGORY_IMAGES,
+    VIDEO_IMAGES,
+  ] = await Promise.all([
+    siteImage("home.hero", HERO_BG_DEFAULT),
+    siteImage("home.about", ABOUT_IMG_DEFAULT),
+    Promise.all(
+      CLIENT_LOGOS_DEFAULT.map(async (logo) => ({
+        ...logo,
+        src: await siteImage(`home.clientLogo.${logo.key}`, logo.src),
+      }))
+    ),
+    (async () => ({
+      cat1: await siteImage("home.category.cat1", CATEGORY_IMAGES_DEFAULT.cat1),
+      cat2: await siteImage("home.category.cat2", CATEGORY_IMAGES_DEFAULT.cat2),
+      cat3: await siteImage("home.category.cat3", CATEGORY_IMAGES_DEFAULT.cat3),
+      cat4: await siteImage("home.category.cat4", CATEGORY_IMAGES_DEFAULT.cat4),
+    }))(),
+    Promise.all([
+      siteImage("home.video.1", VIDEO_IMGS_DEFAULT[0]),
+      siteImage("home.video.2", VIDEO_IMGS_DEFAULT[1]),
+      siteImage("home.video.3", VIDEO_IMGS_DEFAULT[2]),
+    ]),
+  ]);
 
   const productCategories = [
     {
@@ -491,7 +526,7 @@ export default async function Home({
       <SectionSeparator label={t("sepVideos")} />
 
       {/* ═══ 6. VIDEOS ═══ */}
-      <VideoSection />
+      <VideoSection images={VIDEO_IMAGES as [string, string, string]} />
 
       {/* ═══ WHY CHOOSE US ═══ */}
       <section className="py-24 bg-on-background text-on-primary relative overflow-hidden">

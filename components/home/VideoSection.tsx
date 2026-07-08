@@ -4,12 +4,6 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 
-const VIDEO_IMGS = [
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuCvUppSIUhiLWIyyd-8B9t1tvTbccTRdXY9Nl-ZoAMQrVOWoSEOBUPOzR4MChZDQSGPBzoURAW5wiRz03UypGYnBhWRbL2bHFzLdP4oa__H5VSKHFILgRqm0OOjKI_7w5MoM1iXx21UsvZl9WUzk4UcYgTUkk9G0PPt690qiXU3pWB6FeHpoaWkfiQZQFt4WubDwOjG6SAiXOfUv6idi7QaGe3ZpmEqEMdT0z2YUXQlyT0Jtm9qCq9LAAc0s580PKk41Bbw42nyesw",
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuAdJc6ylJWEXyzDimYyjnQ00x9XeNWK9KPZjA140wr00AvC3HpOha8CRMQffb43tWBWd5yxbzkA-ixSLkuKY-r2HOXfkEq-vYsKBp1s9aFYbGRwcmy7Q9KkED-wQcDJ2NgzMQKLq_t9VitW_ahLz27Kn2QyAWRETwkE07VNOdNwXMx_-nQZ-BEd0MsWAXmE56g9obqnPkfvTznouerMn7vRreb0zQc0xU7-gv3HdLRYmhCXA3gzBhycrRJx9C8DTc05i0FwVAMl8MM",
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuD1kpyOH_iWnAUZX8-RTg76vb4zbqZ4iP47eRO4mAHmjwp8dQT9IjGWzmq3jAk1XItktWoHE2kkRymnoB8jRwEF4INzD_7Y2_PS0wkkt2233pj6Cz9JkXj3BxSe5K8ACtSTQmkDyuSITv8x1zJU36sRXWuIra4y1GQvE65kh5Gl3-t_Jexsy5tuaIfv6WV1mPWHSubrOuhaDGrJogMrTJo1DbZUIwZkcslAGl68yoW_YUy4dDTlqTz7nBcucm11d95hnYR5zJFHvz8",
-];
-
 function PlayOverlay() {
   return (
     <div className="play-btn">
@@ -28,16 +22,16 @@ function PlayOverlay() {
  * "Watch Now" links pointed at "#"). When videos exist, turn the buttons
  * below into links to the video/watch page.
  */
-export default function VideoSection() {
+export default function VideoSection({ images }: { images: [string, string, string] }) {
   const t = useTranslations("home");
   const isRtl = useLocale() === "ar";
   const [current, setCurrent] = useState(0);
   const touchX = useRef(0);
 
   const videos = [
-    { img: VIDEO_IMGS[0], title: t("video1Title"), desc: t("video1Desc"), shortDesc: t("video1Short") },
-    { img: VIDEO_IMGS[1], title: t("video2Title"), desc: t("video2Desc"), shortDesc: t("video2Short") },
-    { img: VIDEO_IMGS[2], title: t("video3Title"), desc: t("video3Desc"), shortDesc: t("video3Short") },
+    { img: images[0], title: t("video1Title"), desc: t("video1Desc"), shortDesc: t("video1Short") },
+    { img: images[1], title: t("video2Title"), desc: t("video2Desc"), shortDesc: t("video2Short") },
+    { img: images[2], title: t("video3Title"), desc: t("video3Desc"), shortDesc: t("video3Short") },
   ];
   const total = videos.length;
 

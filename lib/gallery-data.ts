@@ -10,6 +10,7 @@ type ImageRow = {
   caption_en: string;
   alt_ar: string;
   caption_ar: string;
+  image_url: string | null;
 };
 
 type VideoRow = {
@@ -28,7 +29,7 @@ const fetchImageRows = unstable_cache(
   async (): Promise<ImageRow[]> => {
     const { data, error } = await supabase()
       .from("gallery_images")
-      .select("file, alt_en, caption_en, alt_ar, caption_ar");
+      .select("file, alt_en, caption_en, alt_ar, caption_ar, image_url");
     if (error) throw error;
     return data as ImageRow[];
   },
@@ -60,7 +61,8 @@ export async function getGalleryImages(locale: string): Promise<GalleryImage[]> 
   return (GALLERY_MANIFEST as { file: string; width: number; height: number }[]).map((m) => {
     const r = byFile.get(m.file);
     return {
-      src: m.file,
+      file: m.file,
+      src: r?.image_url || m.file,
       width: m.width,
       height: m.height,
       alt: (locale === "ar" ? r?.alt_ar : r?.alt_en) || fallback.alt,
@@ -119,6 +121,26 @@ export async function writeGalleryVideoText(
       desc_ar: patch.descAr || null,
     })
     .eq("id", id);
+  if (error) throw error;
+  revalidateTag("gallery-videos", { expire: 0 });
+}
+
+/** Replaces the physical photo for a gallery slot (overrides the static
+ *  public/gallery/images/img-NN.jpg manifest file). Always-live, no
+ *  publish gate — same discipline as the alt/caption base fields. */
+export async function writeGalleryImageFile(file: string, imageUrl: string): Promise<void> {
+  const { error } = await supabase()
+    .from("gallery_images")
+    .update({ image_url: imageUrl || null, updated_at: new Date().toISOString() })
+    .eq("file", file);
+  if (error) throw error;
+  revalidateTag("gallery-images", { expire: 0 });
+  revalidateTag("cms-data", { expire: 0 });
+}
+
+/** Replaces a gallery video's thumbnail image. Always-live, no publish gate. */
+export async function writeGalleryVideoThumb(id: string, thumb: string): Promise<void> {
+  const { error } = await supabase().from("gallery_videos").update({ thumb }).eq("id", id);
   if (error) throw error;
   revalidateTag("gallery-videos", { expire: 0 });
 }

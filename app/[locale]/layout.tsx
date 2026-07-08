@@ -10,6 +10,8 @@ import FloatingContactWidget from "@/components/ui/FloatingContactWidget";
 import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/site";
 import { faviconLinks, organizationJsonLd } from "@/lib/cms/seo";
+import { siteImage } from "@/lib/cms/images-data";
+import { LOGO_SRC_DEFAULT } from "@/lib/nav";
 import "../globals.css";
 
 const inter = Inter({
@@ -97,6 +99,7 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const orgJsonLd = await organizationJsonLd();
+  const logoSrc = await siteImage("header.logo", LOGO_SRC_DEFAULT);
 
   return (
     <html
@@ -112,7 +115,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider>
           {/* key={locale} remounts on language change → smooth fade-in */}
           <div key={locale} className="locale-fade flex min-h-screen flex-col">
-            <Header />
+            <Header logoSrc={logoSrc} />
             <main className="flex-1">{children}</main>
             <Footer />
             <FloatingContactWidget />

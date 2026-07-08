@@ -9,6 +9,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import WebsiteContentTab from "./WebsiteContentTab";
+import ImageUploader from "./ImageUploader";
 
 /* ────────────── types mirrored from lib/cms (client-safe copies) ────────────── */
 type Locale = "en" | "ar";
@@ -55,7 +56,7 @@ type Payload = {
   audits: Audit[];
   imageIssues: Issue[];
   products: { id: number; nameEn: string; nameAr: string; material: string; dimensions: string; loadCapacity: string }[];
-  galleryImages: Record<Locale, { src: string; alt: string; caption: string }[]>;
+  galleryImages: Record<Locale, { file: string; src: string; alt: string; caption: string }[]>;
   galleryVideos: { id: string; titleEn: string; descEn: string; titleAr: string; descAr: string; thumb: string }[];
 };
 
@@ -639,10 +640,14 @@ function GalleryTab({ data, reload }: { data: Payload; reload: () => Promise<voi
           {data.galleryImages.en.map((img, i) => {
             const arImg = data.galleryImages.ar[i];
             const record: ImageSeo =
-              data.cms.images[img.src] ?? { file: img.src, published: false, en: {}, ar: {} };
+              data.cms.images[img.file] ?? { file: img.file, published: false, en: {}, ar: {} };
             return (
-              <ImageCard key={img.src} img={img} arCaption={arImg?.caption ?? ""} record={record} onSave={async (rec) => {
-                const ok = await saveSection({ section: "image", file: img.src, record: rec });
+              <ImageCard key={img.file} img={img} arCaption={arImg?.caption ?? ""} record={record} onSave={async (rec) => {
+                const ok = await saveSection({ section: "image", file: img.file, record: rec });
+                if (ok) await reload();
+                return ok;
+              }} onSaveFile={async (imageUrl) => {
+                const ok = await saveSection({ section: "imageFile", file: img.file, imageUrl });
                 if (ok) await reload();
                 return ok;
               }} />
@@ -658,6 +663,10 @@ function GalleryTab({ data, reload }: { data: Payload; reload: () => Promise<voi
               const ok = await saveSection({ section: "galleryVideo", id: video.id, record: rec });
               if (ok) await reload();
               return ok;
+            }} onSaveThumb={async (thumb) => {
+              const ok = await saveSection({ section: "galleryVideoThumb", id: video.id, thumb });
+              if (ok) await reload();
+              return ok;
             }} />
           ))}
         </div>
@@ -667,10 +676,11 @@ function GalleryTab({ data, reload }: { data: Payload; reload: () => Promise<voi
 }
 
 function VideoCard({
-  video, onSave,
+  video, onSave, onSaveThumb,
 }: {
   video: { id: string; titleEn: string; descEn: string; titleAr: string; descAr: string; thumb: string };
   onSave: (rec: { titleEn: string; descEn: string; titleAr: string; descAr: string }) => Promise<boolean>;
+  onSaveThumb: (thumb: string) => Promise<boolean>;
 }) {
   const [v, setV] = useState({
     titleEn: video.titleEn, descEn: video.descEn, titleAr: video.titleAr, descAr: video.descAr,
@@ -679,14 +689,36 @@ function VideoCard({
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [thumb, setThumb] = useState(video.thumb);
+  const [thumbBusy, setThumbBusy] = useState(false);
+  const [thumbSaved, setThumbSaved] = useState(false);
+  const [thumbFailed, setThumbFailed] = useState(false);
   const titleKey = loc === "en" ? "titleEn" : "titleAr";
   const descKey = loc === "en" ? "descEn" : "descAr";
+
+  const doSaveThumb = async (url: string) => {
+    setThumb(url);
+    setThumbBusy(true);
+    const ok = await onSaveThumb(url);
+    setThumbBusy(false);
+    if (ok) {
+      setThumbSaved(true);
+      setTimeout(() => setThumbSaved(false), 1800);
+    } else {
+      setThumbFailed(true);
+      setTimeout(() => setThumbFailed(false), 4000);
+    }
+  };
 
   return (
     <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4">
       <div className="flex gap-3 mb-3">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={video.thumb} alt="" className="w-24 h-16 object-cover rounded-lg" />
+        <div>
+          <ImageUploader compact value={thumb} onChange={doSaveThumb} />
+          {thumbBusy && <span className="text-[10px] text-on-surface-variant">Saving…</span>}
+          {thumbSaved && <span className="text-[10px] text-primary font-bold">Saved ✓</span>}
+          {thumbFailed && <span className="text-[10px] text-error font-bold">Save failed</span>}
+        </div>
         <div className="min-w-0">
           <p className="text-xs font-bold truncate">{video.id}</p>
           <p className="text-xs text-on-surface-variant truncate">{v[titleKey]}</p>
@@ -730,27 +762,51 @@ function VideoCard({
 }
 
 function ImageCard({
-  img, arCaption, record, onSave,
+  img, arCaption, record, onSave, onSaveFile,
 }: {
-  img: { src: string; alt: string; caption: string };
+  img: { file: string; src: string; alt: string; caption: string };
   arCaption: string;
   record: ImageSeo;
   onSave: (rec: ImageSeo) => Promise<boolean>;
+  onSaveFile: (imageUrl: string) => Promise<boolean>;
 }) {
   const [rec, setRec] = useState(record);
   const [loc, setLoc] = useState<Locale>("en");
   const [saved, setSaved] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [photo, setPhoto] = useState(img.src);
+  const [photoBusy, setPhotoBusy] = useState(false);
+  const [photoSaved, setPhotoSaved] = useState(false);
+  const [photoFailed, setPhotoFailed] = useState(false);
   const side = rec[loc];
   const set = (k: keyof ImageSeoSide, v: string) =>
     setRec((r) => ({ ...r, [loc]: { ...r[loc], [k]: v } }));
+
+  const doSavePhoto = async (url: string) => {
+    setPhoto(url);
+    setPhotoBusy(true);
+    const ok = await onSaveFile(url);
+    setPhotoBusy(false);
+    if (ok) {
+      setPhotoSaved(true);
+      setTimeout(() => setPhotoSaved(false), 1800);
+    } else {
+      setPhotoFailed(true);
+      setTimeout(() => setPhotoFailed(false), 4000);
+    }
+  };
+
   return (
     <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4">
       <div className="flex gap-3 mb-3">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={img.src} alt="" className="w-24 h-16 object-cover rounded-lg" />
+        <div>
+          <ImageUploader compact value={photo} onChange={doSavePhoto} />
+          {photoBusy && <span className="text-[10px] text-on-surface-variant">Saving…</span>}
+          {photoSaved && <span className="text-[10px] text-primary font-bold">Saved ✓</span>}
+          {photoFailed && <span className="text-[10px] text-error font-bold">Save failed</span>}
+        </div>
         <div className="min-w-0">
-          <p className="text-xs font-bold truncate">{img.src.split("/").pop()}</p>
+          <p className="text-xs font-bold truncate">{img.file.split("/").pop()}</p>
           <p className="text-xs text-on-surface-variant truncate">{loc === "en" ? img.caption : arCaption}</p>
           <div className="flex gap-1 mt-1.5">
             {(["en", "ar"] as const).map((l) => (

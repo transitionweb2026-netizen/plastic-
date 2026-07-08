@@ -1,7 +1,13 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { getProductsBase } from "@/lib/products-data";
-import { getGalleryImages, getGalleryVideosAdmin, writeGalleryVideoText } from "@/lib/gallery-data";
+import {
+  getGalleryImages,
+  getGalleryVideosAdmin,
+  writeGalleryVideoText,
+  writeGalleryImageFile,
+  writeGalleryVideoThumb,
+} from "@/lib/gallery-data";
 import { SITE_URL } from "@/lib/site";
 import { isAuthenticated } from "@/lib/cms/auth";
 import { readCms, writeGlobal, writePage, writeProductSeo, writeImageSeo, writeRedirects } from "@/lib/cms/storage";
@@ -61,7 +67,9 @@ type SaveBody =
       section: "galleryVideo";
       id: string;
       record: { titleEn: string; descEn: string; titleAr: string; descAr: string };
-    };
+    }
+  | { section: "imageFile"; file: string; imageUrl: string }
+  | { section: "galleryVideoThumb"; id: string; thumb: string };
 
 /** Save one section; auto-creates slug-change redirects; revalidates site. */
 export async function PUT(request: Request) {
@@ -111,6 +119,10 @@ export async function PUT(request: Request) {
     await writeRedirects(body.records);
   } else if (body.section === "galleryVideo") {
     await writeGalleryVideoText(body.id, body.record);
+  } else if (body.section === "imageFile") {
+    await writeGalleryImageFile(body.file, body.imageUrl);
+  } else if (body.section === "galleryVideoThumb") {
+    await writeGalleryVideoThumb(body.id, body.thumb);
   } else {
     return NextResponse.json({ error: "unknown section" }, { status: 400 });
   }

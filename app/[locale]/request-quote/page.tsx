@@ -6,6 +6,7 @@ import Image from "next/image";
 import QuoteForm from "@/components/forms/QuoteForm";
 import { resolveContact } from "@/lib/nav";
 import { siteContact } from "@/lib/cms/content-storage";
+import { siteImage } from "@/lib/cms/images-data";
 
 export async function generateMetadata({
   params,
@@ -16,7 +17,7 @@ export async function generateMetadata({
   return cmsMetadata("quote", locale as "en" | "ar");
 }
 
-const SPOTLIGHT_IMG =
+const SPOTLIGHT_IMG_DEFAULT =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuCu-r1AtSl49qnI-a6NpF3tIMe9S-lR-_cjAB-1B1UFjSmtwMjuChO8r_vHNeznJ12flZiGZ4SxWZ8hD6TGOulSfBizqWR9qxtIJY52SlcUX1Mbk_7JJGm5n7rwbflv7mWhPhh6LBAqkdIc70TCCcuCPfd_hvvH2WiPZLU-qSWh2krADab1dLpe8oZl16qEn98rf1MTStEiM_YPxBIJSdPGtm31NnmvEbgU0j7AymSOMtp4_TySD5AhRTnoUwHxZpWeQNr9Ri9ZfAg";
 
 const WHY_ICONS = ["verified", "public", "engineering"] as const;
@@ -30,6 +31,7 @@ export default async function RequestQuotePage({
   setRequestLocale(locale);
   const t = await getTranslations("quotePage");
   const contact = resolveContact(await siteContact());
+  const SPOTLIGHT_IMG = await siteImage("requestQuote.spotlight", SPOTLIGHT_IMG_DEFAULT);
   const whyItems = WHY_ICONS.map((icon, i) => ({
     icon,
     title: t(`why${i + 1}Title`),

@@ -6,6 +6,7 @@ import Image from "next/image";
 import ContactForm from "@/components/forms/ContactForm";
 import { CONTACT, resolveContact } from "@/lib/nav";
 import { siteContact } from "@/lib/cms/content-storage";
+import { siteImage } from "@/lib/cms/images-data";
 
 export async function generateMetadata({
   params,
@@ -16,7 +17,7 @@ export async function generateMetadata({
   return cmsMetadata("contact", locale as "en" | "ar");
 }
 
-const MAP_IMG =
+const MAP_IMG_DEFAULT =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuAgvTljDfpm5vdwOxt5YpPXyz6xER5qgSXF6dDaZ79iz-kz7ePQWF_O8kBSsiZvZ5OFdhGSvxBxG5aL2jR4b93DZHeib8J-x2Tx73QsZaLg82vrG6jo3uhxePwjmpTQeDEQRBB62pAn44sbNE6fy9q4xvuCnw-RCv26idq29XO6h8Y9juWS5zL8gRmMj-UpPF0p8G2Gfje6xenL-DRx84Oe_76rIdWqYztjDLZWIjR-QZIaUg_QgGEC9nNeKx1ziUAEJ60BYYG8krCO";
 
 const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
@@ -32,6 +33,7 @@ export default async function ContactPage({
   setRequestLocale(locale);
   const t = await getTranslations("contactPage");
   const contact = resolveContact(await siteContact());
+  const MAP_IMG = await siteImage("contact.map", MAP_IMG_DEFAULT);
 
   return (
     <div className="relative overflow-hidden pt-6 pb-20">

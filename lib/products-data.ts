@@ -1,5 +1,5 @@
 import "server-only";
-import { unstable_cache } from "next/cache";
+import { unstable_cache, revalidateTag } from "next/cache";
 import { supabase } from "./supabase/client";
 import { applyContentOverride } from "./cms/deep-merge";
 import type { Product, ProductCategory } from "./products";
@@ -72,4 +72,18 @@ export async function getProduct(id: number, locale: string): Promise<Product | 
 export async function getProductsBase(locale: string): Promise<Product[]> {
   const rows = await fetchRows();
   return rows.map((r) => localizedBase(r, locale));
+}
+
+/** Base (locale-invariant) image fields — not part of the override layer. */
+export async function writeProductImages(
+  id: string,
+  patch: { image?: string; coverImage?: string; images?: string[] }
+): Promise<void> {
+  const update: Record<string, unknown> = {};
+  if (patch.image !== undefined) update.image = patch.image;
+  if (patch.coverImage !== undefined) update.cover_image = patch.coverImage || null;
+  if (patch.images !== undefined) update.images = patch.images.length ? patch.images : null;
+  const { error } = await supabase().from("content_products").update(update).eq("id", Number(id));
+  if (error) throw error;
+  revalidateTag("content-products", { expire: 0 });
 }

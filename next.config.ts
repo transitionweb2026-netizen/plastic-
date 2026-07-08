@@ -3,6 +3,12 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const isProd = process.env.NODE_ENV === "production";
 
+/** Supabase Storage host (site-images bucket) — derived from the env var
+ *  so this doesn't need updating if the project ever changes. */
+const supabaseHost = process.env.SUPABASE_URL
+  ? new URL(process.env.SUPABASE_URL).hostname
+  : undefined;
+
 /**
  * Ported from the legacy per-page <meta http-equiv="Content-Security-Policy"> tag,
  * adjusted for the Next.js build: Tailwind CDN and runtime Google Fonts are gone
@@ -14,7 +20,7 @@ const contentSecurityPolicy = [
   "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self' data:",
-  "img-src 'self' data: https://lh3.googleusercontent.com https://upload.wikimedia.org",
+  `img-src 'self' data: https://lh3.googleusercontent.com https://upload.wikimedia.org${supabaseHost ? ` https://${supabaseHost}` : ""}`,
   "connect-src 'self' https://formspree.io",
   // Gallery video lightbox: YouTube embeds + self-hosted MP4s
   "frame-src https://www.youtube-nocookie.com",
@@ -32,6 +38,9 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
       { protocol: "https", hostname: "upload.wikimedia.org" },
+      ...(supabaseHost
+        ? [{ protocol: "https" as const, hostname: supabaseHost }]
+        : []),
     ],
   },
   async headers() {

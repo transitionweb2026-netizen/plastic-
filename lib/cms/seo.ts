@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { getArticles, getArticleSlugs } from "@/lib/articles-data";
 import { getProductsBase } from "@/lib/products-data";
 import { SITE_URL } from "@/lib/site";
-import { CONTACT, SOCIAL_LINKS, LOGO_SRC } from "@/lib/nav";
+import { CONTACT, SOCIAL_LINKS, LOGO_SRC_DEFAULT } from "@/lib/nav";
 import { messagesFromDb } from "./translations-storage";
 import { readCms } from "./storage";
 import { findRedirect } from "./redirects";
@@ -176,7 +176,7 @@ export async function orgSettings(): Promise<OrgSchema> {
   const cms = (await readCms()).global.org;
   return {
     companyName: cms.companyName || "Giant Storage Integrated Solutions",
-    logoUrl: cms.logoUrl || LOGO_SRC,
+    logoUrl: cms.logoUrl || LOGO_SRC_DEFAULT,
     website: cms.website || SITE_URL,
     phone: cms.phone || CONTACT.phoneMain.display,
     email: cms.email || CONTACT.email,

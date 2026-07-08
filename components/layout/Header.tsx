@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
-import { LOGO_SRC, NAV_LINKS, REQUEST_QUOTE } from "@/lib/nav";
+import { NAV_LINKS, REQUEST_QUOTE } from "@/lib/nav";
 import LanguageSwitcher from "./LanguageSwitcher";
 import MobileDrawer from "./MobileDrawer";
 
@@ -13,7 +13,7 @@ import MobileDrawer from "./MobileDrawer";
  * (home.html look: sticky, translucent surface, underline nav links,
  * Request Quote pill) with the slide-in drawer for mobile.
  */
-export default function Header() {
+export default function Header({ logoSrc }: { logoSrc: string }) {
   const pathname = usePathname();
   const t = useTranslations();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -46,7 +46,7 @@ export default function Header() {
             <Image
               alt={t("header.brand")}
               className="h-12 w-auto object-contain"
-              src={LOGO_SRC}
+              src={logoSrc}
               width={120}
               height={48}
               priority

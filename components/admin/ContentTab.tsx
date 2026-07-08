@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import RichTextEditor from "./RichTextEditor";
+import ImageUploader from "./ImageUploader";
 
 type Locale = "en" | "ar";
 
@@ -37,9 +38,19 @@ type SiteContact = {
 };
 
 type Payload = {
-  products: { id: number; nameEn: string; nameAr: string; base: { en: ProductFields; ar: ProductFields } }[];
-  industries: { id: string; titleEn: string; titleAr: string; base: { en: IndustryFields; ar: IndustryFields } }[];
-  articles: { slug: string; titleEn: string; titleAr: string; base: { en: ArticleFields; ar: ArticleFields } }[];
+  products: {
+    id: number; nameEn: string; nameAr: string;
+    image: string; coverImage: string; images: string[];
+    base: { en: ProductFields; ar: ProductFields };
+  }[];
+  industries: {
+    id: string; titleEn: string; titleAr: string; image: string;
+    base: { en: IndustryFields; ar: IndustryFields };
+  }[];
+  articles: {
+    slug: string; titleEn: string; titleAr: string; heroImg: string; heroAlt: string;
+    base: { en: ArticleFields; ar: ArticleFields };
+  }[];
   overrides: {
     products: Record<string, ContentRecord<ProductFields>>;
     industries: Record<string, ContentRecord<IndustryFields>>;
@@ -89,18 +100,25 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 /* ─────────────────────── Product editor ─────────────────────── */
 
 function ProductCard({
-  id, nameEn, nameAr, base, record, onSave,
+  id, nameEn, nameAr, image, coverImage, images, base, record, onSave, onSaveImages,
 }: {
   id: number; nameEn: string; nameAr: string;
+  image: string; coverImage: string; images: string[];
   base: { en: ProductFields; ar: ProductFields };
   record: ContentRecord<ProductFields>;
   onSave: (rec: ContentRecord<ProductFields>) => Promise<boolean>;
+  onSaveImages: (patch: { image?: string; coverImage?: string; images?: string[] }) => Promise<boolean>;
 }) {
   const [rec, setRec] = useState(record);
   const [loc, setLoc] = useState<Locale>("en");
   const [busy, setBusy] = useState<"" | "draft" | "publish">("");
   const [saved, setSaved] = useState(false);
   const [failed, setFailed] = useState(false);
+
+  const [imgState, setImgState] = useState({ image, coverImage, images });
+  const [imgBusy, setImgBusy] = useState(false);
+  const [imgSaved, setImgSaved] = useState(false);
+  const [imgFailed, setImgFailed] = useState(false);
 
   const f = rec[loc];
   const b = base[loc];
@@ -121,6 +139,19 @@ function ProductCard({
     }
   };
 
+  const doSaveImages = async () => {
+    setImgBusy(true);
+    const ok = await onSaveImages(imgState);
+    setImgBusy(false);
+    if (ok) {
+      setImgSaved(true);
+      setTimeout(() => setImgSaved(false), 1800);
+    } else {
+      setImgFailed(true);
+      setTimeout(() => setImgFailed(false), 4000);
+    }
+  };
+
   return (
     <details className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
       <summary className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none">
@@ -130,6 +161,59 @@ function ProductCard({
         </span>
       </summary>
       <div className="px-5 pb-5 border-t border-outline-variant/50 pt-4">
+        <details className="mb-4 border border-outline-variant rounded-lg">
+          <summary className="text-xs font-bold text-on-surface-variant uppercase tracking-wide cursor-pointer px-3 py-2.5">
+            Photos
+          </summary>
+          <div className="px-3 pb-3">
+            <ImageUploader
+              label="Main catalog photo"
+              value={imgState.image}
+              onChange={(url) => setImgState((s) => ({ ...s, image: url }))}
+            />
+            <ImageUploader
+              label="Cover photo (collapsed card) — leave blank to use main photo"
+              value={imgState.coverImage}
+              onChange={(url) => setImgState((s) => ({ ...s, coverImage: url }))}
+            />
+            <div className="mb-1">
+              <label className="block text-xs font-bold text-on-surface-variant uppercase tracking-wide mb-1">
+                Gallery photos
+              </label>
+              <div className="flex flex-wrap gap-3">
+                {imgState.images.map((url, i) => (
+                  <div key={i} className="flex flex-col items-center gap-1">
+                    <ImageUploader
+                      compact
+                      value={url}
+                      onChange={(newUrl) =>
+                        setImgState((s) => ({
+                          ...s,
+                          images: newUrl
+                            ? s.images.map((x, j) => (j === i ? newUrl : x))
+                            : s.images.filter((_, j) => j !== i),
+                        }))
+                      }
+                    />
+                  </div>
+                ))}
+                <ImageUploader
+                  compact
+                  onChange={(url) =>
+                    url && setImgState((s) => ({ ...s, images: [...s.images, url] }))
+                  }
+                />
+              </div>
+            </div>
+            <div className="flex items-center gap-3 mt-3">
+              <button disabled={imgBusy} onClick={doSaveImages} className="px-4 py-2 bg-primary text-on-primary rounded-lg text-xs font-bold disabled:opacity-60">
+                {imgBusy ? "Saving…" : "Save Photos"}
+              </button>
+              {imgSaved && <span className="text-primary text-xs font-bold">Saved ✓</span>}
+              {imgFailed && <span className="text-error text-xs font-bold">Save failed</span>}
+            </div>
+          </div>
+        </details>
         <div className="flex gap-1 mb-4">
           {(["en", "ar"] as const).map((l) => (
             <button key={l} onClick={() => setLoc(l)} className={`px-4 py-1.5 rounded-full text-xs font-bold ${loc === l ? "bg-primary text-white" : "bg-surface-container-low"}`}>
@@ -182,18 +266,24 @@ function ProductCard({
 /* ─────────────────────── Industry modal editor ─────────────────────── */
 
 function IndustryCard({
-  id, titleEn, titleAr, base, record, onSave,
+  id, titleEn, titleAr, image, base, record, onSave, onSaveImage,
 }: {
-  id: string; titleEn: string; titleAr: string;
+  id: string; titleEn: string; titleAr: string; image: string;
   base: { en: IndustryFields; ar: IndustryFields };
   record: ContentRecord<IndustryFields>;
   onSave: (rec: ContentRecord<IndustryFields>) => Promise<boolean>;
+  onSaveImage: (image: string) => Promise<boolean>;
 }) {
   const [rec, setRec] = useState(record);
   const [loc, setLoc] = useState<Locale>("en");
   const [busy, setBusy] = useState<"" | "draft" | "publish">("");
   const [saved, setSaved] = useState(false);
   const [failed, setFailed] = useState(false);
+
+  const [img, setImg] = useState(image);
+  const [imgBusy, setImgBusy] = useState(false);
+  const [imgSaved, setImgSaved] = useState(false);
+  const [imgFailed, setImgFailed] = useState(false);
 
   const f = rec[loc];
   const set = (patch: Partial<IndustryFields>) =>
@@ -213,6 +303,20 @@ function IndustryCard({
     }
   };
 
+  const doSaveImage = async (url: string) => {
+    setImg(url);
+    setImgBusy(true);
+    const ok = await onSaveImage(url);
+    setImgBusy(false);
+    if (ok) {
+      setImgSaved(true);
+      setTimeout(() => setImgSaved(false), 1800);
+    } else {
+      setImgFailed(true);
+      setTimeout(() => setImgFailed(false), 4000);
+    }
+  };
+
   return (
     <details className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
       <summary className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none">
@@ -226,6 +330,12 @@ function IndustryCard({
           This edits the click-through detail modal only. The card grid on the
           Industries page itself is edited under Translations → industriesPage.
         </p>
+        <div className="mb-4">
+          <ImageUploader label="Photo" value={img} onChange={doSaveImage} />
+          {imgBusy && <span className="text-xs text-on-surface-variant">Saving…</span>}
+          {imgSaved && <span className="text-xs text-primary font-bold">Saved ✓</span>}
+          {imgFailed && <span className="text-xs text-error font-bold">Save failed</span>}
+        </div>
         <div className="flex gap-1 mb-4">
           {(["en", "ar"] as const).map((l) => (
             <button key={l} onClick={() => setLoc(l)} className={`px-4 py-1.5 rounded-full text-xs font-bold ${loc === l ? "bg-primary text-white" : "bg-surface-container-low"}`}>
@@ -268,18 +378,24 @@ function IndustryCard({
 /* ─────────────────────── Article editor ─────────────────────── */
 
 function ArticleCard({
-  slug, titleEn, titleAr, base, record, onSave,
+  slug, titleEn, titleAr, heroImg, base, record, onSave, onSaveHero,
 }: {
-  slug: string; titleEn: string; titleAr: string;
+  slug: string; titleEn: string; titleAr: string; heroImg: string;
   base: { en: ArticleFields; ar: ArticleFields };
   record: ContentRecord<ArticleFields>;
   onSave: (rec: ContentRecord<ArticleFields>) => Promise<boolean>;
+  onSaveHero: (heroImg: string) => Promise<boolean>;
 }) {
   const [rec, setRec] = useState(record);
   const [loc, setLoc] = useState<Locale>("en");
   const [busy, setBusy] = useState<"" | "draft" | "publish">("");
   const [saved, setSaved] = useState(false);
   const [failed, setFailed] = useState(false);
+
+  const [hero, setHero] = useState(heroImg);
+  const [heroBusy, setHeroBusy] = useState(false);
+  const [heroSaved, setHeroSaved] = useState(false);
+  const [heroFailed, setHeroFailed] = useState(false);
 
   const f = rec[loc];
   const b = base[loc];
@@ -300,6 +416,20 @@ function ArticleCard({
     }
   };
 
+  const doSaveHero = async (url: string) => {
+    setHero(url);
+    setHeroBusy(true);
+    const ok = await onSaveHero(url);
+    setHeroBusy(false);
+    if (ok) {
+      setHeroSaved(true);
+      setTimeout(() => setHeroSaved(false), 1800);
+    } else {
+      setHeroFailed(true);
+      setTimeout(() => setHeroFailed(false), 4000);
+    }
+  };
+
   return (
     <details className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
       <summary className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none">
@@ -313,6 +443,12 @@ function ArticleCard({
           Listing-page teaser text is edited under Translations → blogPage.
           This edits the article's detail page.
         </p>
+        <div className="mb-4">
+          <ImageUploader label="Hero image" value={hero} onChange={doSaveHero} />
+          {heroBusy && <span className="text-xs text-on-surface-variant">Saving…</span>}
+          {heroSaved && <span className="text-xs text-primary font-bold">Saved ✓</span>}
+          {heroFailed && <span className="text-xs text-error font-bold">Save failed</span>}
+        </div>
         <div className="flex gap-1 mb-4">
           {(["en", "ar"] as const).map((l) => (
             <button key={l} onClick={() => setLoc(l)} className={`px-4 py-1.5 rounded-full text-xs font-bold ${loc === l ? "bg-primary text-white" : "bg-surface-container-low"}`}>
@@ -551,10 +687,18 @@ export default function ContentTab() {
               id={p.id}
               nameEn={p.nameEn}
               nameAr={p.nameAr}
+              image={p.image}
+              coverImage={p.coverImage}
+              images={p.images}
               base={p.base}
               record={data.overrides.products[String(p.id)] ?? emptyProduct()}
               onSave={async (rec) => {
                 const ok = await saveContent({ section: "product", id: String(p.id), record: rec });
+                if (ok) load();
+                return ok;
+              }}
+              onSaveImages={async (patch) => {
+                const ok = await saveContent({ section: "productImages", id: String(p.id), ...patch });
                 if (ok) load();
                 return ok;
               }}
@@ -571,10 +715,16 @@ export default function ContentTab() {
               id={ind.id}
               titleEn={ind.titleEn}
               titleAr={ind.titleAr}
+              image={ind.image}
               base={ind.base}
               record={data.overrides.industries[ind.id] ?? emptyIndustry()}
               onSave={async (rec) => {
                 const ok = await saveContent({ section: "industry", id: ind.id, record: rec });
+                if (ok) load();
+                return ok;
+              }}
+              onSaveImage={async (image) => {
+                const ok = await saveContent({ section: "industryImage", id: ind.id, image });
                 if (ok) load();
                 return ok;
               }}
@@ -591,10 +741,16 @@ export default function ContentTab() {
               slug={a.slug}
               titleEn={a.titleEn}
               titleAr={a.titleAr}
+              heroImg={a.heroImg}
               base={a.base}
               record={data.overrides.articles[a.slug] ?? emptyArticle()}
               onSave={async (rec) => {
                 const ok = await saveContent({ section: "article", slug: a.slug, record: rec });
+                if (ok) load();
+                return ok;
+              }}
+              onSaveHero={async (heroImg) => {
+                const ok = await saveContent({ section: "articleHero", slug: a.slug, heroImg });
                 if (ok) load();
                 return ok;
               }}

@@ -9,9 +9,10 @@ import {
   writeSiteContact,
 } from "@/lib/cms/content-storage";
 import type { ContentOverrides, ContentRecord } from "@/lib/cms/content-types";
-import { getProductsBase } from "@/lib/products-data";
-import { getIndustryModalsBase } from "@/lib/industries-data";
-import { getArticlesBase } from "@/lib/articles-data";
+import { getProductsBase, writeProductImages } from "@/lib/products-data";
+import { getIndustryModalsBase, writeIndustryImage } from "@/lib/industries-data";
+import { getArticlesBase, writeArticleHeroImage } from "@/lib/articles-data";
+import { productCover, productGallery } from "@/lib/products";
 
 /** Only the 12 reachable modal ids (5 process steps, 3 tech, 4 certs) —
  *  the "industries served" ind1..6 keys are dead in the current UI, so
@@ -43,6 +44,9 @@ export async function GET() {
       id: p.id,
       nameEn: p.name,
       nameAr: arProductById.get(p.id)?.name ?? p.name,
+      image: p.image,
+      coverImage: productCover(p),
+      images: productGallery(p),
       base: {
         en: {
           name: p.name,
@@ -63,6 +67,7 @@ export async function GET() {
       id,
       titleEn: industriesEn[id].title,
       titleAr: industriesAr[id]?.title ?? industriesEn[id].title,
+      image: industriesEn[id].image,
       base: {
         en: industriesEn[id],
         ar: industriesAr[id] ?? industriesEn[id],
@@ -74,6 +79,8 @@ export async function GET() {
         slug: a.slug,
         titleEn: a.title,
         titleAr: ar.title,
+        heroImg: a.heroImg,
+        heroAlt: a.heroAlt,
         base: {
           en: {
             title: a.title,
@@ -108,7 +115,10 @@ type SaveBody =
   | { section: "product"; id: string; record: ContentRecord<ContentOverrides["products"][string]["en"]> }
   | { section: "industry"; id: string; record: ContentRecord<ContentOverrides["industries"][string]["en"]> }
   | { section: "article"; slug: string; record: ContentRecord<ContentOverrides["articles"][string]["en"]> }
-  | { section: "siteContact"; record: ContentOverrides["siteContact"] };
+  | { section: "siteContact"; record: ContentOverrides["siteContact"] }
+  | { section: "productImages"; id: string; image?: string; coverImage?: string; images?: string[] }
+  | { section: "industryImage"; id: string; image: string }
+  | { section: "articleHero"; slug: string; heroImg?: string; heroAlt?: string };
 
 export async function PUT(request: Request) {
   if (!(await isAuthenticated()))
@@ -123,6 +133,16 @@ export async function PUT(request: Request) {
     await writeArticleOverride(body.slug, { ...body.record, updatedAt: new Date().toISOString() });
   } else if (body.section === "siteContact") {
     await writeSiteContact(body.record);
+  } else if (body.section === "productImages") {
+    await writeProductImages(body.id, {
+      image: body.image,
+      coverImage: body.coverImage,
+      images: body.images,
+    });
+  } else if (body.section === "industryImage") {
+    await writeIndustryImage(body.id, body.image);
+  } else if (body.section === "articleHero") {
+    await writeArticleHeroImage(body.slug, { heroImg: body.heroImg, heroAlt: body.heroAlt });
   } else {
     return NextResponse.json({ error: "unknown section" }, { status: 400 });
   }

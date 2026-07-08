@@ -111,10 +111,10 @@ export async function auditGalleryImages(): Promise<Issue[]> {
   const issues: Issue[] = [];
   for (const locale of ["en", "ar"] as const) {
     for (const img of await getGalleryImages(locale)) {
-      const rec = cms.images[img.src];
+      const rec = cms.images[img.file];
       const alt = (rec?.published && rec[locale]?.alt) || img.alt;
       if (!alt?.trim())
-        issues.push({ severity: "error", code: "img-alt-missing", message: `Gallery image ${img.src} has no ${locale} alt text.` });
+        issues.push({ severity: "error", code: "img-alt-missing", message: `Gallery image ${img.file} has no ${locale} alt text.` });
     }
   }
   return issues;

@@ -34,7 +34,7 @@ export default async function GalleryPage({
   const baseImages = await getGalleryImages(loc);
   const images = await Promise.all(
     baseImages.map(async (img) => {
-      const cms = await galleryImageSeo(img.src, loc);
+      const cms = await galleryImageSeo(img.file, loc);
       return {
         ...img,
         alt: cms?.alt?.trim() || img.alt,
