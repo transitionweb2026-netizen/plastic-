@@ -445,6 +445,17 @@
     "nlAgree": "By subscribing, you agree to our",
     "nlPrivacy": "Privacy Policy"
   },
+  "articlePage": {
+    "backToBlog": "Back to Blog",
+    "shareLabel": "Share:",
+    "shareAgainLabel": "Share this article:",
+    "shareFacebook": "Facebook",
+    "shareLinkedIn": "LinkedIn",
+    "shareTwitter": "Twitter",
+    "copyLink": "Copy Link",
+    "copied": "Copied!",
+    "relatedArticlesHeading": "Related Articles"
+  },
   "aboutPage": {
     "since": "SINCE 1984",
     "heroTitle1": "Engineering Global",

@@ -6,7 +6,8 @@ import RichTextEditor from "./RichTextEditor";
 type Locale = "en" | "ar";
 
 type ProductFields = {
-  name?: string; shortDesc?: string; description?: string; material?: string;
+  name?: string; category?: string; badge?: string; status?: string;
+  shortDesc?: string; description?: string; material?: string;
   dimensions?: string; loadCapacity?: string; colors?: string[]; applications?: string[];
   features?: string[]; availability?: string;
 };
@@ -14,7 +15,20 @@ type IndustryFields = {
   title?: string; description?: string; specs?: [string, string][];
   features?: string[]; applications?: string[]; industries?: string[]; availability?: string;
 };
-type ArticleFields = { title?: string; h1?: string; description?: string; bodyHtml?: string };
+type LinkField = { href: string | null; label: string; title: string; disabled: boolean };
+type RelatedItem = { href: string; img: string; category: string; title: string };
+type ArticleCta = {
+  badge: string; title: string; description: string;
+  button1Text: string; button1Href: string; button2Text: string; button2Href: string;
+};
+type ArticleFields = {
+  title?: string; h1?: string; description?: string; bodyHtml?: string;
+  authorBio?: { name: string; roleTitle: string; bio: string };
+  prevLink?: LinkField;
+  nextLink?: LinkField;
+  relatedArticles?: RelatedItem[];
+  cta?: ArticleCta;
+};
 
 type ContentRecord<T> = { published: boolean; en: T; ar: T; updatedAt?: string };
 type SiteContact = {
@@ -120,6 +134,11 @@ function ProductCard({
         <Field label={`Name (default: ${b.name ?? nameAr})`}>
           <input className={inputCls} value={f.name ?? ""} onChange={(e) => set({ name: e.target.value })} />
         </Field>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <Field label="Category label"><input className={inputCls} value={f.category ?? ""} onChange={(e) => set({ category: e.target.value })} /></Field>
+          <Field label="Badge (image pill)"><input className={inputCls} value={f.badge ?? ""} onChange={(e) => set({ badge: e.target.value })} /></Field>
+          <Field label="Status (e.g. In Stock)"><input className={inputCls} value={f.status ?? ""} onChange={(e) => set({ status: e.target.value })} /></Field>
+        </div>
         <Field label="Short description (catalog card)">
           <textarea className={inputCls} rows={2} value={f.shortDesc ?? ""} onChange={(e) => set({ shortDesc: e.target.value })} />
         </Field>
@@ -297,6 +316,98 @@ function ArticleCard({
             onChange={(html) => set({ bodyHtml: html })}
           />
         </Field>
+
+        <details className="mt-4 border-t border-outline-variant pt-4">
+          <summary className="text-xs font-bold text-on-surface-variant uppercase tracking-wide cursor-pointer mb-3">
+            Author bio {b.authorBio ? "" : "(none by default)"}
+          </summary>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <Field label="Name">
+              <input className={inputCls} value={f.authorBio?.name ?? b.authorBio?.name ?? ""}
+                onChange={(e) => set({ authorBio: { name: e.target.value, roleTitle: f.authorBio?.roleTitle ?? b.authorBio?.roleTitle ?? "", bio: f.authorBio?.bio ?? b.authorBio?.bio ?? "" } })} />
+            </Field>
+            <Field label="Role title">
+              <input className={inputCls} value={f.authorBio?.roleTitle ?? b.authorBio?.roleTitle ?? ""}
+                onChange={(e) => set({ authorBio: { name: f.authorBio?.name ?? b.authorBio?.name ?? "", roleTitle: e.target.value, bio: f.authorBio?.bio ?? b.authorBio?.bio ?? "" } })} />
+            </Field>
+          </div>
+          <Field label="Bio">
+            <textarea className={inputCls} rows={2} value={f.authorBio?.bio ?? b.authorBio?.bio ?? ""}
+              onChange={(e) => set({ authorBio: { name: f.authorBio?.name ?? b.authorBio?.name ?? "", roleTitle: f.authorBio?.roleTitle ?? b.authorBio?.roleTitle ?? "", bio: e.target.value } })} />
+          </Field>
+        </details>
+
+        <details className="mt-4 border-t border-outline-variant pt-4">
+          <summary className="text-xs font-bold text-on-surface-variant uppercase tracking-wide cursor-pointer mb-3">
+            Previous / Next navigation cards
+          </summary>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p className="text-xs font-bold mb-2">Previous</p>
+              <Field label="Label"><input className={inputCls} value={f.prevLink?.label ?? b.prevLink?.label ?? ""} onChange={(e) => set({ prevLink: { href: f.prevLink?.href ?? b.prevLink?.href ?? null, label: e.target.value, title: f.prevLink?.title ?? b.prevLink?.title ?? "", disabled: f.prevLink?.disabled ?? b.prevLink?.disabled ?? false } })} /></Field>
+              <Field label="Title"><input className={inputCls} value={f.prevLink?.title ?? b.prevLink?.title ?? ""} onChange={(e) => set({ prevLink: { href: f.prevLink?.href ?? b.prevLink?.href ?? null, label: f.prevLink?.label ?? b.prevLink?.label ?? "", title: e.target.value, disabled: f.prevLink?.disabled ?? b.prevLink?.disabled ?? false } })} /></Field>
+            </div>
+            <div>
+              <p className="text-xs font-bold mb-2">Next</p>
+              <Field label="Label"><input className={inputCls} value={f.nextLink?.label ?? b.nextLink?.label ?? ""} onChange={(e) => set({ nextLink: { href: f.nextLink?.href ?? b.nextLink?.href ?? null, label: e.target.value, title: f.nextLink?.title ?? b.nextLink?.title ?? "", disabled: f.nextLink?.disabled ?? b.nextLink?.disabled ?? false } })} /></Field>
+              <Field label="Title"><input className={inputCls} value={f.nextLink?.title ?? b.nextLink?.title ?? ""} onChange={(e) => set({ nextLink: { href: f.nextLink?.href ?? b.nextLink?.href ?? null, label: f.nextLink?.label ?? b.nextLink?.label ?? "", title: e.target.value, disabled: f.nextLink?.disabled ?? b.nextLink?.disabled ?? false } })} /></Field>
+            </div>
+          </div>
+        </details>
+
+        <details className="mt-4 border-t border-outline-variant pt-4">
+          <summary className="text-xs font-bold text-on-surface-variant uppercase tracking-wide cursor-pointer mb-3">
+            Related articles cards
+          </summary>
+          {(f.relatedArticles ?? b.relatedArticles ?? []).map((r, i) => (
+            <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3 pb-3 border-b border-outline-variant/40 last:border-0">
+              <Field label={`Card ${i + 1} — category tag`}>
+                <input className={inputCls} value={r.category} onChange={(e) => {
+                  const list = [...(f.relatedArticles ?? b.relatedArticles ?? [])];
+                  list[i] = { ...list[i], category: e.target.value };
+                  set({ relatedArticles: list });
+                }} />
+              </Field>
+              <Field label={`Card ${i + 1} — title`}>
+                <input className={inputCls} value={r.title} onChange={(e) => {
+                  const list = [...(f.relatedArticles ?? b.relatedArticles ?? [])];
+                  list[i] = { ...list[i], title: e.target.value };
+                  set({ relatedArticles: list });
+                }} />
+              </Field>
+            </div>
+          ))}
+        </details>
+
+        <details className="mt-4 border-t border-outline-variant pt-4">
+          <summary className="text-xs font-bold text-on-surface-variant uppercase tracking-wide cursor-pointer mb-3">
+            Closing CTA section {b.cta ? "" : "(none by default)"}
+          </summary>
+          {(() => {
+            const cur = f.cta ?? b.cta;
+            const patchCta = (patch: Partial<ArticleCta>) => {
+              const base: ArticleCta = cur ?? {
+                badge: "", title: "", description: "",
+                button1Text: "", button1Href: "/contact", button2Text: "", button2Href: "/products",
+              };
+              set({ cta: { ...base, ...patch } });
+            };
+            return (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <Field label="Badge"><input className={inputCls} value={cur?.badge ?? ""} onChange={(e) => patchCta({ badge: e.target.value })} /></Field>
+                  <div />
+                  <Field label="Title"><input className={inputCls} value={cur?.title ?? ""} onChange={(e) => patchCta({ title: e.target.value })} /></Field>
+                </div>
+                <Field label="Description"><textarea className={inputCls} rows={2} value={cur?.description ?? ""} onChange={(e) => patchCta({ description: e.target.value })} /></Field>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <Field label="Button 1 text"><input className={inputCls} value={cur?.button1Text ?? ""} onChange={(e) => patchCta({ button1Text: e.target.value })} /></Field>
+                  <Field label="Button 2 text"><input className={inputCls} value={cur?.button2Text ?? ""} onChange={(e) => patchCta({ button2Text: e.target.value })} /></Field>
+                </div>
+              </>
+            );
+          })()}
+        </details>
 
         <div className="flex items-center gap-3 mt-5">
           <button disabled={!!busy} onClick={() => doSave(false)} className="px-5 py-2.5 border border-outline-variant rounded-lg text-sm font-bold disabled:opacity-60">
