@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
 import IndustryModal from "./IndustryModal";
-import { INDUSTRY_MODALS, localizeIndustryModal, type IndustryModal as IndustryModalData } from "@/lib/industries";
+import type { IndustryModal as IndustryModalData } from "@/lib/industries";
 
 const HERO_IMG =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuD9tA-rr56TAmeLUnSIaFKlqLG4WOQHKeKl--QJeyBeW4FocUP0_70tEj7xLqMSxysGDlXeHbbhUEYKgQDUx4Bobd1-tTTOPJbQ-sBlHT8xEeBEuI246As9lEE9_tN8TpHTJADF-JYWyVqKw8d_Y9FUF9rfzQdccymjHv0TkPA9KCAip3cT_w1e5ZaTtgmlFM5xlQ17smw7Xjp3FFIyb6tOk2YOJGs4PnucZmYwhk3bSsUt8q0LPvZ0eKBY8BA4-mxFCSsjFeZyefM";
@@ -42,22 +42,21 @@ const CERT_DEFS = [
   { id: "cert4", icon: "verified", delay: "d4", title: "CE Compliant" },
 ] as const;
 
-/** Legacy proc-card images keyed by step id (same order as the IMGS constant). */
-const STEP_IMAGES: Record<string, string> = Object.fromEntries(
-  STEP_DEFS.map((s) => [s.id, INDUSTRY_MODALS[s.id].image])
-);
-
 export default function IndustriesContent({
-  overrides,
+  modals,
 }: {
-  /** CMS content overrides for the detail modals, keyed by modal id
-   *  (server-fetched by the parent page). Card-grid text above stays
-   *  translation-driven — see the "industriesPage" namespace. */
-  overrides?: Record<string, Partial<IndustryModalData>>;
+  /** Fully resolved (localized, CMS-merged) detail-modal data, keyed by
+   *  modal id — fetched server-side by the parent page. Card-grid text
+   *  above stays translation-driven — see the "industriesPage" namespace. */
+  modals: Record<string, IndustryModalData>;
 }) {
   const t = useTranslations("industriesPage");
-  const locale = useLocale();
   const [openId, setOpenId] = useState<string | null>(null);
+
+  /** Legacy proc-card images keyed by step id (same order as the IMGS constant). */
+  const STEP_IMAGES: Record<string, string> = Object.fromEntries(
+    STEP_DEFS.map((s) => [s.id, modals[s.id]?.image ?? ""])
+  );
 
   const stats = STAT_DEFS.map((s) => ({ ...s, label: t(s.key) }));
   const processSteps = STEP_DEFS.map((s) => ({
@@ -389,11 +388,7 @@ export default function IndustriesContent({
       </section>
 
       <IndustryModal
-        data={
-          openId && INDUSTRY_MODALS[openId]
-            ? localizeIndustryModal(openId, INDUSTRY_MODALS[openId], locale, overrides?.[openId])
-            : null
-        }
+        data={openId ? modals[openId] ?? null : null}
         onClose={() => setOpenId(null)}
       />
     </div>

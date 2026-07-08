@@ -5,7 +5,7 @@ import { CircuitLines, CrateSchematic, DimensionLine } from "@/components/ui/Dec
 import Image from "next/image";
 import ContactForm from "@/components/forms/ContactForm";
 import { CONTACT, resolveContact } from "@/lib/nav";
-import { siteContactOverride } from "@/lib/cms/content-overlay";
+import { siteContact } from "@/lib/cms/content-storage";
 
 export async function generateMetadata({
   params,
@@ -31,7 +31,7 @@ export default async function ContactPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("contactPage");
-  const contact = resolveContact(siteContactOverride());
+  const contact = resolveContact(await siteContact());
 
   return (
     <div className="relative overflow-hidden pt-6 pb-20">

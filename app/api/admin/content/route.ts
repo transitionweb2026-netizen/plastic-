@@ -3,15 +3,15 @@ import { revalidatePath } from "next/cache";
 import { isAuthenticated } from "@/lib/cms/auth";
 import {
   readContentOverrides,
-  writeContentOverrides,
+  writeProductOverride,
+  writeIndustryOverride,
+  writeArticleOverride,
+  writeSiteContact,
 } from "@/lib/cms/content-storage";
 import type { ContentOverrides, ContentRecord } from "@/lib/cms/content-types";
-import { PRODUCTS } from "@/lib/products";
-import { AR_PRODUCTS } from "@/lib/products-ar";
-import { INDUSTRY_MODALS } from "@/lib/industries";
-import { AR_INDUSTRY_MODALS } from "@/lib/industries-ar";
-import { ARTICLES } from "@/lib/articles";
-import { AR_ARTICLES } from "@/lib/articles-ar";
+import { getProductsBase } from "@/lib/products-data";
+import { getIndustryModalsBase } from "@/lib/industries-data";
+import { getArticlesBase } from "@/lib/articles-data";
 
 /** Only the 12 reachable modal ids (5 process steps, 3 tech, 4 certs) —
  *  the "industries served" ind1..6 keys are dead in the current UI, so
@@ -25,13 +25,24 @@ const REACHABLE_INDUSTRY_IDS = [
 export async function GET() {
   if (!(await isAuthenticated()))
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  const overrides = readContentOverrides();
+  const overrides = await readContentOverrides();
+
+  const productsEn = await getProductsBase("en");
+  const productsAr = await getProductsBase("ar");
+  const arProductById = new Map(productsAr.map((p) => [p.id, p]));
+
+  const industriesEn = await getIndustryModalsBase("en");
+  const industriesAr = await getIndustryModalsBase("ar");
+
+  const articlesEn = await getArticlesBase("en");
+  const articlesAr = await getArticlesBase("ar");
+  const arArticleBySlug = new Map(articlesAr.map((a) => [a.slug, a]));
 
   return NextResponse.json({
-    products: PRODUCTS.map((p) => ({
+    products: productsEn.map((p) => ({
       id: p.id,
       nameEn: p.name,
-      nameAr: AR_PRODUCTS[p.id]?.name ?? p.name,
+      nameAr: arProductById.get(p.id)?.name ?? p.name,
       base: {
         en: {
           name: p.name,
@@ -45,47 +56,50 @@ export async function GET() {
           features: p.features,
           availability: p.availability,
         },
-        ar: { ...p, ...AR_PRODUCTS[p.id] },
+        ar: arProductById.get(p.id) ?? p,
       },
     })),
-    industries: REACHABLE_INDUSTRY_IDS.filter((id) => INDUSTRY_MODALS[id]).map((id) => ({
+    industries: REACHABLE_INDUSTRY_IDS.filter((id) => industriesEn[id]).map((id) => ({
       id,
-      titleEn: INDUSTRY_MODALS[id].title,
-      titleAr: AR_INDUSTRY_MODALS[id]?.title ?? INDUSTRY_MODALS[id].title,
+      titleEn: industriesEn[id].title,
+      titleAr: industriesAr[id]?.title ?? industriesEn[id].title,
       base: {
-        en: INDUSTRY_MODALS[id],
-        ar: { ...INDUSTRY_MODALS[id], ...AR_INDUSTRY_MODALS[id] },
+        en: industriesEn[id],
+        ar: industriesAr[id] ?? industriesEn[id],
       },
     })),
-    articles: ARTICLES.map((a) => ({
-      slug: a.slug,
-      titleEn: a.title,
-      titleAr: AR_ARTICLES[a.slug]?.title ?? a.title,
-      base: {
-        en: {
-          title: a.title,
-          h1: a.h1,
-          description: a.description,
-          bodyHtml: a.bodyHtml,
-          authorBio: a.authorBio,
-          prevLink: a.prevLink,
-          nextLink: a.nextLink,
-          relatedArticles: a.relatedArticles,
-          cta: a.cta,
+    articles: articlesEn.map((a) => {
+      const ar = arArticleBySlug.get(a.slug) ?? a;
+      return {
+        slug: a.slug,
+        titleEn: a.title,
+        titleAr: ar.title,
+        base: {
+          en: {
+            title: a.title,
+            h1: a.h1,
+            description: a.description,
+            bodyHtml: a.bodyHtml,
+            authorBio: a.authorBio,
+            prevLink: a.prevLink,
+            nextLink: a.nextLink,
+            relatedArticles: a.relatedArticles,
+            cta: a.cta,
+          },
+          ar: {
+            title: ar.title,
+            h1: ar.h1,
+            description: ar.description,
+            bodyHtml: ar.bodyHtml,
+            authorBio: ar.authorBio,
+            prevLink: ar.prevLink,
+            nextLink: ar.nextLink,
+            relatedArticles: ar.relatedArticles,
+            cta: ar.cta,
+          },
         },
-        ar: {
-          title: AR_ARTICLES[a.slug]?.title ?? a.title,
-          h1: AR_ARTICLES[a.slug]?.h1 ?? a.h1,
-          description: AR_ARTICLES[a.slug]?.description ?? a.description,
-          bodyHtml: AR_ARTICLES[a.slug]?.bodyHtml ?? a.bodyHtml,
-          authorBio: AR_ARTICLES[a.slug]?.authorBio ?? a.authorBio,
-          prevLink: AR_ARTICLES[a.slug]?.prevLink ?? a.prevLink,
-          nextLink: AR_ARTICLES[a.slug]?.nextLink ?? a.nextLink,
-          relatedArticles: AR_ARTICLES[a.slug]?.relatedArticles ?? a.relatedArticles,
-          cta: AR_ARTICLES[a.slug]?.cta ?? a.cta,
-        },
-      },
-    })),
+      };
+    }),
     overrides,
   });
 }
@@ -100,22 +114,19 @@ export async function PUT(request: Request) {
   if (!(await isAuthenticated()))
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   const body = (await request.json()) as SaveBody;
-  const overrides = readContentOverrides();
-  const next: ContentOverrides = JSON.parse(JSON.stringify(overrides)) as ContentOverrides;
 
   if (body.section === "product") {
-    next.products[body.id] = { ...body.record, updatedAt: new Date().toISOString() };
+    await writeProductOverride(body.id, { ...body.record, updatedAt: new Date().toISOString() });
   } else if (body.section === "industry") {
-    next.industries[body.id] = { ...body.record, updatedAt: new Date().toISOString() };
+    await writeIndustryOverride(body.id, { ...body.record, updatedAt: new Date().toISOString() });
   } else if (body.section === "article") {
-    next.articles[body.slug] = { ...body.record, updatedAt: new Date().toISOString() };
+    await writeArticleOverride(body.slug, { ...body.record, updatedAt: new Date().toISOString() });
   } else if (body.section === "siteContact") {
-    next.siteContact = body.record;
+    await writeSiteContact(body.record);
   } else {
     return NextResponse.json({ error: "unknown section" }, { status: 400 });
   }
 
-  writeContentOverrides(next);
   revalidatePath("/", "layout");
   return NextResponse.json({ ok: true });
 }

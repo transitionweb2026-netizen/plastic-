@@ -5,7 +5,7 @@ import { PalletBlueprint, DimensionLine } from "@/components/ui/DecorArt";
 import Image from "next/image";
 import QuoteForm from "@/components/forms/QuoteForm";
 import { resolveContact } from "@/lib/nav";
-import { siteContactOverride } from "@/lib/cms/content-overlay";
+import { siteContact } from "@/lib/cms/content-storage";
 
 export async function generateMetadata({
   params,
@@ -29,6 +29,7 @@ export default async function RequestQuotePage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("quotePage");
+  const contact = resolveContact(await siteContact());
   const whyItems = WHY_ICONS.map((icon, i) => ({
     icon,
     title: t(`why${i + 1}Title`),
@@ -60,7 +61,7 @@ export default async function RequestQuotePage({
         <PalletBlueprint className="decor-breathe absolute bottom-6 left-6 w-[320px] hidden xl:block" />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
           <div className="lg:col-span-8">
-            <QuoteForm contact={resolveContact(siteContactOverride())} />
+            <QuoteForm contact={contact} />
           </div>
 
           <aside className="lg:col-span-4 space-y-gutter">

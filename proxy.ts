@@ -20,13 +20,13 @@ const intl = createMiddleware(routing);
  * Node.js runtime by default in this Next version, so the fs-backed CMS
  * read in findRedirect() works here.
  */
-export default function proxy(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isEnglish = pathname === "/en" || pathname.startsWith("/en/");
   const preferred = request.cookies.get("NEXT_LOCALE")?.value;
 
   const logicalPath = isEnglish ? pathname.slice(3) || "/" : pathname;
-  const hit = findRedirect(logicalPath);
+  const hit = await findRedirect(logicalPath);
   if (hit) {
     if (hit.to.startsWith("http")) {
       return NextResponse.redirect(hit.to, hit.statusCode);

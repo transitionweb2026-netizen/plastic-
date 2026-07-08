@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { galleryImages, type GalleryImage } from "@/lib/gallery";
+import type { GalleryImage } from "@/lib/gallery";
 
 /** Thumbnails visible at once in the carousel strip. */
 const VISIBLE_THUMBS = 5;
@@ -17,16 +17,15 @@ const VISIBLE_THUMBS = 5;
  * arrow glyphs flip via .rtl-flip.
  */
 export default function ImageGallery({
-  images: imagesProp,
+  images,
 }: {
-  /** Server-provided list (with CMS SEO overrides); falls back to defaults. */
-  images?: GalleryImage[];
+  /** Server-provided list (with CMS SEO overrides) — see app/[locale]/gallery/page.tsx. */
+  images: GalleryImage[];
 }) {
   const locale = useLocale();
   const isRtl = locale === "ar";
   const t = useTranslations("galleryUi");
   const tc = useTranslations("common");
-  const images = imagesProp ?? galleryImages(locale);
   const total = images.length;
   const maxStart = Math.max(0, total - VISIBLE_THUMBS);
 

@@ -2,21 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
-import { galleryVideos, type GalleryVideo } from "@/lib/gallery";
+import { useTranslations } from "next-intl";
+import type { GalleryVideo } from "@/lib/gallery";
 
 const STAGGERS = ["d1", "d2", "d3"];
 
 /**
  * Video grid reusing the home page's .video-card / .play-btn styling, with
  * a fullscreen player lightbox. Supports YouTube embeds and local MP4s
- * (see lib/gallery.ts — placeholders until client videos arrive).
+ * (see lib/gallery-data.ts — placeholders until client videos arrive).
  */
-export default function VideoGallery() {
-  const locale = useLocale();
+export default function VideoGallery({ videos }: { videos: GalleryVideo[] }) {
   const t = useTranslations("galleryUi");
   const tc = useTranslations("common");
-  const videos = galleryVideos(locale);
   const [open, setOpen] = useState<GalleryVideo | null>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
 

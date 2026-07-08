@@ -6,8 +6,8 @@ import { readCms } from "@/lib/cms/storage";
  *  API routes are always excluded. */
 export const dynamic = "force-dynamic";
 
-export default function robots(): MetadataRoute.Robots {
-  const cfg = readCms().global.robots;
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const cfg = (await readCms()).global.robots;
   const rules =
     cfg.rules.length > 0
       ? cfg.rules.map((r) => ({

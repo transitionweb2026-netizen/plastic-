@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/DecorArt";
 import { Link } from "@/i18n/navigation";
 import { SOCIAL_LINKS, resolveContact } from "@/lib/nav";
-import { siteContactOverride } from "@/lib/cms/content-overlay";
+import { siteContact } from "@/lib/cms/content-storage";
 
 export async function generateMetadata({
   params,
@@ -60,7 +60,7 @@ export default async function Home({
   setRequestLocale(locale);
   const t = await getTranslations("home");
   const tw = await getTranslations("widget");
-  const CONTACT = resolveContact(siteContactOverride());
+  const CONTACT = resolveContact(await siteContact());
 
   const productCategories = [
     {

@@ -1,5 +1,5 @@
 import "server-only";
-import { galleryImages } from "@/lib/gallery";
+import { getGalleryImages } from "@/lib/gallery-data";
 import { readCms } from "./storage";
 import { defaultSeo, effectiveSeo, pageRegistry } from "./seo";
 import type { Locale } from "./types";
@@ -54,15 +54,15 @@ export function slugify(input: string): string {
     .slice(0, 80);
 }
 
-export function validateSlug(slug: string | undefined, pageKey: string, locale: Locale): Issue[] {
+export async function validateSlug(slug: string | undefined, pageKey: string, locale: Locale): Promise<Issue[]> {
   if (!slug) return [];
   const issues: Issue[] = [];
   if (!SLUG_RE.test(slug))
     issues.push({ severity: "error", code: "slug-invalid", message: "Slug must be lowercase, hyphen-separated, no special characters." });
   // duplicate detection across all slug-capable pages in the same locale
-  for (const entry of pageRegistry()) {
+  for (const entry of await pageRegistry()) {
     if (!entry.slugEditable || entry.pageKey === pageKey) continue;
-    if (effectiveSeo(entry.pageKey, locale).slug === slug)
+    if ((await effectiveSeo(entry.pageKey, locale)).slug === slug)
       issues.push({ severity: "error", code: "slug-duplicate", message: `Slug is already used by "${entry.label}".` });
   }
   return issues;
@@ -88,12 +88,13 @@ export type PageAudit = {
 };
 
 /** Score one page/locale (0–100) with the issue list behind it. */
-export function auditPage(pageKey: string, locale: Locale): Omit<PageAudit, "label"> {
-  const seo = effectiveSeo(pageKey, locale);
+export async function auditPage(pageKey: string, locale: Locale): Promise<Omit<PageAudit, "label">> {
+  const seo = await effectiveSeo(pageKey, locale);
+  const dft = await defaultSeo(pageKey, locale);
   const issues: Issue[] = [
     ...validateTitle(seo.metaTitle),
     ...validateDescription(seo.metaDescription),
-    ...validateSlug(seo.slug !== defaultSeo(pageKey, locale).slug ? seo.slug : undefined, pageKey, locale),
+    ...(await validateSlug(seo.slug !== dft.slug ? seo.slug : undefined, pageKey, locale)),
     ...validateCanonical(seo.canonical),
   ];
   if (!seo.ogImage)
@@ -105,11 +106,11 @@ export function auditPage(pageKey: string, locale: Locale): Omit<PageAudit, "lab
   return { pageKey, locale, score: Math.max(0, score), issues };
 }
 
-export function auditGalleryImages(): Issue[] {
-  const cms = readCms();
+export async function auditGalleryImages(): Promise<Issue[]> {
+  const cms = await readCms();
   const issues: Issue[] = [];
   for (const locale of ["en", "ar"] as const) {
-    for (const img of galleryImages(locale)) {
+    for (const img of await getGalleryImages(locale)) {
       const rec = cms.images[img.src];
       const alt = (rec?.published && rec[locale]?.alt) || img.alt;
       if (!alt?.trim())
@@ -119,11 +120,11 @@ export function auditGalleryImages(): Issue[] {
   return issues;
 }
 
-export function auditAll(): PageAudit[] {
+export async function auditAll(): Promise<PageAudit[]> {
   const out: PageAudit[] = [];
-  for (const entry of pageRegistry()) {
+  for (const entry of await pageRegistry()) {
     for (const locale of ["en", "ar"] as const) {
-      out.push({ ...auditPage(entry.pageKey, locale), label: entry.label });
+      out.push({ ...(await auditPage(entry.pageKey, locale)), label: entry.label });
     }
   }
   return out;

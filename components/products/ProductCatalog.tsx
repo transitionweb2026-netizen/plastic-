@@ -1,34 +1,28 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
-import { localizeProduct, PRODUCTS, productCover, type Product } from "@/lib/products";
+import { useTranslations } from "next-intl";
+import { productCover, type Product } from "@/lib/products";
 import ProductModal from "./ProductModal";
 
 /** The catalog shows a single grid of exactly six products. */
 const MAX_VISIBLE_PRODUCTS = 6;
 const DELAYS = ["delay-1", "delay-2", "delay-3", "delay-4", "delay-5", "delay-6"];
 
-const VISIBLE_PRODUCTS = PRODUCTS.slice(0, MAX_VISIBLE_PRODUCTS);
-
 /**
  * Client-side product catalog: a single six-product grid with the detail
  * modal (no category filters, no pagination).
  */
 export default function ProductCatalog({
-  overrides,
+  products,
 }: {
-  /** CMS content overrides, keyed by product id (server-fetched by the
-   *  parent page — see app/[locale]/products/page.tsx). */
-  overrides?: Record<number, Partial<Product>>;
+  /** Fully resolved (localized, CMS-merged) products — fetched server-side
+   *  by the parent page, see app/[locale]/products/page.tsx. */
+  products: Product[];
 }) {
-  const locale = useLocale();
   const t = useTranslations("productsUi");
-  const visibleProducts = useMemo(
-    () => VISIBLE_PRODUCTS.map((p) => localizeProduct(p, locale, overrides?.[p.id])),
-    [locale, overrides]
-  );
+  const visibleProducts = products.slice(0, MAX_VISIBLE_PRODUCTS);
   const [selected, setSelected] = useState<Product | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 

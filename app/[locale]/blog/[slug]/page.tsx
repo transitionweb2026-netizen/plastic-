@@ -6,12 +6,7 @@ import { Link } from "@/i18n/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
 import ArticleCounters from "@/components/blog/ArticleCounters";
 import CopyLinkButton from "@/components/blog/CopyLinkButton";
-import {
-  ARTICLES,
-  articleBodyLocalized,
-  getArticle,
-  localizeArticle,
-} from "@/lib/articles";
+import { getArticle, articleBodyLocalized, getArticleSlugs } from "@/lib/articles-data";
 import { SITE_URL } from "@/lib/site";
 import {
   articleSlug,
@@ -19,12 +14,12 @@ import {
   cmsMetadata,
   resolveArticleSlug,
 } from "@/lib/cms/seo";
-import { articleOverride } from "@/lib/cms/content-overlay";
 
 type Params = { slug: string; locale: string };
 
-export function generateStaticParams(): { slug: string }[] {
-  return ARTICLES.map((a) => ({ slug: a.slug }));
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  const slugs = await getArticleSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -34,9 +29,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug, locale } = await params;
   const loc = locale as "en" | "ar";
-  const baseSlug = resolveArticleSlug(slug, loc);
+  const baseSlug = await resolveArticleSlug(slug, loc);
   if (!baseSlug) return {};
-  const meta = cmsMetadata(`article:${baseSlug}`, loc);
+  const meta = await cmsMetadata(`article:${baseSlug}`, loc);
   return {
     ...meta,
     openGraph: { ...meta.openGraph, type: "article" },
@@ -52,15 +47,13 @@ export default async function ArticlePage({
   setRequestLocale(locale);
   const loc = locale as "en" | "ar";
   const t = await getTranslations("articlePage");
-  const baseSlug = resolveArticleSlug(slug, loc);
+  const baseSlug = await resolveArticleSlug(slug, loc);
   if (!baseSlug) notFound();
-  const base = getArticle(baseSlug);
-  if (!base) notFound();
-  const cmsOverride = articleOverride(baseSlug, loc);
-  const article = localizeArticle(base, locale, cmsOverride);
-  const bodyLocalized = articleBodyLocalized(baseSlug, locale, cmsOverride?.bodyHtml);
+  const article = await getArticle(baseSlug, locale);
+  if (!article) notFound();
+  const bodyLocalized = await articleBodyLocalized(baseSlug, locale);
 
-  const urlSlug = articleSlug(baseSlug, loc);
+  const urlSlug = await articleSlug(baseSlug, loc);
   const pageUrl = `${SITE_URL}${locale === "en" ? "/en" : ""}/blog/${urlSlug}`;
   const bodyHtml = article.bodyHtml.replaceAll(
     'href="/',

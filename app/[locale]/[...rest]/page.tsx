@@ -19,7 +19,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; rest: string[] }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const seo = notFoundSeo(locale as "en" | "ar");
+  const seo = await notFoundSeo(locale as "en" | "ar");
   return {
     title: seo.metaTitle,
     description: seo.metaDescription,

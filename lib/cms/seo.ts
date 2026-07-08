@@ -1,14 +1,12 @@
 import "server-only";
 import type { Metadata } from "next";
-import enMessages from "@/messages/en.json";
-import arMessages from "@/messages/ar.json";
-import { ARTICLES } from "@/lib/articles";
-import { AR_ARTICLES } from "@/lib/articles-ar";
-import { PRODUCTS } from "@/lib/products";
-import { AR_PRODUCTS } from "@/lib/products-ar";
+import { getArticles, getArticleSlugs } from "@/lib/articles-data";
+import { getProductsBase } from "@/lib/products-data";
 import { SITE_URL } from "@/lib/site";
 import { CONTACT, SOCIAL_LINKS, LOGO_SRC } from "@/lib/nav";
+import { messagesFromDb } from "./translations-storage";
 import { readCms } from "./storage";
+import { findRedirect } from "./redirects";
 import type { Locale, OrgSchema, PageSeo, SeoFields } from "./types";
 
 /* ─────────────────────────── Page registry ───────────────────────────
@@ -24,15 +22,6 @@ export type RegistryEntry = {
   group: "Core" | "Blog" | "Products" | "Legal" | "System";
   slugEditable: boolean;
 };
-
-const MSG = { en: enMessages, ar: arMessages } as const;
-
-function metaNs(locale: Locale) {
-  return (MSG[locale] as typeof enMessages).meta as Record<
-    string,
-    { title: string; description: string } | string
-  >;
-}
 
 const STATIC_PAGES: Omit<RegistryEntry, "pageKey">[] = [
   { path: "/", label: "Home", group: "Core", slugEditable: false },
@@ -60,38 +49,45 @@ const STATIC_KEY_BY_PATH: Record<string, string> = {
   "/terms-of-service": "terms",
 };
 
-export function pageRegistry(): RegistryEntry[] {
+export async function pageRegistry(): Promise<RegistryEntry[]> {
   const fixed = STATIC_PAGES.map((p) => ({
     ...p,
     pageKey: STATIC_KEY_BY_PATH[p.path],
   }));
-  const articles = ARTICLES.map((a) => ({
+  const articles = await getArticles("en");
+  const articleEntries = articles.map((a) => ({
     pageKey: `article:${a.slug}`,
     path: `/blog/${a.slug}`,
     label: `Article — ${a.title}`,
     group: "Blog" as const,
     slugEditable: true,
   }));
-  return [...fixed, ...articles];
+  return [...fixed, ...articleEntries];
 }
 
 /* ─────────────────────────── Defaults ─────────────────────────── */
 
-/** Built-in SEO values (what the site ships with, pre-CMS). */
-export function defaultSeo(pageKey: string, locale: Locale): Required<Pick<SeoFields, "metaTitle" | "metaDescription">> & SeoFields {
+/** Built-in SEO values (what the site currently ships, pre-CMS-override):
+ *  page titles/descriptions come from the live translations table (so a
+ *  Translations-tab edit to e.g. "meta.home.title" is reflected here too),
+ *  falling back further to the SEO tab override only if published. */
+export async function defaultSeo(
+  pageKey: string,
+  locale: Locale
+): Promise<Required<Pick<SeoFields, "metaTitle" | "metaDescription">> & SeoFields> {
   if (pageKey.startsWith("article:")) {
     const slug = pageKey.slice("article:".length);
-    const base = ARTICLES.find((a) => a.slug === slug);
-    const ar = AR_ARTICLES[slug];
-    const src = locale === "ar" && ar ? { ...base, ...ar } : base;
+    const article = (await getArticles(locale)).find((a) => a.slug === slug);
     return {
-      metaTitle: src?.title ?? "",
-      metaDescription: src?.description ?? "",
+      metaTitle: article?.title ?? "",
+      metaDescription: article?.description ?? "",
       slug,
-      ogImage: base?.heroImg,
+      ogImage: article?.heroImg,
     };
   }
-  const ns = metaNs(locale)[pageKey] as { title: string; description: string } | undefined;
+  const messages = await messagesFromDb(locale);
+  const meta = (messages.meta ?? {}) as Record<string, { title: string; description: string } | string>;
+  const ns = meta[pageKey] as { title: string; description: string } | undefined;
   return {
     metaTitle: ns?.title ?? "",
     metaDescription: ns?.description ?? "",
@@ -104,9 +100,12 @@ function published(rec?: PageSeo): PageSeo | undefined {
   return rec && rec.published ? rec : undefined;
 }
 
-export function effectiveSeo(pageKey: string, locale: Locale): SeoFields & { metaTitle: string; metaDescription: string } {
-  const cms = published(readCms().pages[pageKey])?.[locale] ?? {};
-  const dft = defaultSeo(pageKey, locale);
+export async function effectiveSeo(
+  pageKey: string,
+  locale: Locale
+): Promise<SeoFields & { metaTitle: string; metaDescription: string }> {
+  const cms = published((await readCms()).pages[pageKey])?.[locale] ?? {};
+  const dft = await defaultSeo(pageKey, locale);
   return {
     metaTitle: cms.metaTitle?.trim() || dft.metaTitle,
     metaDescription: cms.metaDescription?.trim() || dft.metaDescription,
@@ -117,14 +116,15 @@ export function effectiveSeo(pageKey: string, locale: Locale): SeoFields & { met
 }
 
 /** Localized article slug (CMS override falls back to the base slug). */
-export function articleSlug(baseSlug: string, locale: Locale): string {
-  return effectiveSeo(`article:${baseSlug}`, locale).slug || baseSlug;
+export async function articleSlug(baseSlug: string, locale: Locale): Promise<string> {
+  return (await effectiveSeo(`article:${baseSlug}`, locale)).slug || baseSlug;
 }
 
 /** Resolve an incoming article URL slug to the base slug, per locale. */
-export function resolveArticleSlug(urlSlug: string, locale: Locale): string | undefined {
-  for (const a of ARTICLES) {
-    if (articleSlug(a.slug, locale) === urlSlug || a.slug === urlSlug) return a.slug;
+export async function resolveArticleSlug(urlSlug: string, locale: Locale): Promise<string | undefined> {
+  const slugs = await getArticleSlugs();
+  for (const base of slugs) {
+    if ((await articleSlug(base, locale)) === urlSlug || base === urlSlug) return base;
   }
   return undefined;
 }
@@ -138,18 +138,12 @@ function localePath(path: string, locale: Locale): string {
  * canonical (deduped, auto-derived when not set), hreflang alternates, and
  * OG image/title/description. One call per page = no duplicate tags.
  */
-export function cmsMetadata(pageKey: string, locale: Locale, pathOverride?: string): Metadata {
-  const seo = effectiveSeo(pageKey, locale);
-  const entry = pageRegistry().find((p) => p.pageKey === pageKey);
+export async function cmsMetadata(pageKey: string, locale: Locale, pathOverride?: string): Promise<Metadata> {
+  const seo = await effectiveSeo(pageKey, locale);
+  const entry = (await pageRegistry()).find((p) => p.pageKey === pageKey);
   const basePath = pathOverride ?? entry?.path ?? "/";
-  const arPath =
-    pageKey.startsWith("article:")
-      ? `/blog/${articleSlug(pageKey.slice(8), "ar")}`
-      : basePath;
-  const enPath =
-    pageKey.startsWith("article:")
-      ? `/blog/${articleSlug(pageKey.slice(8), "en")}`
-      : basePath;
+  const arPath = pageKey.startsWith("article:") ? `/blog/${await articleSlug(pageKey.slice(8), "ar")}` : basePath;
+  const enPath = pageKey.startsWith("article:") ? `/blog/${await articleSlug(pageKey.slice(8), "en")}` : basePath;
   const canonical =
     seo.canonical || `${SITE_URL}${localePath(locale === "ar" ? arPath : enPath, locale)}`;
 
@@ -178,8 +172,8 @@ export function cmsMetadata(pageKey: string, locale: Locale, pathOverride?: stri
 
 /* ─────────────────────────── Global / org ─────────────────────────── */
 
-export function orgSettings(): OrgSchema {
-  const cms = readCms().global.org;
+export async function orgSettings(): Promise<OrgSchema> {
+  const cms = (await readCms()).global.org;
   return {
     companyName: cms.companyName || "Giant Storage Integrated Solutions",
     logoUrl: cms.logoUrl || LOGO_SRC,
@@ -198,8 +192,8 @@ export function orgSettings(): OrgSchema {
 }
 
 /** Organization JSON-LD, CMS-driven (single source — rendered once in layout). */
-export function organizationJsonLd() {
-  const org = orgSettings();
+export async function organizationJsonLd() {
+  const org = await orgSettings();
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -233,8 +227,8 @@ export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
 
 /* ─────────────────────────── Gallery image SEO ─────────────────────────── */
 
-export function galleryImageSeo(file: string, locale: Locale) {
-  const rec = readCms().images[file];
+export async function galleryImageSeo(file: string, locale: Locale) {
+  const rec = (await readCms()).images[file];
   if (!rec || !rec.published) return undefined;
   return rec[locale];
 }
@@ -255,16 +249,15 @@ export function galleryImageJsonLd(locale: Locale, images: { src: string; alt: s
 
 /* ─────────────────────────── Product SEO / schema ─────────────────────────── */
 
-export function productJsonLd(locale: Locale) {
-  const cms = readCms();
-  const org = orgSettings();
-  const visible = PRODUCTS.slice(0, 6);
+export async function productJsonLd(locale: Locale) {
+  const cms = await readCms();
+  const org = await orgSettings();
+  const visible = (await getProductsBase(locale)).slice(0, 6);
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    itemListElement: visible.map((p, i) => {
-      const loc = locale === "ar" ? { ...p, ...AR_PRODUCTS[p.id] } : p;
-      const extra = cms.products[String(p.id)];
+    itemListElement: visible.map((loc, i) => {
+      const extra = cms.products[String(loc.id)];
       const pub = extra && extra.published ? extra : undefined;
       return {
         "@type": "ListItem",
@@ -298,8 +291,8 @@ export function productJsonLd(locale: Locale) {
 
 /* ─────────────────────────── 404 / favicon / robots / redirects ─────────────────────────── */
 
-export function notFoundSeo(locale: Locale) {
-  const g = readCms().global.notFound;
+export async function notFoundSeo(locale: Locale) {
+  const g = (await readCms()).global.notFound;
   const cms = g.published ? g[locale] : {};
   const fallback =
     locale === "ar"
@@ -312,12 +305,9 @@ export function notFoundSeo(locale: Locale) {
   };
 }
 
-export function faviconLinks() {
-  const g = readCms().global;
+export async function faviconLinks() {
+  const g = (await readCms()).global;
   return { favicon: g.favicon, appleTouchIcon: g.appleTouchIcon };
 }
 
-/* findRedirect lives in ./redirects.ts (kept lean — it's called on every
-   request from proxy.ts). Re-exported here so existing call sites that
-   import it from "./seo" keep working. */
-export { findRedirect } from "./redirects";
+export { findRedirect };

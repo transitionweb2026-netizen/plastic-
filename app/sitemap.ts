@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { ARTICLES } from "@/lib/articles";
+import { getArticles } from "@/lib/articles-data";
 import { SITE_URL } from "@/lib/site";
 import { articleSlug, pageRegistry } from "@/lib/cms/seo";
 
@@ -12,7 +12,7 @@ const PRIORITY: Record<string, number> = {
   gallery: 0.6, about: 0.6, contact: 0.6, privacy: 0.2, terms: 0.2,
 };
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entry = (arPath: string, enPath: string, priority: number, lastModified: Date) => ({
     url: `${SITE_URL}${arPath === "" ? "/" : arPath}`,
     lastModified,
@@ -25,15 +25,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   });
 
+  const articles = await getArticles("en");
   const out: MetadataRoute.Sitemap = [];
-  for (const page of pageRegistry()) {
+  for (const page of await pageRegistry()) {
     if (page.pageKey.startsWith("article:")) {
       const base = page.pageKey.slice(8);
-      const a = ARTICLES.find((x) => x.slug === base);
+      const a = articles.find((x) => x.slug === base);
       out.push(
         entry(
-          `/blog/${articleSlug(base, "ar")}`,
-          `/blog/${articleSlug(base, "en")}`,
+          `/blog/${await articleSlug(base, "ar")}`,
+          `/blog/${await articleSlug(base, "en")}`,
           0.5,
           a ? new Date(a.date) : new Date()
         )

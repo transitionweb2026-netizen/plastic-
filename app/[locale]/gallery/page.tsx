@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { cmsMetadata, galleryImageJsonLd, galleryImageSeo } from "@/lib/cms/seo";
-import { galleryImages } from "@/lib/gallery";
+import { getGalleryImages, getGalleryVideos } from "@/lib/gallery-data";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import RevealObserver from "@/components/ui/RevealObserver";
@@ -31,17 +31,21 @@ export default async function GalleryPage({
   // Gallery images with CMS per-image overrides (alt/caption always shown;
   // title/category/description carried through for any consumer that wants
   // them — same trim-or-fallback discipline as the rest of the CMS).
-  const images = galleryImages(loc).map((img) => {
-    const cms = galleryImageSeo(img.src, loc);
-    return {
-      ...img,
-      alt: cms?.alt?.trim() || img.alt,
-      caption: cms?.caption?.trim() || img.caption,
-      title: cms?.title?.trim() || undefined,
-      category: cms?.category?.trim() || undefined,
-      description: cms?.description?.trim() || undefined,
-    };
-  });
+  const baseImages = await getGalleryImages(loc);
+  const images = await Promise.all(
+    baseImages.map(async (img) => {
+      const cms = await galleryImageSeo(img.src, loc);
+      return {
+        ...img,
+        alt: cms?.alt?.trim() || img.alt,
+        caption: cms?.caption?.trim() || img.caption,
+        title: cms?.title?.trim() || undefined,
+        category: cms?.category?.trim() || undefined,
+        description: cms?.description?.trim() || undefined,
+      };
+    })
+  );
+  const videos = await getGalleryVideos(loc);
 
   return (
     <div className="page-gallery">
@@ -110,7 +114,7 @@ export default async function GalleryPage({
               {t("videosDescription")}
             </p>
           </div>
-          <VideoGallery />
+          <VideoGallery videos={videos} />
         </div>
       </section>
     </div>

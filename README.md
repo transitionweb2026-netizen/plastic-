@@ -41,11 +41,13 @@ number is configured.
 - `i18n/` — next-intl routing/navigation config; `messages/*.json` — UI strings
 - `components/layout/` — shared Header, Footer, MobileDrawer, LanguageSwitcher
 - `components/{home,products,industries,blog,gallery,forms,ui,admin}/` — page/CMS components
-- `lib/` — content data (`products.ts` + `products-ar.ts`, `industries.ts`,
-  `articles.ts` + `articles-ar.ts`, `gallery.ts`), navigation/contact config
-  (`nav.ts`), site constants (`site.ts`)
-- `lib/cms/` — the SEO CMS's data layer (types, storage, auth, validation)
-- `content/cms/`, `content/uploads/` — CMS runtime data (gitignored; see below)
+- `lib/` — content types (`products.ts`, `industries.ts`, `articles.ts`,
+  `gallery.ts`) + their Supabase-backed fetch functions (`products-data.ts`,
+  `industries-data.ts`, `articles-data.ts`, `gallery-data.ts`);
+  navigation/contact config (`nav.ts`), site constants (`site.ts`)
+- `lib/cms/` — the CMS's data layer (types, storage, auth, validation)
+- `lib/supabase/client.ts` — server-only Supabase client (service role)
+- `content/uploads/` — OG/favicon image uploads (gitignored; see below)
 
 ## SEO CMS (`/admin`)
 
@@ -74,19 +76,20 @@ hardcoded, but nothing breaks if the CMS is untouched, either. Saving in the
 admin panel calls `revalidatePath("/", "layout")`, so changes go live
 immediately with no rebuild.
 
-**Storage:** a single JSON file at `content/cms/seo.json` (gitignored — it's
-runtime data, not source), behind a small `CmsDriver` interface
-(`lib/cms/storage.ts`). This mirrors the *legacy* React version of this site's
-CMS, which used Supabase Auth + Postgres tables (`seo_pages`, `org_schema`) so
-edits were shared across a team rather than per-browser. To reconnect that
-backend here, implement `CmsDriver` against the same tables and swap it in at
-the bottom of `storage.ts` — every consumer goes through `readCms()`/
-`writeCms()` only, so nothing else needs to change. **Deliberately no
-in-memory cache**: Next.js's production bundler compiles API routes and page
-rendering into separate server chunks, each getting its own copy of any
-module-scope variable, so a naive cache goes stale the moment one chunk
-writes while another still holds the old value — `readCms()` always reads
-the file fresh (it's small, and this isn't a hot path).
+**Storage:** Supabase Postgres is the *only* persistence layer — both the
+shipped default copy and every CMS edit live in the same tables (see
+`lib/cms/storage.ts`, `content-storage.ts`, `translations-storage.ts`, and
+the `content_products`/`content_industries`/`content_articles`/
+`content_site_contact`/`cms_pages`/`cms_product_seo`/`cms_global`/
+`cms_redirects`/`translations`/`gallery_images`/`gallery_videos` tables).
+Reads go through `lib/supabase/client.ts` (service-role key, server-only —
+every consumer is a Server Component or Route Handler, so no RLS policies
+are needed). Each read function is wrapped in Next's `unstable_cache` under
+a domain tag; every write function calls `revalidateTag` (immediate
+expiration, `{ expire: 0 }`) for its tag plus `revalidatePath("/", "layout")`,
+so admin edits go live on the next request with no rebuild or redeploy.
+`scripts/seed-supabase.ts` was the one-time script that populated these
+tables from the original hardcoded `lib/*.ts` data.
 
 **Uploads** (`content/uploads/`, also gitignored) are deliberately **not**
 under `public/`: Next.js's production server (`next start`) scans `public/`

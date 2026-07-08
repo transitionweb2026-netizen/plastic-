@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { breadcrumbJsonLd, cmsMetadata, productJsonLd } from "@/lib/cms/seo";
-import { allProductOverrides } from "@/lib/cms/content-overlay";
+import { getProducts } from "@/lib/products-data";
 import { SITE_URL } from "@/lib/site";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import ProductCatalog from "@/components/products/ProductCatalog";
@@ -23,6 +23,7 @@ export default async function ProductsPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("productsUi");
+  const products = await getProducts(locale);
 
   return (
     <div className="relative overflow-hidden pt-6 pb-20">
@@ -46,7 +47,7 @@ export default async function ProductsPage({
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd(locale as "en" | "ar")) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(await productJsonLd(locale as "en" | "ar")) }}
       />
       <script
         type="application/ld+json"
@@ -60,7 +61,7 @@ export default async function ProductsPage({
         }}
       />
       {/* Catalog is client-side (modal state) */}
-      <ProductCatalog overrides={allProductOverrides(locale as "en" | "ar")} />
+      <ProductCatalog products={products} />
       <CrateSchematic className="absolute -bottom-4 -right-4 w-[260px] hidden lg:block" />
     </div>
   );

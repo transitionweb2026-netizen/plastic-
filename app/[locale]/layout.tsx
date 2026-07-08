@@ -55,7 +55,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
-  const icons = faviconLinks();
+  const icons = await faviconLinks();
   return {
     metadataBase: new URL(SITE_URL),
     // Deliberately no app/favicon.ico special file: Next.js always injects
@@ -96,6 +96,7 @@ export default async function LocaleLayout({
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
+  const orgJsonLd = await organizationJsonLd();
 
   return (
     <html
@@ -106,7 +107,7 @@ export default async function LocaleLayout({
       <body className="min-h-screen bg-background text-on-background antialiased">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
         />
         <NextIntlClientProvider>
           {/* key={locale} remounts on language change → smooth fade-in */}

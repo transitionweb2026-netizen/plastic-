@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { WHATSAPP_HREF, resolveContact } from "@/lib/nav";
-import { siteContactOverride } from "@/lib/cms/content-overlay";
+import { siteContact } from "@/lib/cms/content-storage";
 
 const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 const whatsappHref = envNumber ? `https://wa.me/${envNumber}` : WHATSAPP_HREF;
@@ -12,7 +12,7 @@ const whatsappHref = envNumber ? `https://wa.me/${envNumber}` : WHATSAPP_HREF;
  */
 export default async function FloatingContactWidget() {
   const t = await getTranslations("widget");
-  const CONTACT = resolveContact(siteContactOverride());
+  const CONTACT = resolveContact(await siteContact());
   return (
     <div className="fcw" aria-label={t("quickContact")}>
       <a
