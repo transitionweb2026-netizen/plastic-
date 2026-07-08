@@ -1,5 +1,5 @@
 import "server-only";
-import { unstable_cache } from "next/cache";
+import { unstable_cache, revalidateTag } from "next/cache";
 import { supabase } from "./supabase/client";
 import GALLERY_MANIFEST from "./gallery-manifest.json";
 import type { GalleryImage, GalleryVideo } from "./gallery";
@@ -79,4 +79,46 @@ export async function getGalleryVideos(locale: string): Promise<GalleryVideo[]> 
       ? { ...common, type: "youtube" as const, youtubeId: r.youtube_id! }
       : { ...common, type: "mp4" as const, src: r.src! };
   });
+}
+
+export type GalleryVideoAdmin = {
+  id: string;
+  titleEn: string;
+  descEn: string;
+  titleAr: string;
+  descAr: string;
+  thumb: string;
+};
+
+/** Raw (non-locale-merged) video text rows for the admin Gallery tab —
+ *  see app/api/admin/cms/route.ts. Always-live, no publish gate (same
+ *  discipline as content_site_contact/translations — a single canonical
+ *  text pair per locale, not a draft/published pair). */
+export async function getGalleryVideosAdmin(): Promise<GalleryVideoAdmin[]> {
+  const rows = await fetchVideoRows();
+  return rows.map((r) => ({
+    id: r.id,
+    titleEn: r.title_en,
+    descEn: r.desc_en,
+    titleAr: r.title_ar ?? "",
+    descAr: r.desc_ar ?? "",
+    thumb: r.thumb,
+  }));
+}
+
+export async function writeGalleryVideoText(
+  id: string,
+  patch: { titleEn: string; descEn: string; titleAr: string; descAr: string }
+): Promise<void> {
+  const { error } = await supabase()
+    .from("gallery_videos")
+    .update({
+      title_en: patch.titleEn,
+      desc_en: patch.descEn,
+      title_ar: patch.titleAr || null,
+      desc_ar: patch.descAr || null,
+    })
+    .eq("id", id);
+  if (error) throw error;
+  revalidateTag("gallery-videos", { expire: 0 });
 }

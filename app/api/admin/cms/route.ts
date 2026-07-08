@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { getProductsBase } from "@/lib/products-data";
-import { getGalleryImages } from "@/lib/gallery-data";
+import { getGalleryImages, getGalleryVideosAdmin, writeGalleryVideoText } from "@/lib/gallery-data";
 import { SITE_URL } from "@/lib/site";
 import { isAuthenticated } from "@/lib/cms/auth";
 import { readCms, writeGlobal, writePage, writeProductSeo, writeImageSeo, writeRedirects } from "@/lib/cms/storage";
@@ -47,6 +47,7 @@ export async function GET() {
       en: await getGalleryImages("en"),
       ar: await getGalleryImages("ar"),
     },
+    galleryVideos: await getGalleryVideosAdmin(),
   });
 }
 
@@ -55,7 +56,12 @@ type SaveBody =
   | { section: "product"; id: string; record: CmsData["products"][string] }
   | { section: "image"; file: string; record: CmsData["images"][string] }
   | { section: "global"; record: CmsData["global"] }
-  | { section: "redirects"; records: Redirect[] };
+  | { section: "redirects"; records: Redirect[] }
+  | {
+      section: "galleryVideo";
+      id: string;
+      record: { titleEn: string; descEn: string; titleAr: string; descAr: string };
+    };
 
 /** Save one section; auto-creates slug-change redirects; revalidates site. */
 export async function PUT(request: Request) {
@@ -103,6 +109,8 @@ export async function PUT(request: Request) {
     await writeGlobal(body.record);
   } else if (body.section === "redirects") {
     await writeRedirects(body.records);
+  } else if (body.section === "galleryVideo") {
+    await writeGalleryVideoText(body.id, body.record);
   } else {
     return NextResponse.json({ error: "unknown section" }, { status: 400 });
   }

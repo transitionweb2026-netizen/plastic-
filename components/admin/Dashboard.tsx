@@ -56,6 +56,7 @@ type Payload = {
   imageIssues: Issue[];
   products: { id: number; nameEn: string; nameAr: string; material: string; dimensions: string; loadCapacity: string }[];
   galleryImages: Record<Locale, { src: string; alt: string; caption: string }[]>;
+  galleryVideos: { id: string; titleEn: string; descEn: string; titleAr: string; descAr: string; thumb: string }[];
 };
 
 const TABS = ["Website Content", "Pages", "Blog", "Products", "Gallery", "Global", "Robots", "Redirects", "Health"] as const;
@@ -615,18 +616,90 @@ function ProductExtras({
 
 function GalleryTab({ data, reload }: { data: Payload; reload: () => Promise<void> }) {
   return (
-    <div className="grid md:grid-cols-2 gap-3">
-      {data.galleryImages.en.map((img, i) => {
-        const arImg = data.galleryImages.ar[i];
-        const record: ImageSeo =
-          data.cms.images[img.src] ?? { file: img.src, published: false, en: {}, ar: {} };
-        return (
-          <ImageCard key={img.src} img={img} arCaption={arImg?.caption ?? ""} record={record} onSave={async (rec) => {
-            await saveSection({ section: "image", file: img.src, record: rec });
-            await reload();
-          }} />
-        );
-      })}
+    <div className="space-y-8">
+      <div>
+        <h2 className="font-label-lg text-label-lg mb-3">Images</h2>
+        <div className="grid md:grid-cols-2 gap-3">
+          {data.galleryImages.en.map((img, i) => {
+            const arImg = data.galleryImages.ar[i];
+            const record: ImageSeo =
+              data.cms.images[img.src] ?? { file: img.src, published: false, en: {}, ar: {} };
+            return (
+              <ImageCard key={img.src} img={img} arCaption={arImg?.caption ?? ""} record={record} onSave={async (rec) => {
+                await saveSection({ section: "image", file: img.src, record: rec });
+                await reload();
+              }} />
+            );
+          })}
+        </div>
+      </div>
+      <div>
+        <h2 className="font-label-lg text-label-lg mb-3">Videos</h2>
+        <div className="grid md:grid-cols-2 gap-3">
+          {data.galleryVideos.map((video) => (
+            <VideoCard key={video.id} video={video} onSave={async (rec) => {
+              await saveSection({ section: "galleryVideo", id: video.id, record: rec });
+              await reload();
+            }} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function VideoCard({
+  video, onSave,
+}: {
+  video: { id: string; titleEn: string; descEn: string; titleAr: string; descAr: string; thumb: string };
+  onSave: (rec: { titleEn: string; descEn: string; titleAr: string; descAr: string }) => Promise<void>;
+}) {
+  const [v, setV] = useState({
+    titleEn: video.titleEn, descEn: video.descEn, titleAr: video.titleAr, descAr: video.descAr,
+  });
+  const [loc, setLoc] = useState<Locale>("en");
+  const [busy, setBusy] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const titleKey = loc === "en" ? "titleEn" : "titleAr";
+  const descKey = loc === "en" ? "descEn" : "descAr";
+
+  return (
+    <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4">
+      <div className="flex gap-3 mb-3">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={video.thumb} alt="" className="w-24 h-16 object-cover rounded-lg" />
+        <div className="min-w-0">
+          <p className="text-xs font-bold truncate">{video.id}</p>
+          <p className="text-xs text-on-surface-variant truncate">{v[titleKey]}</p>
+          <div className="flex gap-1 mt-1.5">
+            {(["en", "ar"] as const).map((l) => (
+              <button key={l} onClick={() => setLoc(l)} className={`px-2.5 py-0.5 rounded text-[10px] font-bold ${loc === l ? "bg-primary text-white" : "bg-surface-container-low"}`}>
+                {l.toUpperCase()}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 gap-2" dir={loc === "ar" ? "rtl" : "ltr"}>
+        <input className={inputCls} placeholder="Title" value={v[titleKey]} onChange={(e) => setV((x) => ({ ...x, [titleKey]: e.target.value }))} />
+        <textarea className={inputCls} rows={2} placeholder="Description" value={v[descKey]} onChange={(e) => setV((x) => ({ ...x, [descKey]: e.target.value }))} />
+      </div>
+      <div className="flex items-center gap-2 mt-3">
+        <button
+          disabled={busy}
+          className="px-4 py-1.5 bg-primary text-white rounded-lg text-xs font-bold disabled:opacity-60"
+          onClick={async () => {
+            setBusy(true);
+            await onSave(v);
+            setBusy(false);
+            setSaved(true);
+            setTimeout(() => setSaved(false), 2000);
+          }}
+        >
+          {busy ? "Saving…" : "Save"}
+        </button>
+        {saved && <span className="text-primary text-xs font-bold">Saved ✓</span>}
+      </div>
     </div>
   );
 }
