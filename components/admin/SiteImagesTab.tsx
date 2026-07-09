@@ -84,6 +84,9 @@ export default function SiteImagesTab() {
     about: "About page",
     contact: "Contact page",
     requestQuote: "Request Quote page",
+    gallery: "Gallery page",
+    blog: "Blog page",
+    industries: "Industries page",
   };
 
   return (

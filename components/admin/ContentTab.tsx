@@ -549,21 +549,33 @@ function ArticleCard({
             Related articles cards
           </summary>
           {(f.relatedArticles ?? b.relatedArticles ?? []).map((r, i) => (
-            <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3 pb-3 border-b border-outline-variant/40 last:border-0">
-              <Field label={`Card ${i + 1} — category tag`}>
-                <input className={inputCls} value={r.category} onChange={(e) => {
+            <div key={i} className="mb-3 pb-3 border-b border-outline-variant/40 last:border-0">
+              <ImageUploader
+                compact
+                label={`Card ${i + 1} — thumbnail`}
+                value={r.img}
+                onChange={(url) => {
                   const list = [...(f.relatedArticles ?? b.relatedArticles ?? [])];
-                  list[i] = { ...list[i], category: e.target.value };
+                  list[i] = { ...list[i], img: url };
                   set({ relatedArticles: list });
-                }} />
-              </Field>
-              <Field label={`Card ${i + 1} — title`}>
-                <input className={inputCls} value={r.title} onChange={(e) => {
-                  const list = [...(f.relatedArticles ?? b.relatedArticles ?? [])];
-                  list[i] = { ...list[i], title: e.target.value };
-                  set({ relatedArticles: list });
-                }} />
-              </Field>
+                }}
+              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+                <Field label={`Card ${i + 1} — category tag`}>
+                  <input className={inputCls} value={r.category} onChange={(e) => {
+                    const list = [...(f.relatedArticles ?? b.relatedArticles ?? [])];
+                    list[i] = { ...list[i], category: e.target.value };
+                    set({ relatedArticles: list });
+                  }} />
+                </Field>
+                <Field label={`Card ${i + 1} — title`}>
+                  <input className={inputCls} value={r.title} onChange={(e) => {
+                    const list = [...(f.relatedArticles ?? b.relatedArticles ?? [])];
+                    list[i] = { ...list[i], title: e.target.value };
+                    set({ relatedArticles: list });
+                  }} />
+                </Field>
+              </div>
             </div>
           ))}
         </details>

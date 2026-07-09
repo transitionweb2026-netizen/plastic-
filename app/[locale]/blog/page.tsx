@@ -7,6 +7,7 @@ import { Link } from "@/i18n/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
 import NewsletterForm from "@/components/forms/NewsletterForm";
 import { getArticles } from "@/lib/articles-data";
+import { siteImage } from "@/lib/cms/images-data";
 
 export async function generateMetadata({
   params,
@@ -42,6 +43,7 @@ export default async function BlogPage({
     (await getArticles(locale)).map((a) => [a.slug, a.cardImage])
   );
   const featuredCardImage = articlesBySlug.get("high-density-storage") ?? HERO_IMG;
+  const pageHeroImg = await siteImage("blog.hero", HERO_IMG);
   const recentArticles = RECENT_ARTICLE_META.map((a) => ({
     ...a,
     img: articlesBySlug.get(a.href.replace("/blog/", "")) ?? a.img,
@@ -62,7 +64,7 @@ export default async function BlogPage({
         <div className="absolute inset-0 z-0">
           <div className="hero-bg relative w-full h-full">
             <Image
-              src={HERO_IMG}
+              src={pageHeroImg}
               alt={t("heroAlt")}
               fill
               priority

@@ -7,6 +7,7 @@ import RevealObserver from "@/components/ui/RevealObserver";
 import ImageGallery from "@/components/gallery/ImageGallery";
 import { RackOutline, DimensionLine } from "@/components/ui/DecorArt";
 import VideoGallery from "@/components/gallery/VideoGallery";
+import { siteImage } from "@/lib/cms/images-data";
 
 export async function generateMetadata({
   params,
@@ -17,7 +18,7 @@ export async function generateMetadata({
   return cmsMetadata("gallery", locale as "en" | "ar");
 }
 
-const HERO_IMG = "/gallery/images/img-01.jpg";
+const HERO_IMG_DEFAULT = "/gallery/images/img-01.jpg";
 
 export default async function GalleryPage({
   params,
@@ -46,6 +47,7 @@ export default async function GalleryPage({
     })
   );
   const videos = await getGalleryVideos(loc);
+  const HERO_IMG = await siteImage("gallery.hero", HERO_IMG_DEFAULT);
 
   return (
     <div className="page-gallery">

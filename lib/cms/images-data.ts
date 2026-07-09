@@ -34,6 +34,10 @@ export const SITE_IMAGE_KEYS: { key: string; label: string }[] = [
   { key: "about.factoryCard.3", label: "About — factory card 3" },
   { key: "contact.map", label: "Contact — map image" },
   { key: "requestQuote.spotlight", label: "Request Quote — spotlight image" },
+  { key: "gallery.hero", label: "Gallery — hero background" },
+  { key: "blog.hero", label: "Blog — hero background" },
+  { key: "industries.hero", label: "Industries — hero background" },
+  { key: "industries.techHighlight", label: "Industries — tech highlights showcase image" },
 ];
 
 const fetchAll = unstable_cache(

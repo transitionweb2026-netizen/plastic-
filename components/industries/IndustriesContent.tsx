@@ -8,12 +8,6 @@ import RevealObserver from "@/components/ui/RevealObserver";
 import IndustryModal from "./IndustryModal";
 import type { IndustryModal as IndustryModalData } from "@/lib/industries";
 
-const HERO_IMG =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuD9tA-rr56TAmeLUnSIaFKlqLG4WOQHKeKl--QJeyBeW4FocUP0_70tEj7xLqMSxysGDlXeHbbhUEYKgQDUx4Bobd1-tTTOPJbQ-sBlHT8xEeBEuI246As9lEE9_tN8TpHTJADF-JYWyVqKw8d_Y9FUF9rfzQdccymjHv0TkPA9KCAip3cT_w1e5ZaTtgmlFM5xlQ17smw7Xjp3FFIyb6tOk2YOJGs4PnucZmYwhk3bSsUt8q0LPvZ0eKBY8BA4-mxFCSsjFeZyefM";
-
-const TECH_IMG =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuCa9xG4AOLYtNF6EeqxOIyGlrwnGXVZUlh95ADhGQ5AGSP8iESn5u-6v9g6KADSN3RpjfF6GSiDeK_wNYUVdHIn8wKBxZo_D4u9W7UgkZA4jTj8gm6koZL_FxEZ09iCcpCZPIXctcf8iSUoqEetfgp8MdJ_j2BULAwR3iDzEF6mOP0MVLDYrXY-U0epKLARtpzAZ9k7HEDlc-6_7ehjbIBA8VuQ5uUQMbtKDSe1MNKu1hOQNMOmYz0K1x0EiDW25D-yKgCj4LWADIk";
-
 const STAT_DEFS = [
   { num: "22", suffix: "+", key: "stat1" },
   { num: "600K", suffix: "+", key: "stat2" },
@@ -46,11 +40,17 @@ const CERT_DEFS = [
 
 export default function IndustriesContent({
   modals,
+  heroImg,
+  techImg,
 }: {
   /** Fully resolved (localized, CMS-merged) detail-modal data, keyed by
    *  modal id — fetched server-side by the parent page. Card-grid text
    *  above stays translation-driven — see the "industriesPage" namespace. */
   modals: Record<string, IndustryModalData>;
+  /** CMS-resolved (siteImage "industries.hero" / "industries.techHighlight")
+   *  page-level showcase images, fetched server-side by the parent page. */
+  heroImg: string;
+  techImg: string;
 }) {
   const t = useTranslations("industriesPage");
   const [openId, setOpenId] = useState<string | null>(null);
@@ -86,7 +86,7 @@ export default function IndustriesContent({
         <div className="absolute inset-0 z-0">
           <div className="hero-img relative w-full h-full">
             <Image
-              src={HERO_IMG}
+              src={heroImg}
               alt="Giant Storage facility"
               fill
               priority
@@ -243,7 +243,7 @@ export default function IndustriesContent({
               <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl">
                 <Image
                   className="w-full h-auto transition-transform duration-700 hover:scale-105"
-                  src={TECH_IMG}
+                  src={techImg}
                   alt={t("techAlt")}
                   width={720}
                   height={480}
