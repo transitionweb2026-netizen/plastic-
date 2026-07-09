@@ -204,7 +204,6 @@ export default function IndustriesContent({
                 key={step.id}
                 type="button"
                 className={`proc-card reveal ${step.delay} text-left`}
-                onClick={() => setOpenId(step.id)}
               >
                 <div className="relative overflow-hidden aspect-[3/4]">
                   <Image
