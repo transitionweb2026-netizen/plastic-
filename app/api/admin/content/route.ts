@@ -14,11 +14,11 @@ import { getIndustryModalsBase, writeIndustryImage } from "@/lib/industries-data
 import { getArticlesBase, writeArticleHeroImage } from "@/lib/articles-data";
 import { productCover, productGallery } from "@/lib/products";
 
-/** Only the 12 reachable modal ids (5 process steps, 3 tech, 4 certs) —
+/** Only the 14 reachable modal ids (7 process steps, 3 tech, 4 certs) —
  *  the "industries served" ind1..6 keys are dead in the current UI, so
  *  there's nothing to edit them for. See IndustriesContent.tsx. */
 const REACHABLE_INDUSTRY_IDS = [
-  "step1", "step2", "step3", "step4", "step5",
+  "step1", "step2", "step3", "step4", "step5", "step6", "step7",
   "tech1", "tech2", "tech3",
   "cert1", "cert2", "cert3", "cert4",
 ];

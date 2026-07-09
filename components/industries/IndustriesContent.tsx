@@ -27,6 +27,8 @@ const STEP_DEFS = [
   { id: "step3", num: "03", delay: "d3" },
   { id: "step4", num: "04", delay: "d4" },
   { id: "step5", num: "05", delay: "d5" },
+  { id: "step6", num: "06", delay: "d1" },
+  { id: "step7", num: "07", delay: "d2" },
 ] as const;
 
 const TECH_DEFS = [
@@ -196,7 +198,7 @@ export default function IndustriesContent({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-6">
             {processSteps.map((step) => (
               <button
                 key={step.id}
