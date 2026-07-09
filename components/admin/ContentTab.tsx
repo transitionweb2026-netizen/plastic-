@@ -23,7 +23,7 @@ type ArticleCta = {
   button1Text: string; button1Href: string; button2Text: string; button2Href: string;
 };
 type ArticleFields = {
-  title?: string; h1?: string; description?: string; bodyHtml?: string;
+  title?: string; h1?: string; heroBadge?: string; description?: string; bodyHtml?: string;
   authorBio?: { name: string; roleTitle: string; bio: string };
   prevLink?: LinkField;
   nextLink?: LinkField;
@@ -461,6 +461,9 @@ function ArticleCard({
         </Field>
         <Field label="H1 (page heading)">
           <input className={inputCls} value={f.h1 ?? ""} onChange={(e) => set({ h1: e.target.value })} />
+        </Field>
+        <Field label="Hero badge (small pill above the title)">
+          <input className={inputCls} value={f.heroBadge ?? ""} onChange={(e) => set({ heroBadge: e.target.value })} />
         </Field>
         <Field label="Description (meta + teaser)">
           <textarea className={inputCls} rows={2} value={f.description ?? ""} onChange={(e) => set({ description: e.target.value })} />

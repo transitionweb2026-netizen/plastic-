@@ -109,7 +109,41 @@ export default async function ArticlePage({
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
-        <div dangerouslySetInnerHTML={{ __html: article.heroOverlayHtml }} />
+        <div className="absolute bottom-0 left-0 right-0 px-6 md:px-10 pb-12 max-w-4xl mx-auto">
+          <span
+            className="hero-animate inline-block bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4"
+            style={{ animationDelay: ".1s" }}
+          >
+            {article.heroBadge}
+          </span>
+          <h1
+            className="hero-animate font-black text-white leading-tight mb-4"
+            style={{ fontSize: "clamp(1.6rem,4vw,2.75rem)", letterSpacing: "-.02em", animationDelay: ".25s" }}
+          >
+            {article.h1}
+          </h1>
+          <div
+            className="hero-animate flex flex-wrap items-center gap-3 text-white/70 text-sm"
+            style={{ animationDelay: ".4s" }}
+          >
+            {article.authorBio && (
+              <>
+                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                  <span className="material-symbols-outlined text-white" style={{ fontSize: 14 }}>
+                    person
+                  </span>
+                </div>
+                <span className="font-semibold text-white">{article.authorBio.name}</span>
+                <span>·</span>
+                <span>{article.authorBio.roleTitle}</span>
+                <span>·</span>
+              </>
+            )}
+            <span>{article.date}</span>
+            <span>·</span>
+            <span>{article.readTime}</span>
+          </div>
+        </div>
       </section>
 
       <main className="max-w-4xl mx-auto px-6 md:px-10 py-16">
@@ -147,7 +181,7 @@ export default async function ArticlePage({
           dangerouslySetInnerHTML={{ __html: bodyHtml }}
         />
 
-        {article.authorBio && (
+        {article.authorBio?.bio && (
           <div className="mt-12 p-6 bg-surface-container-low rounded-2xl flex gap-5 items-start border border-outline-variant reveal">
             <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
               <span className="material-symbols-outlined text-white text-2xl">

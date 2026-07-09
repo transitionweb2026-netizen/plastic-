@@ -8,14 +8,13 @@ type ArticleRow = {
   slug: string;
   hero_img: string;
   hero_alt: string;
-  hero_overlay_html: string;
   date: string;
   read_time: string;
   has_counters: boolean;
   show_bottom_share: boolean;
   base_en: Omit<
     Article,
-    "slug" | "heroImg" | "heroAlt" | "heroOverlayHtml" | "date" | "readTime" | "hasCounters" | "showBottomShare"
+    "slug" | "heroImg" | "heroAlt" | "date" | "readTime" | "hasCounters" | "showBottomShare"
   >;
   base_ar: Partial<Article>;
   override_en: Partial<Article>;
@@ -38,7 +37,6 @@ function localizedBase(row: ArticleRow, locale: string): Article {
     slug: row.slug,
     heroImg: row.hero_img,
     heroAlt: row.hero_alt,
-    heroOverlayHtml: row.hero_overlay_html,
     date: row.date,
     readTime: row.read_time,
     hasCounters: row.has_counters,

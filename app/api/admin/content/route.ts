@@ -85,6 +85,7 @@ export async function GET() {
           en: {
             title: a.title,
             h1: a.h1,
+            heroBadge: a.heroBadge,
             description: a.description,
             bodyHtml: a.bodyHtml,
             authorBio: a.authorBio,
@@ -96,6 +97,7 @@ export async function GET() {
           ar: {
             title: ar.title,
             h1: ar.h1,
+            heroBadge: ar.heroBadge,
             description: ar.description,
             bodyHtml: ar.bodyHtml,
             authorBio: ar.authorBio,

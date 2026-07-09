@@ -10,7 +10,7 @@ export type Article = {
   description: string;
   heroImg: string;
   heroAlt: string;
-  heroOverlayHtml: string;
+  heroBadge: string;
   bodyHtml: string;
   date: string;
   readTime: string;
