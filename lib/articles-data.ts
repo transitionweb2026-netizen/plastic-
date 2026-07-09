@@ -48,18 +48,23 @@ function localizedBase(row: ArticleRow, locale: string): Article {
   return locale !== "ar" ? base : { ...base, ...row.base_ar };
 }
 
-/** Card Image is the dedicated thumbnail for listing/featured cards. When
- *  left blank in the CMS, callers fall back to the Hero Image so nothing
- *  breaks — this is the one place that fallback is applied, so every
- *  public reader (getArticles/getArticle) sees it consistently. */
-function withCardImageFallback(article: Article): Article {
-  return { ...article, cardImage: article.cardImage || article.heroImg };
+/** Card Image and Hero Image are stored and edited completely independently
+ *  (see writeArticleCardImage/writeArticleHeroImage below). When either one
+ *  is left blank in the CMS, callers temporarily borrow the other purely for
+ *  display — this is the one place that fallback is applied, so every
+ *  public reader (getArticles/getArticle) sees it consistently. Whichever
+ *  field is actually blank in Supabase stays blank; only the rendered value
+ *  falls back, so the two never overwrite each other in storage. */
+function withImageFallbacks(article: Article): Article {
+  const cardImage = article.cardImage || article.heroImg;
+  const heroImg = article.heroImg || article.cardImage;
+  return { ...article, cardImage, heroImg };
 }
 
 export async function getArticles(locale: string): Promise<Article[]> {
   const rows = await fetchRows();
   return rows.map((r) =>
-    withCardImageFallback(
+    withImageFallbacks(
       applyContentOverride(
         localizedBase(r, locale),
         r.published ? (locale === "ar" ? r.override_ar : r.override_en) : undefined
@@ -72,7 +77,7 @@ export async function getArticle(slug: string, locale: string): Promise<Article 
   const rows = await fetchRows();
   const row = rows.find((r) => r.slug === slug);
   if (!row) return undefined;
-  return withCardImageFallback(
+  return withImageFallbacks(
     applyContentOverride(
       localizedBase(row, locale),
       row.published ? (locale === "ar" ? row.override_ar : row.override_en) : undefined
@@ -122,7 +127,7 @@ export async function writeArticleHeroImage(
 
 /** Base (locale-invariant) card/thumbnail image — independent of Hero
  *  Image, stored and published separately. Empty string clears it, which
- *  re-enables the Hero Image fallback (see withCardImageFallback above). */
+ *  re-enables the Hero Image fallback (see withImageFallbacks above). */
 export async function writeArticleCardImage(slug: string, cardImage: string): Promise<void> {
   const { error } = await supabase()
     .from("content_articles")

@@ -464,7 +464,11 @@ function ArticleCard({
           This edits the article's detail page.
         </p>
         <div className="mb-4">
-          <ImageUploader label="Hero image (article page top)" value={hero} onChange={doSaveHero} />
+          <ImageUploader
+            label="Hero image (article page top — falls back to Card image if left blank)"
+            value={hero}
+            onChange={doSaveHero}
+          />
           {heroBusy && <span className="text-xs text-on-surface-variant">Saving…</span>}
           {heroSaved && <span className="text-xs text-primary font-bold">Saved ✓</span>}
           {heroFailed && <span className="text-xs text-error font-bold">Save failed</span>}

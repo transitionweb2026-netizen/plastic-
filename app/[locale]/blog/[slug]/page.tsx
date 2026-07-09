@@ -6,7 +6,7 @@ import { Link } from "@/i18n/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
 import ArticleCounters from "@/components/blog/ArticleCounters";
 import CopyLinkButton from "@/components/blog/CopyLinkButton";
-import { getArticle, articleBodyLocalized, getArticleSlugs } from "@/lib/articles-data";
+import { getArticle, getArticles, articleBodyLocalized, getArticleSlugs } from "@/lib/articles-data";
 import { SITE_URL } from "@/lib/site";
 import {
   articleSlug,
@@ -52,6 +52,14 @@ export default async function ArticlePage({
   const article = await getArticle(baseSlug, locale);
   if (!article) notFound();
   const bodyLocalized = await articleBodyLocalized(baseSlug, locale);
+
+  // Related-article thumbnails always mirror the linked article's own Card
+  // Image (falling back to its Hero Image) — same single Card Image system
+  // used everywhere else, not a separately curated field. Falls back to the
+  // stored r.img only if the href doesn't resolve to a known article.
+  const cardImageBySlug = new Map(
+    (await getArticles(locale)).map((a) => [a.slug, a.cardImage])
+  );
 
   const urlSlug = await articleSlug(baseSlug, loc);
   const pageUrl = `${SITE_URL}${locale === "en" ? "/en" : ""}/blog/${urlSlug}`;
@@ -274,7 +282,7 @@ export default async function ArticlePage({
                   className={`art-related reveal d${i + 1}`}
                 >
                   <Image
-                    src={r.img}
+                    src={cardImageBySlug.get(r.href.replace("/blog/", "")) ?? r.img}
                     alt=""
                     width={400}
                     height={144}
