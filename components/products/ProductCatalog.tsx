@@ -6,13 +6,11 @@ import { useTranslations } from "next-intl";
 import { productCover, type Product } from "@/lib/products";
 import ProductModal from "./ProductModal";
 
-/** The catalog shows a single grid of exactly six products. */
-const MAX_VISIBLE_PRODUCTS = 6;
 const DELAYS = ["delay-1", "delay-2", "delay-3", "delay-4", "delay-5", "delay-6"];
 
 /**
- * Client-side product catalog: a single six-product grid with the detail
- * modal (no category filters, no pagination).
+ * Client-side product catalog: a single grid of every published product,
+ * with the detail modal (no category filters, no pagination).
  */
 export default function ProductCatalog({
   products,
@@ -22,7 +20,7 @@ export default function ProductCatalog({
   products: Product[];
 }) {
   const t = useTranslations("productsUi");
-  const visibleProducts = products.slice(0, MAX_VISIBLE_PRODUCTS);
+  const visibleProducts = products;
   const [selected, setSelected] = useState<Product | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
