@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { useLocale, useTranslations } from "next-intl";
-import { colorLabel, productGallery, type Product } from "@/lib/products";
+import { useTranslations } from "next-intl";
+import { productGallery, type Product } from "@/lib/products";
 
 type ProductModalProps = {
   product: Product | null;
@@ -13,7 +13,6 @@ type ProductModalProps = {
 
 /** Product detail modal (ported from the legacy openModal renderer). */
 export default function ProductModal({ product, onClose }: ProductModalProps) {
-  const locale = useLocale();
   const t = useTranslations("productsUi");
   const tc = useTranslations("common");
   const gallery = useMemo(
@@ -140,63 +139,19 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
               {product.description}
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <p className="modal-section-title">{t("technicalSpecifications")}</p>
               <div>
-                <p className="modal-section-title">{t("technicalSpecifications")}</p>
-                <div>
-                  {[
-                    [t("material"), product.material],
-                    [t("dimensions"), product.dimensions],
-                    [t("loadCapacity"), product.loadCapacity],
-                  ].map(([label, value]) => (
-                    <div key={label} className="spec-row">
-                      <span className="spec-label">{label}</span>
-                      <span className="spec-value">{value}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <p className="modal-section-title mt-6">{t("availableColors")}</p>
-                <div className="flex flex-wrap gap-2">
-                  {product.colors.map((color) => (
-                    <div key={color} className="flex items-center gap-2 mr-3 mb-2">
-                      <span className="color-dot" style={{ background: color }} />
-                      <span className="text-xs font-medium text-on-surface-variant">
-                        {colorLabel(color, locale)}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <p className="modal-section-title">{t("keyFeatures")}</p>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {product.features.map((feature) => (
-                    <span key={feature} className="feature-chip">
-                      <span
-                        className="material-symbols-outlined text-primary"
-                        style={{
-                          fontSize: 14,
-                          fontVariationSettings:
-                            "'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24",
-                        }}
-                      >
-                        check_circle
-                      </span>
-                      {feature}
-                    </span>
-                  ))}
-                </div>
-
-                <p className="modal-section-title">{t("applications")}</p>
-                <div className="flex flex-wrap gap-2">
-                  {product.applications.map((app) => (
-                    <span key={app} className="app-tag">
-                      {app}
-                    </span>
-                  ))}
-                </div>
+                {[
+                  [t("material"), product.material],
+                  [t("dimensions"), product.dimensions],
+                  [t("loadCapacity"), product.loadCapacity],
+                ].map(([label, value]) => (
+                  <div key={label} className="spec-row">
+                    <span className="spec-label">{label}</span>
+                    <span className="spec-value">{value}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -207,13 +162,28 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                 </span>{" "}
                 {product.availability}
               </p>
-              <Link
-                href="/request-quote"
-                className="bg-primary text-on-primary px-8 py-3 rounded-lg font-label-md text-label-md hover:bg-secondary active:scale-95 transition-all inline-flex items-center"
-                style={{ boxShadow: "0 6px 20px rgba(1,78,42,.3)" }}
-              >
-                {t("requestAQuote")}
-              </Link>
+              <div className="flex flex-wrap items-center gap-3">
+                {product.datasheetPdf && (
+                  <a
+                    href={product.datasheetPdf}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="border border-outline-variant text-on-surface px-6 py-3 rounded-lg font-label-md text-label-md hover:bg-surface-container-low active:scale-95 transition-all inline-flex items-center gap-2"
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
+                      download
+                    </span>
+                    {t("downloadDatasheet")}
+                  </a>
+                )}
+                <Link
+                  href="/request-quote"
+                  className="bg-primary text-on-primary px-8 py-3 rounded-lg font-label-md text-label-md hover:bg-secondary active:scale-95 transition-all inline-flex items-center"
+                  style={{ boxShadow: "0 6px 20px rgba(1,78,42,.3)" }}
+                >
+                  {t("requestAQuote")}
+                </Link>
+              </div>
             </div>
           </div>
         </div>

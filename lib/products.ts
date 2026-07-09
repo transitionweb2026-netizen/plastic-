@@ -21,6 +21,7 @@ export type Product = {
   image: string;
   coverImage?: string;
   images?: string[];
+  datasheetPdf?: string;
   description: string;
   material: string;
   dimensions: string;

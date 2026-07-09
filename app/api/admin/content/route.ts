@@ -9,7 +9,7 @@ import {
   writeSiteContact,
 } from "@/lib/cms/content-storage";
 import type { ContentOverrides, ContentRecord } from "@/lib/cms/content-types";
-import { getProductsBase, writeProductImages } from "@/lib/products-data";
+import { getProductsBase, writeProductImages, writeProductDatasheet } from "@/lib/products-data";
 import { getIndustryModalsBase, writeIndustryImage } from "@/lib/industries-data";
 import { getArticlesBase, writeArticleHeroImage, writeArticleCardImage } from "@/lib/articles-data";
 import { productCover, productGallery } from "@/lib/products";
@@ -47,6 +47,7 @@ export async function GET() {
       image: p.image,
       coverImage: productCover(p),
       images: productGallery(p),
+      datasheetPdf: p.datasheetPdf ?? "",
       base: {
         en: {
           name: p.name,
@@ -55,9 +56,6 @@ export async function GET() {
           material: p.material,
           dimensions: p.dimensions,
           loadCapacity: p.loadCapacity,
-          colors: p.colors,
-          applications: p.applications,
-          features: p.features,
           availability: p.availability,
         },
         ar: arProductById.get(p.id) ?? p,
@@ -120,6 +118,7 @@ type SaveBody =
   | { section: "article"; slug: string; record: ContentRecord<ContentOverrides["articles"][string]["en"]> }
   | { section: "siteContact"; record: ContentOverrides["siteContact"] }
   | { section: "productImages"; id: string; image?: string; coverImage?: string; images?: string[] }
+  | { section: "productDatasheet"; id: string; datasheetPdf: string }
   | { section: "industryImage"; id: string; image: string }
   | { section: "articleHero"; slug: string; heroImg?: string; heroAlt?: string }
   | { section: "articleCardImage"; slug: string; cardImage: string };
@@ -143,6 +142,8 @@ export async function PUT(request: Request) {
       coverImage: body.coverImage,
       images: body.images,
     });
+  } else if (body.section === "productDatasheet") {
+    await writeProductDatasheet(body.id, body.datasheetPdf);
   } else if (body.section === "industryImage") {
     await writeIndustryImage(body.id, body.image);
   } else if (body.section === "articleHero") {

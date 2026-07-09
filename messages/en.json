@@ -236,11 +236,9 @@
     "material": "Material",
     "dimensions": "Dimensions",
     "loadCapacity": "Load Capacity",
-    "availableColors": "Available Colors",
-    "keyFeatures": "Key Features",
-    "applications": "Applications",
     "availability": "Availability:",
     "requestAQuote": "Request a Quote",
+    "downloadDatasheet": "Download Datasheet",
     "viewImage": "View image {n} of {total}",
     "productImages": "{name} images",
     "industriesServed": "Industries Served"

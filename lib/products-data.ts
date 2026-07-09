@@ -11,7 +11,8 @@ type ProductRow = {
   image: string;
   cover_image: string | null;
   images: string[] | null;
-  base_en: Omit<Product, "id" | "cat" | "statusClass" | "image" | "coverImage" | "images">;
+  datasheet_pdf: string | null;
+  base_en: Omit<Product, "id" | "cat" | "statusClass" | "image" | "coverImage" | "images" | "datasheetPdf">;
   base_ar: Partial<Product>;
   override_en: Partial<Product>;
   override_ar: Partial<Product>;
@@ -39,6 +40,7 @@ function localizedBase(row: ProductRow, locale: string): Product {
     image: row.image,
     coverImage: row.cover_image ?? undefined,
     images: row.images ?? undefined,
+    datasheetPdf: row.datasheet_pdf ?? undefined,
     ...row.base_en,
   };
   return locale !== "ar" ? base : { ...base, ...row.base_ar };
@@ -84,6 +86,17 @@ export async function writeProductImages(
   if (patch.coverImage !== undefined) update.cover_image = patch.coverImage || null;
   if (patch.images !== undefined) update.images = patch.images.length ? patch.images : null;
   const { error } = await supabase().from("content_products").update(update).eq("id", Number(id));
+  if (error) throw error;
+  revalidateTag("content-products", { expire: 0 });
+}
+
+/** Base (locale-invariant) datasheet PDF — independent of every other
+ *  product field, stored and published separately. Empty string clears it. */
+export async function writeProductDatasheet(id: string, datasheetPdf: string): Promise<void> {
+  const { error } = await supabase()
+    .from("content_products")
+    .update({ datasheet_pdf: datasheetPdf || null })
+    .eq("id", Number(id));
   if (error) throw error;
   revalidateTag("content-products", { expire: 0 });
 }

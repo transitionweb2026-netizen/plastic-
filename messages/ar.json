@@ -236,11 +236,9 @@
     "material": "الخامة",
     "dimensions": "الأبعاد",
     "loadCapacity": "سعة التحميل",
-    "availableColors": "الألوان المتاحة",
-    "keyFeatures": "أبرز المزايا",
-    "applications": "الاستخدامات",
     "availability": "التوافر:",
     "requestAQuote": "اطلب عرض سعر",
+    "downloadDatasheet": "تحميل نشرة المنتج",
     "viewImage": "عرض الصورة {n} من {total}",
     "productImages": "صور {name}",
     "industriesServed": "القطاعات المخدومة"

@@ -3,14 +3,14 @@
 import { useEffect, useState } from "react";
 import RichTextEditor from "./RichTextEditor";
 import ImageUploader from "./ImageUploader";
+import PdfUploader from "./PdfUploader";
 
 type Locale = "en" | "ar";
 
 type ProductFields = {
   name?: string; category?: string; badge?: string; status?: string;
   shortDesc?: string; description?: string; material?: string;
-  dimensions?: string; loadCapacity?: string; colors?: string[]; applications?: string[];
-  features?: string[]; availability?: string;
+  dimensions?: string; loadCapacity?: string; availability?: string;
 };
 type IndustryFields = {
   title?: string; description?: string; specs?: [string, string][];
@@ -40,7 +40,7 @@ type SiteContact = {
 type Payload = {
   products: {
     id: number; nameEn: string; nameAr: string;
-    image: string; coverImage: string; images: string[];
+    image: string; coverImage: string; images: string[]; datasheetPdf: string;
     base: { en: ProductFields; ar: ProductFields };
   }[];
   industries: {
@@ -100,14 +100,15 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 /* ─────────────────────── Product editor ─────────────────────── */
 
 function ProductCard({
-  id, nameEn, nameAr, image, coverImage, images, base, record, onSave, onSaveImages,
+  id, nameEn, nameAr, image, coverImage, images, datasheetPdf, base, record, onSave, onSaveImages, onSaveDatasheet,
 }: {
   id: number; nameEn: string; nameAr: string;
-  image: string; coverImage: string; images: string[];
+  image: string; coverImage: string; images: string[]; datasheetPdf: string;
   base: { en: ProductFields; ar: ProductFields };
   record: ContentRecord<ProductFields>;
   onSave: (rec: ContentRecord<ProductFields>) => Promise<boolean>;
   onSaveImages: (patch: { image?: string; coverImage?: string; images?: string[] }) => Promise<boolean>;
+  onSaveDatasheet: (datasheetPdf: string) => Promise<boolean>;
 }) {
   const [rec, setRec] = useState(record);
   const [loc, setLoc] = useState<Locale>("en");
@@ -119,6 +120,11 @@ function ProductCard({
   const [imgBusy, setImgBusy] = useState(false);
   const [imgSaved, setImgSaved] = useState(false);
   const [imgFailed, setImgFailed] = useState(false);
+
+  const [datasheet, setDatasheet] = useState(datasheetPdf);
+  const [dsBusy, setDsBusy] = useState(false);
+  const [dsSaved, setDsSaved] = useState(false);
+  const [dsFailed, setDsFailed] = useState(false);
 
   const f = rec[loc];
   const b = base[loc];
@@ -149,6 +155,20 @@ function ProductCard({
     } else {
       setImgFailed(true);
       setTimeout(() => setImgFailed(false), 4000);
+    }
+  };
+
+  const doSaveDatasheet = async (url: string) => {
+    setDatasheet(url);
+    setDsBusy(true);
+    const ok = await onSaveDatasheet(url);
+    setDsBusy(false);
+    if (ok) {
+      setDsSaved(true);
+      setTimeout(() => setDsSaved(false), 1800);
+    } else {
+      setDsFailed(true);
+      setTimeout(() => setDsFailed(false), 4000);
     }
   };
 
@@ -214,6 +234,17 @@ function ProductCard({
             </div>
           </div>
         </details>
+        <details className="mb-4 border border-outline-variant rounded-lg">
+          <summary className="text-xs font-bold text-on-surface-variant uppercase tracking-wide cursor-pointer px-3 py-2.5">
+            Datasheet
+          </summary>
+          <div className="px-3 pb-3">
+            <PdfUploader label="Datasheet PDF" value={datasheet} onChange={doSaveDatasheet} />
+            {dsBusy && <span className="text-xs text-on-surface-variant">Saving…</span>}
+            {dsSaved && <span className="text-xs text-primary font-bold">Saved ✓</span>}
+            {dsFailed && <span className="text-xs text-error font-bold">Save failed</span>}
+          </div>
+        </details>
         <div className="flex gap-1 mb-4">
           {(["en", "ar"] as const).map((l) => (
             <button key={l} onClick={() => setLoc(l)} className={`px-4 py-1.5 rounded-full text-xs font-bold ${loc === l ? "bg-primary text-white" : "bg-surface-container-low"}`}>
@@ -240,12 +271,6 @@ function ProductCard({
           <Field label="Dimensions"><input className={inputCls} value={f.dimensions ?? ""} onChange={(e) => set({ dimensions: e.target.value })} /></Field>
           <Field label="Load capacity"><input className={inputCls} value={f.loadCapacity ?? ""} onChange={(e) => set({ loadCapacity: e.target.value })} /></Field>
         </div>
-        <Field label="Applications (one per line)">
-          <textarea className={inputCls} rows={3} value={arrToText(f.applications)} onChange={(e) => set({ applications: textToArr(e.target.value) })} />
-        </Field>
-        <Field label="Features (one per line)">
-          <textarea className={inputCls} rows={3} value={arrToText(f.features)} onChange={(e) => set({ features: textToArr(e.target.value) })} />
-        </Field>
         <Field label="Availability"><input className={inputCls} value={f.availability ?? ""} onChange={(e) => set({ availability: e.target.value })} /></Field>
 
         <div className="flex items-center gap-3 mt-5">
@@ -739,6 +764,7 @@ export default function ContentTab() {
               image={p.image}
               coverImage={p.coverImage}
               images={p.images}
+              datasheetPdf={p.datasheetPdf}
               base={p.base}
               record={data.overrides.products[String(p.id)] ?? emptyProduct()}
               onSave={async (rec) => {
@@ -748,6 +774,11 @@ export default function ContentTab() {
               }}
               onSaveImages={async (patch) => {
                 const ok = await saveContent({ section: "productImages", id: String(p.id), ...patch });
+                if (ok) load();
+                return ok;
+              }}
+              onSaveDatasheet={async (datasheetPdf) => {
+                const ok = await saveContent({ section: "productDatasheet", id: String(p.id), datasheetPdf });
                 if (ok) load();
                 return ok;
               }}
