@@ -11,7 +11,7 @@ import {
 import type { ContentOverrides, ContentRecord } from "@/lib/cms/content-types";
 import { getProductsBase, writeProductImages } from "@/lib/products-data";
 import { getIndustryModalsBase, writeIndustryImage } from "@/lib/industries-data";
-import { getArticlesBase, writeArticleHeroImage } from "@/lib/articles-data";
+import { getArticlesBase, writeArticleHeroImage, writeArticleCardImage } from "@/lib/articles-data";
 import { productCover, productGallery } from "@/lib/products";
 
 /** Only the 14 reachable modal ids (7 process steps, 3 tech, 4 certs) —
@@ -81,6 +81,7 @@ export async function GET() {
         titleAr: ar.title,
         heroImg: a.heroImg,
         heroAlt: a.heroAlt,
+        cardImage: a.cardImage,
         base: {
           en: {
             title: a.title,
@@ -120,7 +121,8 @@ type SaveBody =
   | { section: "siteContact"; record: ContentOverrides["siteContact"] }
   | { section: "productImages"; id: string; image?: string; coverImage?: string; images?: string[] }
   | { section: "industryImage"; id: string; image: string }
-  | { section: "articleHero"; slug: string; heroImg?: string; heroAlt?: string };
+  | { section: "articleHero"; slug: string; heroImg?: string; heroAlt?: string }
+  | { section: "articleCardImage"; slug: string; cardImage: string };
 
 export async function PUT(request: Request) {
   if (!(await isAuthenticated()))
@@ -145,6 +147,8 @@ export async function PUT(request: Request) {
     await writeIndustryImage(body.id, body.image);
   } else if (body.section === "articleHero") {
     await writeArticleHeroImage(body.slug, { heroImg: body.heroImg, heroAlt: body.heroAlt });
+  } else if (body.section === "articleCardImage") {
+    await writeArticleCardImage(body.slug, body.cardImage);
   } else {
     return NextResponse.json({ error: "unknown section" }, { status: 400 });
   }

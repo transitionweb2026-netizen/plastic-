@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
 import NewsletterForm from "@/components/forms/NewsletterForm";
+import { getArticles } from "@/lib/articles-data";
 
 export async function generateMetadata({
   params,
@@ -33,8 +34,17 @@ export default async function BlogPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("blogPage");
+
+  // Card Image (falling back to Hero Image when unset) always wins over the
+  // legacy hardcoded thumbnails above — see the Articles CMS "Card image"
+  // field. Text/copy here stays translation-driven, untouched.
+  const articlesBySlug = new Map(
+    (await getArticles(locale)).map((a) => [a.slug, a.cardImage])
+  );
+  const featuredCardImage = articlesBySlug.get("high-density-storage") ?? HERO_IMG;
   const recentArticles = RECENT_ARTICLE_META.map((a) => ({
     ...a,
+    img: articlesBySlug.get(a.href.replace("/blog/", "")) ?? a.img,
     tag: t(`${a.key}Tag`),
     title: t(`${a.key}Title`),
     desc: t(`${a.key}Desc`),
@@ -136,7 +146,7 @@ export default async function BlogPage({
             <div className="h-72 md:h-auto overflow-hidden relative">
               <Image
                 className="feat-img object-cover"
-                src={HERO_IMG}
+                src={featuredCardImage}
                 alt={t("featAlt")}
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"

@@ -8,13 +8,14 @@ type ArticleRow = {
   slug: string;
   hero_img: string;
   hero_alt: string;
+  card_image: string | null;
   date: string;
   read_time: string;
   has_counters: boolean;
   show_bottom_share: boolean;
   base_en: Omit<
     Article,
-    "slug" | "heroImg" | "heroAlt" | "date" | "readTime" | "hasCounters" | "showBottomShare"
+    "slug" | "heroImg" | "heroAlt" | "cardImage" | "date" | "readTime" | "hasCounters" | "showBottomShare"
   >;
   base_ar: Partial<Article>;
   override_en: Partial<Article>;
@@ -37,6 +38,7 @@ function localizedBase(row: ArticleRow, locale: string): Article {
     slug: row.slug,
     heroImg: row.hero_img,
     heroAlt: row.hero_alt,
+    cardImage: row.card_image ?? "",
     date: row.date,
     readTime: row.read_time,
     hasCounters: row.has_counters,
@@ -46,12 +48,22 @@ function localizedBase(row: ArticleRow, locale: string): Article {
   return locale !== "ar" ? base : { ...base, ...row.base_ar };
 }
 
+/** Card Image is the dedicated thumbnail for listing/featured cards. When
+ *  left blank in the CMS, callers fall back to the Hero Image so nothing
+ *  breaks — this is the one place that fallback is applied, so every
+ *  public reader (getArticles/getArticle) sees it consistently. */
+function withCardImageFallback(article: Article): Article {
+  return { ...article, cardImage: article.cardImage || article.heroImg };
+}
+
 export async function getArticles(locale: string): Promise<Article[]> {
   const rows = await fetchRows();
   return rows.map((r) =>
-    applyContentOverride(
-      localizedBase(r, locale),
-      r.published ? (locale === "ar" ? r.override_ar : r.override_en) : undefined
+    withCardImageFallback(
+      applyContentOverride(
+        localizedBase(r, locale),
+        r.published ? (locale === "ar" ? r.override_ar : r.override_en) : undefined
+      )
     )
   );
 }
@@ -60,9 +72,11 @@ export async function getArticle(slug: string, locale: string): Promise<Article 
   const rows = await fetchRows();
   const row = rows.find((r) => r.slug === slug);
   if (!row) return undefined;
-  return applyContentOverride(
-    localizedBase(row, locale),
-    row.published ? (locale === "ar" ? row.override_ar : row.override_en) : undefined
+  return withCardImageFallback(
+    applyContentOverride(
+      localizedBase(row, locale),
+      row.published ? (locale === "ar" ? row.override_ar : row.override_en) : undefined
+    )
   );
 }
 
@@ -102,6 +116,18 @@ export async function writeArticleHeroImage(
   if (patch.heroImg !== undefined) update.hero_img = patch.heroImg;
   if (patch.heroAlt !== undefined) update.hero_alt = patch.heroAlt;
   const { error } = await supabase().from("content_articles").update(update).eq("slug", slug);
+  if (error) throw error;
+  revalidateTag("content-articles", { expire: 0 });
+}
+
+/** Base (locale-invariant) card/thumbnail image — independent of Hero
+ *  Image, stored and published separately. Empty string clears it, which
+ *  re-enables the Hero Image fallback (see withCardImageFallback above). */
+export async function writeArticleCardImage(slug: string, cardImage: string): Promise<void> {
+  const { error } = await supabase()
+    .from("content_articles")
+    .update({ card_image: cardImage })
+    .eq("slug", slug);
   if (error) throw error;
   revalidateTag("content-articles", { expire: 0 });
 }

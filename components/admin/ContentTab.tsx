@@ -48,7 +48,7 @@ type Payload = {
     base: { en: IndustryFields; ar: IndustryFields };
   }[];
   articles: {
-    slug: string; titleEn: string; titleAr: string; heroImg: string; heroAlt: string;
+    slug: string; titleEn: string; titleAr: string; heroImg: string; heroAlt: string; cardImage: string;
     base: { en: ArticleFields; ar: ArticleFields };
   }[];
   overrides: {
@@ -378,13 +378,14 @@ function IndustryCard({
 /* ─────────────────────── Article editor ─────────────────────── */
 
 function ArticleCard({
-  slug, titleEn, titleAr, heroImg, base, record, onSave, onSaveHero,
+  slug, titleEn, titleAr, heroImg, cardImage, base, record, onSave, onSaveHero, onSaveCardImage,
 }: {
-  slug: string; titleEn: string; titleAr: string; heroImg: string;
+  slug: string; titleEn: string; titleAr: string; heroImg: string; cardImage: string;
   base: { en: ArticleFields; ar: ArticleFields };
   record: ContentRecord<ArticleFields>;
   onSave: (rec: ContentRecord<ArticleFields>) => Promise<boolean>;
   onSaveHero: (heroImg: string) => Promise<boolean>;
+  onSaveCardImage: (cardImage: string) => Promise<boolean>;
 }) {
   const [rec, setRec] = useState(record);
   const [loc, setLoc] = useState<Locale>("en");
@@ -396,6 +397,11 @@ function ArticleCard({
   const [heroBusy, setHeroBusy] = useState(false);
   const [heroSaved, setHeroSaved] = useState(false);
   const [heroFailed, setHeroFailed] = useState(false);
+
+  const [cardImg, setCardImg] = useState(cardImage);
+  const [cardImgBusy, setCardImgBusy] = useState(false);
+  const [cardImgSaved, setCardImgSaved] = useState(false);
+  const [cardImgFailed, setCardImgFailed] = useState(false);
 
   const f = rec[loc];
   const b = base[loc];
@@ -430,6 +436,20 @@ function ArticleCard({
     }
   };
 
+  const doSaveCardImage = async (url: string) => {
+    setCardImg(url);
+    setCardImgBusy(true);
+    const ok = await onSaveCardImage(url);
+    setCardImgBusy(false);
+    if (ok) {
+      setCardImgSaved(true);
+      setTimeout(() => setCardImgSaved(false), 1800);
+    } else {
+      setCardImgFailed(true);
+      setTimeout(() => setCardImgFailed(false), 4000);
+    }
+  };
+
   return (
     <details className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
       <summary className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none">
@@ -444,10 +464,20 @@ function ArticleCard({
           This edits the article's detail page.
         </p>
         <div className="mb-4">
-          <ImageUploader label="Hero image" value={hero} onChange={doSaveHero} />
+          <ImageUploader label="Hero image (article page top)" value={hero} onChange={doSaveHero} />
           {heroBusy && <span className="text-xs text-on-surface-variant">Saving…</span>}
           {heroSaved && <span className="text-xs text-primary font-bold">Saved ✓</span>}
           {heroFailed && <span className="text-xs text-error font-bold">Save failed</span>}
+        </div>
+        <div className="mb-4">
+          <ImageUploader
+            label="Card image (listing/featured thumbnails — falls back to Hero image if left blank)"
+            value={cardImg}
+            onChange={doSaveCardImage}
+          />
+          {cardImgBusy && <span className="text-xs text-on-surface-variant">Saving…</span>}
+          {cardImgSaved && <span className="text-xs text-primary font-bold">Saved ✓</span>}
+          {cardImgFailed && <span className="text-xs text-error font-bold">Save failed</span>}
         </div>
         <div className="flex gap-1 mb-4">
           {(["en", "ar"] as const).map((l) => (
@@ -745,6 +775,7 @@ export default function ContentTab() {
               titleEn={a.titleEn}
               titleAr={a.titleAr}
               heroImg={a.heroImg}
+              cardImage={a.cardImage}
               base={a.base}
               record={data.overrides.articles[a.slug] ?? emptyArticle()}
               onSave={async (rec) => {
@@ -754,6 +785,11 @@ export default function ContentTab() {
               }}
               onSaveHero={async (heroImg) => {
                 const ok = await saveContent({ section: "articleHero", slug: a.slug, heroImg });
+                if (ok) load();
+                return ok;
+              }}
+              onSaveCardImage={async (cardImage) => {
+                const ok = await saveContent({ section: "articleCardImage", slug: a.slug, cardImage });
                 if (ok) load();
                 return ok;
               }}
