@@ -45,10 +45,10 @@ export default function Header({ logoSrc }: { logoSrc: string }) {
           >
             <Image
               alt={t("header.brand")}
-              className="h-12 w-auto object-contain"
+              className="h-16! sm:h-12! w-auto object-contain"
               src={logoSrc}
-              width={120}
-              height={48}
+              width={160}
+              height={64}
               priority
             />
             <span className="font-headline-md text-headline-md font-bold tracking-tighter text-primary uppercase hidden sm:inline">
