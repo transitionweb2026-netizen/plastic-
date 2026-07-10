@@ -33,7 +33,7 @@ export default function AboutImageParallax({ src, alt }: AboutImageParallaxProps
     <div
       ref={ref}
       className="about-img-wrap relative rounded-2xl overflow-hidden"
-      style={{ boxShadow: "0 24px 64px rgba(1,78,42,.18)" }}
+      style={{ boxShadow: "0 24px 64px rgba(14,74,48,.18)" }}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
     >

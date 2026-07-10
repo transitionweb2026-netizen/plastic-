@@ -12,7 +12,7 @@ type ArtProps = {
 };
 
 function strokeColor(tone: "dark" | "light" = "dark") {
-  return tone === "light" ? "#92d5a6" : "#014e2a";
+  return tone === "light" ? "#92d5a6" : "#0e4a30";
 }
 
 const common = {

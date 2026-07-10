@@ -152,7 +152,7 @@ export default function VideoSection({ images }: { images: [string, string, stri
                   height: 8,
                   minHeight: 8,
                   width: i === current ? 20 : 8,
-                  background: i === current ? "#014e2a" : "#c0c9bf",
+                  background: i === current ? "#0e4a30" : "#c0c9bf",
                 }}
               />
             ))}

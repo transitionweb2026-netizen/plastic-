@@ -156,7 +156,7 @@ export default function IndustryModal({ data, onClose }: IndustryModalProps) {
                 <Link
                   href="/request-quote"
                   className="bg-primary text-on-primary px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-secondary active:scale-95 transition-all inline-flex items-center min-h-[44px]"
-                  style={{ boxShadow: "0 6px 20px rgba(1,78,42,.3)" }}
+                  style={{ boxShadow: "0 6px 20px rgba(14,74,48,.3)" }}
                 >
                   {t("requestAQuote")}
                 </Link>

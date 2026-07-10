@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
+import { CircuitLines, HexOutline } from "@/components/ui/DecorArt";
 import IndustryModal from "./IndustryModal";
 import type { IndustryModal as IndustryModalData } from "@/lib/industries";
 
@@ -235,7 +236,8 @@ export default function IndustriesContent({
       </section>
 
       {/* ═══ TECH HIGHLIGHTS ═══ */}
-      <section className="py-24 bg-surface overflow-hidden" id="technology">
+      <section className="py-24 bg-surface relative overflow-hidden" id="technology">
+        <HexOutline className="absolute top-10 -right-16 w-64 hidden xl:block" opacity={0.04} />
         <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div className="relative reveal-left">
@@ -306,8 +308,16 @@ export default function IndustriesContent({
       </section>
 
       {/* ═══ CERTIFICATIONS ═══ */}
-      <section className="py-24 bg-surface-container-low" id="quality">
-        <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto">
+      <section className="py-24 bg-surface-container-low relative overflow-hidden" id="quality">
+        <CircuitLines className="absolute top-6 left-4 w-[320px] hidden xl:block" />
+        <div
+          className="absolute top-0 left-0 w-72 h-72 dot-pattern-bg opacity-30 pointer-events-none"
+          style={{
+            maskImage: "radial-gradient(circle,#000 40%,transparent 80%)",
+            WebkitMaskImage: "radial-gradient(circle,#000 40%,transparent 80%)",
+          }}
+        />
+        <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto relative">
           <div className="text-center mb-16">
             <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3 reveal">
               {t("certsLabel")}

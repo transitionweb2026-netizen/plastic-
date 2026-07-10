@@ -40,18 +40,18 @@ export default function Header({ logoSrc }: { logoSrc: string }) {
         <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto h-20">
           <Link
             href="/"
-            className="flex items-center gap-4"
+            className="flex items-center gap-2.5 sm:gap-4 min-w-0"
             aria-label={t("header.brand")}
           >
             <Image
               alt={t("header.brand")}
-              className="h-16! sm:h-12! w-auto object-contain"
+              className="h-16! sm:h-12! w-auto object-contain shrink-0"
               src={logoSrc}
               width={160}
               height={64}
               priority
             />
-            <span className="font-headline-md text-headline-md font-bold tracking-tighter text-primary uppercase hidden sm:inline">
+            <span className="font-bold tracking-tighter text-primary uppercase inline leading-none text-[15px] sm:font-headline-md sm:text-headline-md sm:leading-normal truncate">
               {t("header.brand")}
             </span>
           </Link>
@@ -76,17 +76,17 @@ export default function Header({ logoSrc }: { logoSrc: string }) {
             ))}
           </nav>
 
-          <div className="flex items-center gap-3 lg:gap-4">
-            <LanguageSwitcher className="hidden md:flex" />
+          <div className="flex items-center gap-3 sm:gap-3 lg:gap-4 shrink-0">
+            <LanguageSwitcher />
             <Link
               href={REQUEST_QUOTE.href}
               className="bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-lg text-label-lg hover:bg-secondary active:scale-95 transition-all premium-shadow hidden lg:inline-flex items-center"
-              style={{ boxShadow: "0 4px 18px rgba(1,78,42,.3)" }}
+              style={{ boxShadow: "0 4px 18px rgba(14,74,48,.3)" }}
             >
               {t("nav.requestQuote")}
             </Link>
             <button
-              className="md:hidden text-primary hover:scale-110 transition-transform"
+              className="md:hidden -m-2 p-2 shrink-0 text-primary active:scale-90 transition-transform"
               aria-label={t("header.openMenu")}
               aria-expanded={drawerOpen}
               onClick={() => setDrawerOpen(true)}

@@ -422,7 +422,6 @@ export default async function Home({
                     alt={i >= CLIENT_LOGOS.length ? "" : logo.alt}
                     width={120}
                     height={40}
-                    style={{ width: "auto", height: "auto" }}
                     unoptimized
                     aria-hidden={i >= CLIENT_LOGOS.length}
                   />
@@ -430,20 +429,24 @@ export default async function Home({
               ))}
             </div>
           </div>
-          {/* Mobile grid */}
-          <div className="grid grid-cols-3 gap-4 md:hidden">
-            {CLIENT_LOGOS.slice(0, 6).map((logo) => (
-              <div key={logo.alt} className="logo-item">
-                <Image
-                  src={logo.src}
-                  alt={logo.alt}
-                  width={120}
-                  height={40}
-                  style={{ width: "auto", height: "auto" }}
-                  unoptimized
-                />
-              </div>
-            ))}
+          {/* Mobile infinite scroll — same proven marquee as desktop, just
+              bigger logos and no 6-logo cap, so every brand stays legible on
+              a narrow screen instead of being squeezed into a 3-col grid. */}
+          <div className="md:hidden logo-track-wrap" dir="ltr">
+            <div className="logo-track logo-track-mobile">
+              {[...CLIENT_LOGOS, ...CLIENT_LOGOS].map((logo, i) => (
+                <div key={`m-${logo.alt}-${i}`} className="logo-item logo-item-mobile">
+                  <Image
+                    src={logo.src}
+                    alt={i >= CLIENT_LOGOS.length ? "" : logo.alt}
+                    width={140}
+                    height={56}
+                    unoptimized
+                    aria-hidden={i >= CLIENT_LOGOS.length}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -456,7 +459,7 @@ export default async function Home({
           className="absolute inset-0 pointer-events-none"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(1,78,42,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(1,78,42,.03) 1px,transparent 1px)",
+              "linear-gradient(rgba(14,74,48,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(14,74,48,.03) 1px,transparent 1px)",
             backgroundSize: "40px 40px",
           }}
         />

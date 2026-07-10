@@ -179,7 +179,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                 <Link
                   href="/request-quote"
                   className="bg-primary text-on-primary px-8 py-3 rounded-lg font-label-md text-label-md hover:bg-secondary active:scale-95 transition-all inline-flex items-center"
-                  style={{ boxShadow: "0 6px 20px rgba(1,78,42,.3)" }}
+                  style={{ boxShadow: "0 6px 20px rgba(14,74,48,.3)" }}
                 >
                   {t("requestAQuote")}
                 </Link>

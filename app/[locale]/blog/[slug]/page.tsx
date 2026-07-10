@@ -4,6 +4,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
+import { CornerAccent, HexOutline } from "@/components/ui/DecorArt";
 import ArticleCounters from "@/components/blog/ArticleCounters";
 import CopyLinkButton from "@/components/blog/CopyLinkButton";
 import { getArticle, getArticles, articleBodyLocalized, getArticleSlugs } from "@/lib/articles-data";
@@ -269,8 +270,10 @@ export default async function ArticlePage({
 
       {/* Related */}
       {article.relatedArticles.length > 0 && (
-        <section className="py-16 bg-surface-container-low">
-          <div className="max-w-4xl mx-auto px-6 md:px-10">
+        <section className="py-16 bg-surface-container-low relative overflow-hidden">
+          <CornerAccent corner="tl" className="absolute top-6 left-6 hidden md:block" />
+          <HexOutline className="absolute -bottom-10 -right-10 w-56 hidden lg:block" opacity={0.04} />
+          <div className="max-w-4xl mx-auto px-6 md:px-10 relative">
             <h2 className="font-bold text-xl text-on-surface mb-8 reveal">
               {t("relatedArticlesHeading")}
             </h2>
@@ -305,8 +308,16 @@ export default async function ArticlePage({
 
       {/* Closing CTA */}
       {article.cta && (
-        <section className="py-16 bg-primary text-white">
-          <div className="max-w-3xl mx-auto px-6 text-center reveal">
+        <section className="py-16 bg-primary text-white relative overflow-hidden">
+          <div
+            className="absolute inset-0 opacity-10"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 20% 50%,rgba(255,255,255,.4) 0%,transparent 50%),radial-gradient(circle at 80% 50%,rgba(255,255,255,.3) 0%,transparent 50%)",
+            }}
+          />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 animate-float-slow" />
+          <div className="max-w-3xl mx-auto px-6 text-center reveal relative">
             <span className="inline-block bg-white/20 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4">
               {article.cta.badge}
             </span>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { cmsMetadata } from "@/lib/cms/seo";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { PalletBlueprint, DimensionLine } from "@/components/ui/DecorArt";
+import { PalletBlueprint, DimensionLine, HexOutline } from "@/components/ui/DecorArt";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { siteImage } from "@/lib/cms/images-data";
@@ -132,8 +132,9 @@ export default async function AboutPage({
       </section>
 
       {/* Mission & Vision bento */}
-      <section className="px-4 md:px-margin-desktop py-20">
-        <div className="max-w-7xl mx-auto">
+      <section className="px-4 md:px-margin-desktop py-20 relative overflow-hidden">
+        <HexOutline className="absolute top-8 -right-14 w-60 hidden xl:block" opacity={0.04} />
+        <div className="max-w-7xl mx-auto relative">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             <div className="md:col-span-7 bg-white p-12 rounded-3xl soft-industrial-shadow flex flex-col justify-between border border-surface-variant">
               <div>
