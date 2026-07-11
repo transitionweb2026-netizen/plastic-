@@ -121,10 +121,25 @@ export async function articleSlug(baseSlug: string, locale: Locale): Promise<str
 }
 
 /** Resolve an incoming article URL slug to the base slug, per locale. */
-export async function resolveArticleSlug(urlSlug: string, locale: Locale): Promise<string | undefined> {
+export async function resolveArticleSlug(rawUrlSlug: string, locale: Locale): Promise<string | undefined> {
+  // Route params arrive percent-encoded — decode so non-ASCII (Arabic) slug
+  // overrides compare correctly against their stored plain-text form.
+  let urlSlug = rawUrlSlug;
+  try {
+    urlSlug = decodeURIComponent(rawUrlSlug);
+  } catch {
+    /* malformed escape sequence — fall through with the raw value */
+  }
   const slugs = await getArticleSlugs();
   for (const base of slugs) {
     if ((await articleSlug(base, locale)) === urlSlug || base === urlSlug) return base;
+  }
+  // Cross-locale fallback: in-content links (prev/next, related, body) and
+  // shared URLs sometimes carry the OTHER locale's slug override — serve the
+  // article instead of 404ing; canonical tags still point at the right slug.
+  const other: Locale = locale === "ar" ? "en" : "ar";
+  for (const base of slugs) {
+    if ((await articleSlug(base, other)) === urlSlug) return base;
   }
   return undefined;
 }
