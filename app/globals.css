@@ -2635,9 +2635,11 @@ html[lang="ar"] .font-serif {
 }
 
 /* Video player box: responsive vertical 9:16 (1080×1920), height-capped so
-   the portrait frame always fits the viewport and stays centered. */
+   the portrait frame always fits the viewport and stays centered — a
+   floating card that never touches the screen edges. */
 .lightbox-player {
-  width: min(480px, 94vw, calc(78vh * 9 / 16));
+  width: min(480px, calc(100vw - 2.5rem), calc(78vh * 9 / 16));
+  width: min(480px, calc(100vw - 2.5rem), calc(78dvh * 9 / 16));
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -2652,10 +2654,47 @@ html[lang="ar"] .font-serif {
   background: #000;
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
 }
+/* Plyr (direct-file player) — the .plyr container becomes the 9:16 card;
+   brand-green accent, rounded corners, non-9:16 sources letterbox. */
+.lightbox-player .plyr {
+  --plyr-color-main: #0e4a30;
+  width: 100%;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+}
+.lightbox-player .plyr video {
+  object-fit: contain;
+  box-shadow: none;
+  border-radius: 0;
+}
+/* Black 9:16 stand-in shown for the instant Plyr's chunk loads on first
+   open — same footprint as the player, so there is zero layout shift. */
+.lightbox-player .player-placeholder {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  border-radius: 0.75rem;
+  background: #000;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+}
 
 @media (max-width: 639px) {
   .lightbox {
-    padding: 4rem 0.5rem 1.25rem;
+    /* Safe-area aware padding: the player floats clear of notches, home
+       indicators, and screen edges; close button stays reachable above. */
+    padding: calc(4rem + env(safe-area-inset-top, 0px))
+      calc(1.1rem + env(safe-area-inset-right, 0px))
+      calc(1.5rem + env(safe-area-inset-bottom, 0px))
+      calc(1.1rem + env(safe-area-inset-left, 0px));
+  }
+  .lightbox-close {
+    top: calc(1rem + env(safe-area-inset-top, 0px));
+    right: calc(1rem + env(safe-area-inset-right, 0px));
+  }
+  .lightbox-player {
+    width: min(calc(100vw - 2.2rem), calc(78vh * 9 / 16));
+    width: min(calc(100vw - 2.2rem), calc((100dvh - 9.5rem) * 9 / 16));
   }
   .lightbox-prev {
     left: 0.4rem;

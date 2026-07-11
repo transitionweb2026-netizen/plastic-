@@ -1,10 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import type { GalleryVideo } from "@/lib/gallery";
 import { resolveVideoUrl } from "@/lib/video-url";
+
+/** Plyr (JS + CSS) loads only the first time a video modal opens. */
+const PlyrVideo = dynamic(() => import("@/components/ui/PlyrVideo"), {
+  ssr: false,
+  loading: () => <div className="player-placeholder" aria-hidden />,
+});
 
 const STAGGERS = ["d1", "d2", "d3"];
 
@@ -107,7 +114,7 @@ export default function VideoGallery({ videos }: { videos: GalleryVideo[] }) {
                     allowFullScreen
                   />
                 ) : (
-                  <video src={resolved.src} controls autoPlay playsInline />
+                  <PlyrVideo src={resolved.src} poster={open.thumb} title={open.title} />
                 );
               })()}
               <p className="lightbox-caption">{open.title}</p>

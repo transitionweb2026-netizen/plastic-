@@ -1,9 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { resolveVideoUrl } from "@/lib/video-url";
+
+/** Plyr (JS + CSS) loads only the first time a video modal opens. */
+const PlyrVideo = dynamic(() => import("@/components/ui/PlyrVideo"), {
+  ssr: false,
+  loading: () => <div className="player-placeholder" aria-hidden />,
+});
 
 function PlayOverlay() {
   return (
@@ -32,7 +39,7 @@ export default function VideoSection({
   const tc = useTranslations("common");
   const isRtl = useLocale() === "ar";
   const [current, setCurrent] = useState(0);
-  const [open, setOpen] = useState<{ src: string; title: string } | null>(null);
+  const [open, setOpen] = useState<{ src: string; title: string; poster: string } | null>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const touchX = useRef(0);
 
@@ -56,8 +63,8 @@ export default function VideoSection({
   const total = videos.length;
 
   const goTo = (n: number) => setCurrent((n + total) % total);
-  const play = (video: { url: string; title: string }) =>
-    video.url && setOpen({ src: video.url, title: video.title });
+  const play = (video: { url: string; title: string; img: string }) =>
+    video.url && setOpen({ src: video.url, title: video.title, poster: video.img });
 
   return (
     <section className="pb-24 bg-surface relative overflow-hidden">
@@ -224,7 +231,7 @@ export default function VideoSection({
                     allowFullScreen
                   />
                 ) : (
-                  <video src={resolved.src} controls autoPlay playsInline />
+                  <PlyrVideo src={resolved.src} poster={open.poster} title={open.title} />
                 );
               })()}
               <p className="lightbox-caption">{open.title}</p>
