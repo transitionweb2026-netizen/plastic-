@@ -447,7 +447,9 @@
     "shareTwitter": "Twitter",
     "copyLink": "Copy Link",
     "copied": "Copied!",
-    "relatedArticlesHeading": "Related Articles"
+    "relatedArticlesHeading": "Related Articles",
+    "previousArticle": "Previous Article",
+    "nextArticle": "Next Article"
   },
   "aboutPage": {
     "since": "SINCE 1984",

@@ -198,7 +198,7 @@ export default async function ArticlePage({
           {article.prevLink.disabled || !article.prevLink.href ? (
             <div className="p-5 bg-surface-container-low rounded-xl border border-outline-variant opacity-40 cursor-not-allowed">
               <p className="text-xs text-on-surface-variant font-bold uppercase tracking-wider mb-1">
-                {article.prevLink.label}
+                {t("previousArticle")}
               </p>
               <p className="text-sm text-on-surface-variant">{article.prevLink.title}</p>
             </div>
@@ -208,7 +208,7 @@ export default async function ArticlePage({
               className="p-5 bg-surface-container-low rounded-xl border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all"
             >
               <p className="text-xs text-primary font-bold uppercase tracking-wider mb-1">
-                {article.prevLink.label}
+                {t("previousArticle")}
               </p>
               <p className="text-sm font-semibold text-on-surface">{article.prevLink.title}</p>
             </Link>
@@ -216,7 +216,7 @@ export default async function ArticlePage({
           {article.nextLink.disabled || !article.nextLink.href ? (
             <div className="p-5 bg-surface-container-low rounded-xl border border-outline-variant opacity-40 cursor-not-allowed">
               <p className="text-xs text-on-surface-variant font-bold uppercase tracking-wider mb-1">
-                {article.nextLink.label}
+                {t("nextArticle")}
               </p>
               <p className="text-sm text-on-surface-variant">{article.nextLink.title}</p>
             </div>
@@ -226,7 +226,7 @@ export default async function ArticlePage({
               className="p-5 bg-surface-container-low rounded-xl border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all text-right"
             >
               <p className="text-xs text-primary font-bold uppercase tracking-wider mb-1">
-                {article.nextLink.label}
+                {t("nextArticle")}
               </p>
               <p className="text-sm font-semibold text-on-surface">{article.nextLink.title}</p>
             </Link>
@@ -272,48 +272,6 @@ export default async function ArticlePage({
         </section>
       )}
 
-      {/* Closing CTA */}
-      {article.cta && (
-        <section className="py-16 bg-primary text-white relative overflow-hidden">
-          <div
-            className="absolute inset-0 opacity-10"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 20% 50%,rgba(255,255,255,.4) 0%,transparent 50%),radial-gradient(circle at 80% 50%,rgba(255,255,255,.3) 0%,transparent 50%)",
-            }}
-          />
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 animate-float-slow" />
-          <div className="max-w-3xl mx-auto px-6 text-center reveal relative">
-            <span className="inline-block bg-white/20 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4">
-              {article.cta.badge}
-            </span>
-            <h2
-              className="font-black text-3xl md:text-4xl mb-4"
-              style={{ letterSpacing: "-.02em" }}
-            >
-              {article.cta.title}
-            </h2>
-            <p className="text-white/80 text-base mb-8 max-w-xl mx-auto">
-              {article.cta.description}
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href={article.cta.button1Href}>
-                <button
-                  className="bg-white text-primary px-8 py-3 rounded-xl font-bold hover:-translate-y-1 transition-all"
-                  style={{ boxShadow: "0 4px 20px rgba(0,0,0,.2)" }}
-                >
-                  {article.cta.button1Text}
-                </button>
-              </Link>
-              <Link href={article.cta.button2Href}>
-                <button className="border-2 border-white text-white px-8 py-3 rounded-xl font-bold hover:bg-white/10 transition-all">
-                  {article.cta.button2Text}
-                </button>
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
     </div>
   );
 }

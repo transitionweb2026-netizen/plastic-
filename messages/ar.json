@@ -447,7 +447,9 @@
     "shareTwitter": "تويتر",
     "copyLink": "نسخ الرابط",
     "copied": "تم النسخ!",
-    "relatedArticlesHeading": "مقالات ذات صلة"
+    "relatedArticlesHeading": "مقالات ذات صلة",
+    "previousArticle": "المقال السابق",
+    "nextArticle": "المقال التالي"
   },
   "aboutPage": {
     "since": "منذ عام 1984",
