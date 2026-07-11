@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import type { GalleryVideo } from "@/lib/gallery";
+import { resolveVideoUrl } from "@/lib/video-url";
 
 const STAGGERS = ["d1", "d2", "d3"];
 
@@ -93,9 +94,21 @@ export default function VideoGallery({ videos }: { videos: GalleryVideo[] }) {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 />
-              ) : (
-                <video src={open.src} controls autoPlay playsInline />
-              )}
+              ) : (() => {
+                // Google Drive sharing links are converted to the inline
+                // preview player automatically — see lib/video-url.ts.
+                const resolved = resolveVideoUrl(open.src);
+                return resolved.kind === "embed" ? (
+                  <iframe
+                    src={resolved.src}
+                    title={open.title}
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <video src={resolved.src} controls autoPlay playsInline />
+                );
+              })()}
               <p className="lightbox-caption">{open.title}</p>
             </div>
           </>

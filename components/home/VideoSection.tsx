@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
+import { resolveVideoUrl } from "@/lib/video-url";
 
 function PlayOverlay() {
   return (
@@ -211,7 +212,21 @@ export default function VideoSection({
               <span className="material-symbols-outlined">close</span>
             </button>
             <div className="lightbox-player">
-              <video src={open.src} controls autoPlay playsInline />
+              {(() => {
+                // Google Drive sharing links are converted to the inline
+                // preview player automatically — see lib/video-url.ts.
+                const resolved = resolveVideoUrl(open.src);
+                return resolved.kind === "embed" ? (
+                  <iframe
+                    src={resolved.src}
+                    title={open.title}
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <video src={resolved.src} controls autoPlay playsInline />
+                );
+              })()}
               <p className="lightbox-caption">{open.title}</p>
             </div>
           </>
