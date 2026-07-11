@@ -12,7 +12,6 @@ import VideoSection from "@/components/home/VideoSection";
 import SocialIcon from "@/components/ui/SocialIcon";
 import {
   PalletBlueprint,
-  CircuitLines,
   DimensionLine,
   RackOutline,
 } from "@/components/ui/DecorArt";
@@ -152,13 +151,6 @@ export default async function Home({
     { icon: "verified_user", title: t("feat1Title"), desc: t("feat1Desc"), stagger: "stagger-1" },
     { icon: "public", title: t("feat2Title"), desc: t("feat2Desc"), stagger: "stagger-2" },
     { icon: "eco", title: t("feat3Title"), desc: t("feat3Desc"), stagger: "stagger-3" },
-  ];
-
-  const certifications = [
-    { icon: "workspace_premium", title: t("cert1Title"), desc: t("cert1Desc"), stagger: "stagger-1" },
-    { icon: "health_and_safety", title: t("cert2Title"), desc: t("cert2Desc"), stagger: "stagger-2" },
-    { icon: "eco", title: t("cert3Title"), desc: t("cert3Desc"), stagger: "stagger-3" },
-    { icon: "verified", title: t("cert4Title"), desc: t("cert4Desc"), stagger: "stagger-4" },
   ];
 
   return (
@@ -598,55 +590,6 @@ export default async function Home({
         </div>
       </section>
 
-      <SectionSeparator label={t("sepQuality")} bgClassName="bg-surface-container-low" />
-
-      {/* ═══ 7. CERTIFICATIONS ═══ */}
-      <section className="pb-24 bg-surface-container-low relative overflow-hidden">
-        <CircuitLines className="absolute top-6 right-4 w-[320px] hidden xl:block" />
-        <div
-          className="absolute top-0 right-0 w-72 h-72 dot-pattern-bg opacity-30 pointer-events-none"
-          style={{
-            maskImage: "radial-gradient(circle,#000 40%,transparent 80%)",
-            WebkitMaskImage: "radial-gradient(circle,#000 40%,transparent 80%)",
-          }}
-        />
-
-        <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto relative">
-          <div className="text-center mb-12 reveal">
-            <span className="section-eyebrow">{t("certsEyebrow")}</span>
-            <h2 className="font-headline-xl text-headline-xl mb-4">
-              {t("certsTitle")}
-            </h2>
-            <p className="text-on-surface-variant max-w-2xl mx-auto">
-              {t("certsSub")}
-            </p>
-          </div>
-
-          <div className="cert-connector-wrap mb-2" aria-hidden="true">
-            <div className="cert-connector-node" />
-            <div className="cert-connector-line" />
-            <div className="cert-connector-node" />
-            <div className="cert-connector-line" />
-            <div className="cert-connector-node" />
-            <div className="cert-connector-line" />
-            <div className="cert-connector-node" />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {certifications.map((cert) => (
-              <div key={cert.title} className={`cert-card reveal ${cert.stagger}`}>
-                <div className="cert-icon">
-                  <span className="material-symbols-outlined">{cert.icon}</span>
-                </div>
-                <h3 className="font-headline-md text-headline-md mb-2">
-                  {cert.title}
-                </h3>
-                <p className="text-on-surface-variant text-body-md">{cert.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
     </>
   );
 }

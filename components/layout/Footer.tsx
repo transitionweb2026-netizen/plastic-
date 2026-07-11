@@ -56,25 +56,17 @@ export default async function Footer() {
             <li>
               <Link
                 className="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md nav-link"
-                href="/products"
+                href="/industries"
               >
-                {t("palletsCrates")}
+                {t("industriesLink")}
               </Link>
             </li>
             <li>
               <Link
                 className="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md nav-link"
-                href="/products"
+                href="/gallery"
               >
-                {t("binsContainers")}
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md nav-link"
-                href="/request-quote"
-              >
-                {t("customMolding")}
+                {t("galleryLink")}
               </Link>
             </li>
           </ul>
@@ -88,9 +80,9 @@ export default async function Footer() {
             <li>
               <Link
                 className="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md nav-link"
-                href="/industries"
+                href="/about"
               >
-                {t("industriesLink")}
+                {t("aboutLink")}
               </Link>
             </li>
             <li>
@@ -99,22 +91,6 @@ export default async function Footer() {
                 href="/blog"
               >
                 {t("blogLink")}
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md nav-link"
-                href="/gallery"
-              >
-                {t("galleryLink")}
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md nav-link"
-                href="/about"
-              >
-                {t("aboutLink")}
               </Link>
             </li>
             <li>

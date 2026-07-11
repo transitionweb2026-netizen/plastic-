@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
-import { CircuitLines, HexOutline } from "@/components/ui/DecorArt";
+import { HexOutline } from "@/components/ui/DecorArt";
 import IndustryModal from "./IndustryModal";
 import type { IndustryModal as IndustryModalData } from "@/lib/industries";
 
@@ -30,13 +30,6 @@ const TECH_DEFS = [
   { id: "tech1", icon: "smart_toy", iconBg: "bg-primary" },
   { id: "tech2", icon: "precision_manufacturing", iconBg: "bg-secondary" },
   { id: "tech3", icon: "settings_suggest", iconBg: "" },
-] as const;
-
-const CERT_DEFS = [
-  { id: "cert1", icon: "workspace_premium", delay: "d1", title: "ISO 9001:2015" },
-  { id: "cert2", icon: "eco", delay: "d2", title: "ISO 14001" },
-  { id: "cert3", icon: "health_and_safety", delay: "d3", title: "OHSAS 18001" },
-  { id: "cert4", icon: "verified", delay: "d4", title: "CE Compliant" },
 ] as const;
 
 export default function IndustriesContent({
@@ -72,12 +65,6 @@ export default function IndustriesContent({
     title: t(`${s.id}Title`),
     desc: t(`${s.id}Desc`),
   }));
-  const certs = CERT_DEFS.map((s) => ({
-    ...s,
-    subtitle: t(`${s.id}Sub`),
-    desc: t(`${s.id}Desc`),
-  }));
-
   return (
     <div className="page-industries">
       <RevealObserver />
@@ -303,62 +290,6 @@ export default function IndustriesContent({
                 ))}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ CERTIFICATIONS ═══ */}
-      <section className="py-24 bg-surface-container-low relative overflow-hidden" id="quality">
-        <CircuitLines className="absolute top-6 left-4 w-[320px] hidden xl:block" />
-        <div
-          className="absolute top-0 left-0 w-72 h-72 dot-pattern-bg opacity-30 pointer-events-none"
-          style={{
-            maskImage: "radial-gradient(circle,#000 40%,transparent 80%)",
-            WebkitMaskImage: "radial-gradient(circle,#000 40%,transparent 80%)",
-          }}
-        />
-        <div className="px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container-max-width mx-auto relative">
-          <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3 reveal">
-              {t("certsLabel")}
-            </p>
-            <h2 className="font-headline-xl text-headline-xl reveal d1">
-              {t("certsTitle")}
-            </h2>
-            <p className="font-body-lg text-body-lg text-on-surface-variant mt-4 max-w-2xl mx-auto reveal d2">
-              {t("certsPara")}
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {certs.map((cert) => (
-              <button
-                key={cert.id}
-                type="button"
-                className={`cert-card reveal ${cert.delay}`}
-                onClick={() => setOpenId(cert.id)}
-              >
-                <div className="cert-icon-ring">
-                  <span className="material-symbols-outlined text-3xl text-primary">
-                    {cert.icon}
-                  </span>
-                </div>
-                <span className="font-headline-md text-headline-md">
-                  {cert.title}
-                </span>
-                <span className="text-xs font-bold uppercase tracking-wider text-on-surface-variant">
-                  {cert.subtitle}
-                </span>
-                <p className="text-sm text-on-surface-variant text-center">
-                  {cert.desc}
-                </p>
-                <span className="text-primary text-xs font-bold uppercase tracking-wider flex items-center gap-1">
-                  {t("viewDetails")}{" "}
-                  <span className="material-symbols-outlined rtl-flip" style={{ fontSize: 14 }}>
-                    arrow_forward
-                  </span>
-                </span>
-              </button>
-            ))}
           </div>
         </div>
       </section>
