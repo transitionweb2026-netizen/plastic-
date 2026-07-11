@@ -159,7 +159,14 @@ export default async function ContactPage({
               map
             </span>
           </div>
-          <div className="absolute inset-0 z-10">
+          {/* Clicking the map itself opens the company location in Maps */}
+          <a
+            href={MAPS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={t("openInMaps")}
+            className="absolute inset-0 z-10 block"
+          >
             <Image
               src={MAP_IMG}
               alt={t("mapAlt")}
@@ -167,7 +174,7 @@ export default async function ContactPage({
               className="object-cover"
               sizes="100vw"
             />
-          </div>
+          </a>
           <div className="absolute bottom-6 left-6 z-20 hidden md:block max-w-xs glass-panel p-6 rounded-xl border border-white/40 shadow-2xl">
             <div className="flex items-center gap-3 mb-3">
               <span className="material-symbols-outlined text-primary">

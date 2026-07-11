@@ -68,16 +68,13 @@ export function resolveContact(override?: {
 /** WhatsApp chat deep link derived from the real main office number. */
 export const WHATSAPP_HREF = `https://wa.me/${CONTACT.phoneMain.href.replace(/\D/g, "")}`;
 
-/**
- * Social profiles shown in the footer and the home hero contact widget.
- * TODO: replace the placeholder handles below with the company's real
- * profile URLs when available (WhatsApp already uses the real number).
- */
+/** Social profiles shown in the footer and the home hero contact widget —
+ *  the company's official accounts. */
 export const SOCIAL_LINKS: { label: string; brand: string; href: string }[] = [
   { label: "WhatsApp", brand: "whatsapp", href: WHATSAPP_HREF },
-  { label: "Instagram", brand: "instagram", href: "https://www.instagram.com/giantstorage.eg" },
+  { label: "Instagram", brand: "instagram", href: "https://www.instagram.com/giant.storage.eg?igsh=NDJvZDcwZWlvYzhv" },
   { label: "Facebook", brand: "facebook", href: "https://www.facebook.com/giantstorage.eg" },
-  { label: "TikTok", brand: "tiktok", href: "https://www.tiktok.com/@giantstorage.eg" },
+  { label: "TikTok", brand: "tiktok", href: "https://www.tiktok.com/@giant.storage?_r=1&_t=ZS-97wfDP1kQcu" },
 ];
 
 /** Legacy header logo default (remote); admin-overridable via cms_images "header.logo". */
