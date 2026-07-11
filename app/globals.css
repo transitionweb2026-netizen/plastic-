@@ -841,7 +841,9 @@ iframe {
 .video-card .thumb-wrap {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 16/9;
+  /* Vertical 1080×1920 preview — matches the 9:16 lightbox player;
+     thumbnails center-crop via the img rule below (object-fit: cover). */
+  aspect-ratio: 9/16;
 }
 .video-card .thumb-wrap img {
   width: 100%;

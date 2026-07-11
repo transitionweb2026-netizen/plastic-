@@ -42,7 +42,8 @@ export default function VideoGallery({ videos }: { videos: GalleryVideo[] }) {
             onClick={() => setOpen(video)}
             aria-label={t("playVideo", { title: video.title })}
           >
-            <div className="thumb-wrap relative aspect-video">
+            {/* aspect ratio comes from .video-card .thumb-wrap (9:16) */}
+            <div className="thumb-wrap relative">
               <Image
                 src={video.thumb}
                 alt=""
