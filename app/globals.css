@@ -2632,9 +2632,10 @@ html[lang="ar"] .font-serif {
   transform: translateY(-50%) scale(0.94);
 }
 
-/* Video player box: responsive 16:9 */
+/* Video player box: responsive vertical 9:16 (1080×1920), height-capped so
+   the portrait frame always fits the viewport and stays centered. */
 .lightbox-player {
-  width: min(1080px, 94vw);
+  width: min(480px, 94vw, calc(78vh * 9 / 16));
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -2643,7 +2644,7 @@ html[lang="ar"] .font-serif {
 .lightbox-player iframe,
 .lightbox-player video {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 9 / 16;
   border: none;
   border-radius: 0.75rem;
   background: #000;
