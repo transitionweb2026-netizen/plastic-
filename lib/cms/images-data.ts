@@ -40,6 +40,16 @@ export const SITE_IMAGE_KEYS: { key: string; label: string }[] = [
   { key: "industries.techHighlight", label: "Industries — tech highlights showcase image" },
 ];
 
+/** Home-page video playback URLs — stored in the same cms_images key/value
+ *  table, but they hold direct video links (MP4/Storage/CDN) edited as URL
+ *  text in the admin, not uploaded images. Kept out of SITE_IMAGE_KEYS so
+ *  the Site Images tab doesn't render them as image uploaders. */
+export const SITE_VIDEO_URL_KEYS: { key: string; label: string }[] = [
+  { key: "home.videoUrl.1", label: "Home — video 1 URL (plays in-site; thumbnail stays separate)" },
+  { key: "home.videoUrl.2", label: "Home — video 2 URL" },
+  { key: "home.videoUrl.3", label: "Home — video 3 URL" },
+];
+
 const fetchAll = unstable_cache(
   async (): Promise<Record<string, string>> => {
     const { data, error } = await supabase().from("cms_images").select("key, url");

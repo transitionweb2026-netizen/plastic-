@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -16,26 +16,47 @@ function PlayOverlay() {
 
 /**
  * Latest Videos section: desktop grid + mobile swipe carousel with dot nav
- * (ported from the legacy hand-rolled carousel).
- *
- * TODO: real video URLs were never configured in the legacy site (the
- * "Watch Now" links pointed at "#"). When videos exist, turn the buttons
- * below into links to the video/watch page.
+ * (ported from the legacy hand-rolled carousel). Cards with an admin-set
+ * Video URL (cms_images home.videoUrl.N) open an in-site lightbox player —
+ * same UX as the gallery's VideoGallery; cards without one stay inert.
  */
-export default function VideoSection({ images }: { images: [string, string, string] }) {
+export default function VideoSection({
+  images,
+  videoUrls = ["", "", ""],
+}: {
+  images: [string, string, string];
+  videoUrls?: [string, string, string];
+}) {
   const t = useTranslations("home");
+  const tc = useTranslations("common");
   const isRtl = useLocale() === "ar";
   const [current, setCurrent] = useState(0);
+  const [open, setOpen] = useState<{ src: string; title: string } | null>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
   const touchX = useRef(0);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+    closeBtnRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(null);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
   const videos = [
-    { img: images[0], title: t("video1Title"), desc: t("video1Desc"), shortDesc: t("video1Short") },
-    { img: images[1], title: t("video2Title"), desc: t("video2Desc"), shortDesc: t("video2Short") },
-    { img: images[2], title: t("video3Title"), desc: t("video3Desc"), shortDesc: t("video3Short") },
+    { img: images[0], url: videoUrls[0], title: t("video1Title"), desc: t("video1Desc"), shortDesc: t("video1Short") },
+    { img: images[1], url: videoUrls[1], title: t("video2Title"), desc: t("video2Desc"), shortDesc: t("video2Short") },
+    { img: images[2], url: videoUrls[2], title: t("video3Title"), desc: t("video3Desc"), shortDesc: t("video3Short") },
   ];
   const total = videos.length;
 
   const goTo = (n: number) => setCurrent((n + total) % total);
+  const play = (video: { url: string; title: string }) =>
+    video.url && setOpen({ src: video.url, title: video.title });
 
   return (
     <section className="pb-24 bg-surface relative overflow-hidden">
@@ -61,7 +82,12 @@ export default function VideoSection({ images }: { images: [string, string, stri
         <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {videos.map((video, i) => (
             <div key={video.title} className={`video-card reveal stagger-${i + 1}`}>
-              <div className="thumb-wrap">
+              <div
+                className="thumb-wrap"
+                role={video.url ? "button" : undefined}
+                style={video.url ? { cursor: "pointer" } : undefined}
+                onClick={() => play(video)}
+              >
                 <Image
                   src={video.img}
                   alt={`${video.title} video thumbnail`}
@@ -78,7 +104,7 @@ export default function VideoSection({ images }: { images: [string, string, stri
                 <p className="text-on-surface-variant text-body-md mb-3">
                   {video.desc}
                 </p>
-                <button type="button" className="video-card-link">
+                <button type="button" className="video-card-link" onClick={() => play(video)}>
                   {t("watchNow")} {isRtl ? "←" : "→"}
                 </button>
               </div>
@@ -104,7 +130,11 @@ export default function VideoSection({ images }: { images: [string, string, stri
             {videos.map((video) => (
               <div key={video.title} className="video-slide">
                 <div className="video-card">
-                  <div className="thumb-wrap">
+                  <div
+                    className="thumb-wrap"
+                    role={video.url ? "button" : undefined}
+                    onClick={() => play(video)}
+                  >
                     <Image
                       src={video.img}
                       alt={`${video.title} video thumbnail`}
@@ -158,6 +188,34 @@ export default function VideoSection({ images }: { images: [string, string, stri
             ))}
           </div>
         </div>
+      </div>
+
+      {/* In-site player lightbox (same UX as the gallery's VideoGallery) */}
+      <div
+        className={`lightbox ${open ? "open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label={open?.title ?? t("videosTitle")}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setOpen(null);
+        }}
+      >
+        {open && (
+          <>
+            <button
+              ref={closeBtnRef}
+              className="lightbox-ctl lightbox-close"
+              aria-label={tc("close")}
+              onClick={() => setOpen(null)}
+            >
+              <span className="material-symbols-outlined">close</span>
+            </button>
+            <div className="lightbox-player">
+              <video src={open.src} controls autoPlay playsInline />
+              <p className="lightbox-caption">{open.title}</p>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

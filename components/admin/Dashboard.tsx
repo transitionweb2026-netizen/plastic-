@@ -57,7 +57,7 @@ type Payload = {
   imageIssues: Issue[];
   products: { id: number; nameEn: string; nameAr: string; material: string; dimensions: string; loadCapacity: string }[];
   galleryImages: Record<Locale, { file: string; src: string; alt: string; caption: string }[]>;
-  galleryVideos: { id: string; titleEn: string; descEn: string; titleAr: string; descAr: string; thumb: string }[];
+  galleryVideos: { id: string; titleEn: string; descEn: string; titleAr: string; descAr: string; thumb: string; src: string }[];
 };
 
 const TABS = ["Website Content", "Pages", "Blog", "Products", "Gallery", "Global", "Robots", "Redirects", "Health"] as const;
@@ -667,6 +667,10 @@ function GalleryTab({ data, reload }: { data: Payload; reload: () => Promise<voi
               const ok = await saveSection({ section: "galleryVideoThumb", id: video.id, thumb });
               if (ok) await reload();
               return ok;
+            }} onSaveSrc={async (src) => {
+              const ok = await saveSection({ section: "galleryVideoSrc", id: video.id, src });
+              if (ok) await reload();
+              return ok;
             }} />
           ))}
         </div>
@@ -676,11 +680,12 @@ function GalleryTab({ data, reload }: { data: Payload; reload: () => Promise<voi
 }
 
 function VideoCard({
-  video, onSave, onSaveThumb,
+  video, onSave, onSaveThumb, onSaveSrc,
 }: {
-  video: { id: string; titleEn: string; descEn: string; titleAr: string; descAr: string; thumb: string };
+  video: { id: string; titleEn: string; descEn: string; titleAr: string; descAr: string; thumb: string; src: string };
   onSave: (rec: { titleEn: string; descEn: string; titleAr: string; descAr: string }) => Promise<boolean>;
   onSaveThumb: (thumb: string) => Promise<boolean>;
+  onSaveSrc: (src: string) => Promise<boolean>;
 }) {
   const [v, setV] = useState({
     titleEn: video.titleEn, descEn: video.descEn, titleAr: video.titleAr, descAr: video.descAr,
@@ -693,6 +698,10 @@ function VideoCard({
   const [thumbBusy, setThumbBusy] = useState(false);
   const [thumbSaved, setThumbSaved] = useState(false);
   const [thumbFailed, setThumbFailed] = useState(false);
+  const [src, setSrc] = useState(video.src);
+  const [srcBusy, setSrcBusy] = useState(false);
+  const [srcSaved, setSrcSaved] = useState(false);
+  const [srcFailed, setSrcFailed] = useState(false);
   const titleKey = loc === "en" ? "titleEn" : "titleAr";
   const descKey = loc === "en" ? "descEn" : "descAr";
 
@@ -734,6 +743,40 @@ function VideoCard({
       <div className="grid grid-cols-1 gap-2" dir={loc === "ar" ? "rtl" : "ltr"}>
         <input className={inputCls} placeholder="Title" value={v[titleKey]} onChange={(e) => setV((x) => ({ ...x, [titleKey]: e.target.value }))} />
         <textarea className={inputCls} rows={2} placeholder="Description" value={v[descKey]} onChange={(e) => setV((x) => ({ ...x, [descKey]: e.target.value }))} />
+      </div>
+      <div className="mt-2">
+        <label className="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wide mb-1">
+          Video URL (direct MP4/Storage/CDN link — plays in-site; leave blank for YouTube fallback)
+        </label>
+        <div className="flex items-center gap-2">
+          <input
+            className={inputCls}
+            dir="ltr"
+            placeholder="https://…/video.mp4"
+            value={src}
+            onChange={(e) => setSrc(e.target.value)}
+          />
+          <button
+            disabled={srcBusy}
+            className="px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-bold disabled:opacity-60 shrink-0"
+            onClick={async () => {
+              setSrcBusy(true);
+              const ok = await onSaveSrc(src.trim());
+              setSrcBusy(false);
+              if (ok) {
+                setSrcSaved(true);
+                setTimeout(() => setSrcSaved(false), 2000);
+              } else {
+                setSrcFailed(true);
+                setTimeout(() => setSrcFailed(false), 4000);
+              }
+            }}
+          >
+            {srcBusy ? "Saving…" : "Save URL"}
+          </button>
+        </div>
+        {srcSaved && <span className="text-primary text-[10px] font-bold">Saved ✓ — live on the site</span>}
+        {srcFailed && <span className="text-error text-[10px] font-bold">Save failed</span>}
       </div>
       <div className="flex items-center gap-2 mt-3">
         <button

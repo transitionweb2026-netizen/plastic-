@@ -7,6 +7,7 @@ import {
   writeGalleryVideoText,
   writeGalleryImageFile,
   writeGalleryVideoThumb,
+  writeGalleryVideoSrc,
 } from "@/lib/gallery-data";
 import { SITE_URL } from "@/lib/site";
 import { isAuthenticated } from "@/lib/cms/auth";
@@ -69,7 +70,8 @@ type SaveBody =
       record: { titleEn: string; descEn: string; titleAr: string; descAr: string };
     }
   | { section: "imageFile"; file: string; imageUrl: string }
-  | { section: "galleryVideoThumb"; id: string; thumb: string };
+  | { section: "galleryVideoThumb"; id: string; thumb: string }
+  | { section: "galleryVideoSrc"; id: string; src: string };
 
 /** Save one section; auto-creates slug-change redirects; revalidates site. */
 export async function PUT(request: Request) {
@@ -123,6 +125,8 @@ export async function PUT(request: Request) {
     await writeGalleryImageFile(body.file, body.imageUrl);
   } else if (body.section === "galleryVideoThumb") {
     await writeGalleryVideoThumb(body.id, body.thumb);
+  } else if (body.section === "galleryVideoSrc") {
+    await writeGalleryVideoSrc(body.id, body.src);
   } else {
     return NextResponse.json({ error: "unknown section" }, { status: 400 });
   }

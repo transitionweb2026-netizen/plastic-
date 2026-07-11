@@ -77,9 +77,12 @@ export async function getGalleryVideos(locale: string): Promise<GalleryVideo[]> 
     const title = (locale === "ar" ? r.title_ar : r.title_en) || r.title_en;
     const desc = (locale === "ar" ? r.desc_ar : r.desc_en) || r.desc_en;
     const common = { id: r.id, title, desc, thumb: r.thumb };
-    return r.type === "youtube"
-      ? { ...common, type: "youtube" as const, youtubeId: r.youtube_id! }
-      : { ...common, type: "mp4" as const, src: r.src! };
+    // An admin-set Video URL (src) always wins — direct file/CDN playback in
+    // the in-site <video> player. YouTube embed is the fallback when no
+    // direct URL is configured.
+    return r.src
+      ? { ...common, type: "mp4" as const, src: r.src }
+      : { ...common, type: "youtube" as const, youtubeId: r.youtube_id ?? "" };
   });
 }
 
@@ -90,6 +93,7 @@ export type GalleryVideoAdmin = {
   titleAr: string;
   descAr: string;
   thumb: string;
+  src: string;
 };
 
 /** Raw (non-locale-merged) video text rows for the admin Gallery tab —
@@ -105,6 +109,7 @@ export async function getGalleryVideosAdmin(): Promise<GalleryVideoAdmin[]> {
     titleAr: r.title_ar ?? "",
     descAr: r.desc_ar ?? "",
     thumb: r.thumb,
+    src: r.src ?? "",
   }));
 }
 
@@ -141,6 +146,18 @@ export async function writeGalleryImageFile(file: string, imageUrl: string): Pro
 /** Replaces a gallery video's thumbnail image. Always-live, no publish gate. */
 export async function writeGalleryVideoThumb(id: string, thumb: string): Promise<void> {
   const { error } = await supabase().from("gallery_videos").update({ thumb }).eq("id", id);
+  if (error) throw error;
+  revalidateTag("gallery-videos", { expire: 0 });
+}
+
+/** Sets a gallery video's direct playback URL (Supabase Storage/CDN/MP4).
+ *  Always-live, no publish gate. Empty string clears it, restoring the
+ *  YouTube embed fallback (see getGalleryVideos). */
+export async function writeGalleryVideoSrc(id: string, src: string): Promise<void> {
+  const { error } = await supabase()
+    .from("gallery_videos")
+    .update({ src: src || null })
+    .eq("id", id);
   if (error) throw error;
   revalidateTag("gallery-videos", { expire: 0 });
 }

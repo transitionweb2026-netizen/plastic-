@@ -96,6 +96,14 @@ export default async function Home({
     ]),
   ]);
 
+  // Direct playback URLs (admin "Video URL" fields — same cms_images
+  // key/value store as the thumbnails above; empty = no player yet).
+  const VIDEO_URLS = (await Promise.all([
+    siteImage("home.videoUrl.1", ""),
+    siteImage("home.videoUrl.2", ""),
+    siteImage("home.videoUrl.3", ""),
+  ])) as [string, string, string];
+
   const productCategories = [
     {
       span: "md:col-span-7",
@@ -521,7 +529,7 @@ export default async function Home({
       <SectionSeparator label={t("sepVideos")} />
 
       {/* ═══ 6. VIDEOS ═══ */}
-      <VideoSection images={VIDEO_IMAGES as [string, string, string]} />
+      <VideoSection images={VIDEO_IMAGES as [string, string, string]} videoUrls={VIDEO_URLS} />
 
       {/* ═══ WHY CHOOSE US ═══ */}
       <section className="py-24 bg-on-background text-on-primary relative overflow-hidden">
