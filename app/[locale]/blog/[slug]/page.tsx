@@ -135,21 +135,6 @@ export default async function ArticlePage({
             className="hero-animate flex flex-wrap items-center gap-3 text-white/70 text-sm"
             style={{ animationDelay: ".4s" }}
           >
-            {article.authorBio && (
-              <>
-                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                  <span className="material-symbols-outlined text-white" style={{ fontSize: 14 }}>
-                    person
-                  </span>
-                </div>
-                <span className="font-semibold text-white">{article.authorBio.name}</span>
-                <span>·</span>
-                <span>{article.authorBio.roleTitle}</span>
-                <span>·</span>
-              </>
-            )}
-            <span>{article.date}</span>
-            <span>·</span>
             <span>{article.readTime}</span>
           </div>
         </div>
@@ -189,25 +174,6 @@ export default async function ArticlePage({
           dir={bodyLocalized ? undefined : "ltr"}
           dangerouslySetInnerHTML={{ __html: bodyHtml }}
         />
-
-        {article.authorBio?.bio && (
-          <div className="mt-12 p-6 bg-surface-container-low rounded-2xl flex gap-5 items-start border border-outline-variant reveal">
-            <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-              <span className="material-symbols-outlined text-white text-2xl">
-                person
-              </span>
-            </div>
-            <div>
-              <p className="font-bold text-on-surface mb-1">{article.authorBio.name}</p>
-              <p className="text-primary text-xs font-bold uppercase tracking-wider mb-2">
-                {article.authorBio.roleTitle}
-              </p>
-              <p className="text-sm text-on-surface-variant leading-relaxed">
-                {article.authorBio.bio}
-              </p>
-            </div>
-          </div>
-        )}
 
         {article.showBottomShare && (
           <div className="mt-10 pt-8 border-t border-outline-variant flex flex-wrap gap-3 items-center reveal">

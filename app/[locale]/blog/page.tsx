@@ -169,22 +169,7 @@ export default async function BlogPage({
               <p className="text-on-surface-variant text-base leading-relaxed mb-8 line-clamp-3">
                 {t("featDesc")}
               </p>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-                    <span className="material-symbols-outlined text-white" style={{ fontSize: 18 }}>
-                      person
-                    </span>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-sm text-on-surface">
-                      {t("featAuthor")}
-                    </p>
-                    <p className="text-xs text-on-surface-variant">
-                      {t("featRole")}
-                    </p>
-                  </div>
-                </div>
+              <div className="flex items-center justify-end">
                 <span className="flex items-center gap-1 text-primary text-sm font-bold">
                   {t("readArticle")}{" "}
                   <span className="material-symbols-outlined rtl-flip" style={{ fontSize: 16 }}>
