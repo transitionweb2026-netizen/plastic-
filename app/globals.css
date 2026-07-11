@@ -2656,6 +2656,9 @@ html[lang="ar"] .font-serif {
 }
 /* Plyr (direct-file player) — the .plyr container becomes the 9:16 card;
    brand-green accent, rounded corners, non-9:16 sources letterbox. */
+.lightbox-player .plyr-host {
+  width: 100%;
+}
 .lightbox-player .plyr {
   --plyr-color-main: #0e4a30;
   width: 100%;
@@ -2691,6 +2694,12 @@ html[lang="ar"] .font-serif {
   .lightbox-close {
     top: calc(1rem + env(safe-area-inset-top, 0px));
     right: calc(1rem + env(safe-area-inset-right, 0px));
+  }
+  /* RTL mirrors the close button to the left — keep it safe-area aware
+     there too (overrides the desktop RTL rule earlier in the sheet). */
+  [dir="rtl"] .lightbox-close {
+    right: auto;
+    left: calc(1rem + env(safe-area-inset-left, 0px));
   }
   .lightbox-player {
     width: min(calc(100vw - 2.2rem), calc(78vh * 9 / 16));

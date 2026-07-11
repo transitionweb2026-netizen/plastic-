@@ -9,32 +9,58 @@ type PlyrInstance = { destroy: () => void };
 
 /**
  * Plyr-powered player for direct video files (Supabase Storage/CDN/MP4) —
- * used inside the video lightboxes. Consumers load this via
- * next/dynamic({ ssr: false }) and the Plyr library itself is imported
- * dynamically below, so its JS only downloads the first time a modal
- * opens; the player initializes on mount (= modal open) and is destroyed
- * on unmount (= modal close). The icon sprite is self-hosted
+ * used inside the video lightboxes.
+ *
+ * React renders ONLY the stable host <div>; the <video> element is created
+ * imperatively inside it because Plyr rewrites the DOM around the video
+ * (wrapping it in its own containers), which breaks React reconciliation
+ * ("removeChild … not a child" crashes) if React owns those nodes.
+ *
+ * Consumers load this via next/dynamic({ ssr: false }) and Plyr itself is
+ * imported dynamically below, so its JS+CSS only download the first time a
+ * modal opens; the player initializes on mount (= modal open) and is
+ * destroyed on unmount (= modal close). The icon sprite is self-hosted
  * (public/plyr.svg) so no CDN request escapes the site's CSP.
  */
 export default function PlyrVideo({
   src,
   poster,
   title,
+  onError,
 }: {
   src: string;
   poster?: string;
   title?: string;
+  /** Fired when the source fails to load/decode — lets the lightbox swap
+   *  to an embed fallback (used for Google Drive edge cases). */
+  onError?: () => void;
 }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const hostRef = useRef<HTMLDivElement>(null);
+  const onErrorRef = useRef(onError);
+  onErrorRef.current = onError;
 
   useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
     let player: PlyrInstance | null = null;
     let cancelled = false;
 
+    const video = document.createElement("video");
+    video.src = src;
+    if (poster) video.poster = poster;
+    if (title) video.title = title;
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = "metadata";
+    video.addEventListener("error", () => {
+      if (video.error) onErrorRef.current?.();
+    });
+    host.appendChild(video);
+
     void import("plyr").then((mod) => {
       const Plyr = (mod as { default: new (el: HTMLElement, opts: object) => PlyrInstance }).default;
-      if (cancelled || !videoRef.current) return;
-      player = new Plyr(videoRef.current, {
+      if (cancelled) return;
+      player = new Plyr(video, {
         iconUrl: "/plyr.svg",
         blankVideo: "",
         // Portrait 1080×1920 frame; non-9:16 sources letterbox (no cropping).
@@ -61,20 +87,15 @@ export default function PlyrVideo({
 
     return () => {
       cancelled = true;
-      player?.destroy();
+      try {
+        player?.destroy();
+      } catch {
+        /* Plyr can throw during teardown of an already-detached tree */
+      }
+      // React never sees Plyr's DOM — reset the host wholesale.
+      host.innerHTML = "";
     };
-  }, [src]);
+  }, [src, poster, title]);
 
-  return (
-    // eslint-disable-next-line jsx-a11y/media-has-caption
-    <video
-      ref={videoRef}
-      src={src}
-      poster={poster || undefined}
-      title={title}
-      controls
-      playsInline
-      preload="metadata"
-    />
-  );
+  return <div ref={hostRef} className="plyr-host" />;
 }

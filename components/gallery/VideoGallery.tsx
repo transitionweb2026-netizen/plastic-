@@ -24,6 +24,8 @@ export default function VideoGallery({ videos }: { videos: GalleryVideo[] }) {
   const t = useTranslations("galleryUi");
   const tc = useTranslations("common");
   const [open, setOpen] = useState<GalleryVideo | null>(null);
+  /** Drive edge cases only: flips to the iframe preview if native playback errors. */
+  const [playerFallback, setPlayerFallback] = useState(false);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -46,7 +48,10 @@ export default function VideoGallery({ videos }: { videos: GalleryVideo[] }) {
             key={video.id}
             type="button"
             className={`video-card text-left reveal ${STAGGERS[i % STAGGERS.length]}`}
-            onClick={() => setOpen(video)}
+            onClick={() => {
+              setPlayerFallback(false);
+              setOpen(video);
+            }}
             aria-label={t("playVideo", { title: video.title })}
           >
             {/* aspect ratio comes from .video-card .thumb-wrap (9:16) */}
@@ -103,18 +108,24 @@ export default function VideoGallery({ videos }: { videos: GalleryVideo[] }) {
                   allowFullScreen
                 />
               ) : (() => {
-                // Google Drive sharing links are converted to the inline
-                // preview player automatically — see lib/video-url.ts.
+                // Drive links stream natively through Plyr (see
+                // lib/video-url.ts); the Drive iframe renders only if
+                // native playback errors out.
                 const resolved = resolveVideoUrl(open.src);
-                return resolved.kind === "embed" ? (
+                return playerFallback && resolved.fallbackEmbed ? (
                   <iframe
-                    src={resolved.src}
+                    src={resolved.fallbackEmbed}
                     title={open.title}
                     allow="autoplay; encrypted-media; picture-in-picture"
                     allowFullScreen
                   />
                 ) : (
-                  <PlyrVideo src={resolved.src} poster={open.thumb} title={open.title} />
+                  <PlyrVideo
+                    src={resolved.src}
+                    poster={open.thumb}
+                    title={open.title}
+                    onError={resolved.fallbackEmbed ? () => setPlayerFallback(true) : undefined}
+                  />
                 );
               })()}
               <p className="lightbox-caption">{open.title}</p>
