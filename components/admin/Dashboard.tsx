@@ -746,7 +746,7 @@ function VideoCard({
       </div>
       <div className="mt-2">
         <label className="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wide mb-1">
-          Video URL (MP4/Storage/CDN link or a normal Google Drive sharing link — plays in-site; leave blank for YouTube fallback)
+          Video URL (any link: MP4/Storage/CDN, Google Drive, YouTube/Shorts, Vimeo, Loom, Dropbox, OneDrive — provider detected automatically, plays in-site)
         </label>
         <div className="flex items-center gap-2">
           <input

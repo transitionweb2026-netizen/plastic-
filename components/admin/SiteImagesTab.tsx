@@ -39,7 +39,7 @@ function VideoUrlRow({ item, value, onSaved }: { item: SiteImageKey; value: stri
         <input
           className="w-full px-3 py-2 bg-surface-container-low border border-outline-variant rounded-lg text-sm focus:border-primary outline-none transition-colors"
           dir="ltr"
-          placeholder="https://…/video.mp4 or a Google Drive sharing link"
+          placeholder="Any video link: MP4, Drive, YouTube, Vimeo, Loom…"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
         />

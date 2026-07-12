@@ -22,8 +22,10 @@ const contentSecurityPolicy = [
   "font-src 'self' data:",
   `img-src 'self' data: https://lh3.googleusercontent.com https://upload.wikimedia.org${supabaseHost ? ` https://${supabaseHost}` : ""}`,
   "connect-src 'self' https://formspree.io",
-  // Video lightboxes: YouTube embeds + Google Drive inline preview players
-  "frame-src https://www.youtube-nocookie.com https://drive.google.com",
+  // Video lightboxes: embedded players for every auto-detected provider
+  // (see lib/video-url.ts) — YouTube, Drive preview fallback, Vimeo, Loom,
+  // OneDrive.
+  "frame-src https://www.youtube-nocookie.com https://drive.google.com https://player.vimeo.com https://www.loom.com https://onedrive.live.com",
   // Admin-pasted Video URLs may point at any HTTPS host (Supabase Storage,
   // CDNs, plain MP4 links) — media is low-risk, so allow https: broadly.
   "media-src 'self' https:",

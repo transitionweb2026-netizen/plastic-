@@ -108,15 +108,22 @@ export default function VideoGallery({ videos }: { videos: GalleryVideo[] }) {
                   allowFullScreen
                 />
               ) : (() => {
-                // Drive links stream natively through Plyr (see
-                // lib/video-url.ts); the Drive iframe renders only if
-                // native playback errors out.
+                // Provider auto-detection (see lib/video-url.ts): embed
+                // providers (YouTube/Vimeo/Loom/…) render their player in
+                // this same iframe; direct files stream through Plyr, with
+                // Drive's iframe as an error-only fallback.
                 const resolved = resolveVideoUrl(open.src);
-                return playerFallback && resolved.fallbackEmbed ? (
+                const embedSrc =
+                  resolved.kind === "embed"
+                    ? resolved.src
+                    : playerFallback
+                      ? resolved.fallbackEmbed
+                      : undefined;
+                return embedSrc ? (
                   <iframe
-                    src={resolved.fallbackEmbed}
+                    src={embedSrc}
                     title={open.title}
-                    allow="autoplay; encrypted-media; picture-in-picture"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   />
                 ) : (
@@ -124,7 +131,11 @@ export default function VideoGallery({ videos }: { videos: GalleryVideo[] }) {
                     src={resolved.src}
                     poster={open.thumb}
                     title={open.title}
-                    onError={resolved.fallbackEmbed ? () => setPlayerFallback(true) : undefined}
+                    onError={
+                      resolved.kind === "file" && resolved.fallbackEmbed
+                        ? () => setPlayerFallback(true)
+                        : undefined
+                    }
                   />
                 );
               })()}
