@@ -10,6 +10,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import WebsiteContentTab from "./WebsiteContentTab";
 import ImageUploader from "./ImageUploader";
+import VideoUploader from "./VideoUploader";
 
 /* ────────────── types mirrored from lib/cms (client-safe copies) ────────────── */
 type Locale = "en" | "ar";
@@ -745,36 +746,24 @@ function VideoCard({
         <textarea className={inputCls} rows={2} placeholder="Description" value={v[descKey]} onChange={(e) => setV((x) => ({ ...x, [descKey]: e.target.value }))} />
       </div>
       <div className="mt-2">
-        <label className="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wide mb-1">
-          Video URL (any link: MP4/Storage/CDN, Google Drive, YouTube/Shorts, Vimeo, Loom, Dropbox, OneDrive — provider detected automatically, plays in-site)
-        </label>
-        <div className="flex items-center gap-2">
-          <input
-            className={inputCls}
-            dir="ltr"
-            placeholder="https://…/video.mp4"
-            value={src}
-            onChange={(e) => setSrc(e.target.value)}
-          />
-          <button
-            disabled={srcBusy}
-            className="px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-bold disabled:opacity-60 shrink-0"
-            onClick={async () => {
-              setSrcBusy(true);
-              const ok = await onSaveSrc(src.trim());
-              setSrcBusy(false);
-              if (ok) {
-                setSrcSaved(true);
-                setTimeout(() => setSrcSaved(false), 2000);
-              } else {
-                setSrcFailed(true);
-                setTimeout(() => setSrcFailed(false), 4000);
-              }
-            }}
-          >
-            {srcBusy ? "Saving…" : "Save URL"}
-          </button>
-        </div>
+        <VideoUploader
+          label="Video (uploads straight to storage — saved automatically; delete to restore the YouTube fallback)"
+          value={src}
+          onChange={async (url) => {
+            setSrc(url);
+            setSrcBusy(true);
+            const ok = await onSaveSrc(url);
+            setSrcBusy(false);
+            if (ok) {
+              setSrcSaved(true);
+              setTimeout(() => setSrcSaved(false), 2000);
+            } else {
+              setSrcFailed(true);
+              setTimeout(() => setSrcFailed(false), 4000);
+            }
+          }}
+        />
+        {srcBusy && <span className="text-on-surface-variant text-[10px]">Saving…</span>}
         {srcSaved && <span className="text-primary text-[10px] font-bold">Saved ✓ — live on the site</span>}
         {srcFailed && <span className="text-error text-[10px] font-bold">Save failed</span>}
       </div>

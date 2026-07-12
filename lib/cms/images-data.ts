@@ -45,9 +45,9 @@ export const SITE_IMAGE_KEYS: { key: string; label: string }[] = [
  *  text in the admin, not uploaded images. Kept out of SITE_IMAGE_KEYS so
  *  the Site Images tab doesn't render them as image uploaders. */
 export const SITE_VIDEO_URL_KEYS: { key: string; label: string }[] = [
-  { key: "home.videoUrl.1", label: "Home — video 1 URL (plays in-site; thumbnail stays separate)" },
-  { key: "home.videoUrl.2", label: "Home — video 2 URL" },
-  { key: "home.videoUrl.3", label: "Home — video 3 URL" },
+  { key: "home.videoUrl.1", label: "Home — video 1 (thumbnail stays separate)" },
+  { key: "home.videoUrl.2", label: "Home — video 2" },
+  { key: "home.videoUrl.3", label: "Home — video 3" },
 ];
 
 const fetchAll = unstable_cache(

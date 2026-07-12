@@ -2,22 +2,24 @@
 
 import { useEffect, useState } from "react";
 import ImageUploader from "./ImageUploader";
+import VideoUploader from "./VideoUploader";
 
 type SiteImageKey = { key: string; label: string };
 type Payload = { keys: SiteImageKey[]; videoUrlKeys: SiteImageKey[]; values: Record<string, string> };
 
-function VideoUrlRow({ item, value, onSaved }: { item: SiteImageKey; value: string; onSaved: () => void }) {
+function VideoUploadRow({ item, value, onSaved }: { item: SiteImageKey; value: string; onSaved: () => void }) {
   const [url, setUrl] = useState(value);
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState(false);
   const [failed, setFailed] = useState(false);
 
-  const commit = async () => {
+  const commit = async (newUrl: string) => {
+    setUrl(newUrl);
     setBusy(true);
     const res = await fetch("/api/admin/site-images", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ key: item.key, url: url.trim() }),
+      body: JSON.stringify({ key: item.key, url: newUrl }),
     });
     setBusy(false);
     if (res.ok) {
@@ -32,29 +34,12 @@ function VideoUrlRow({ item, value, onSaved }: { item: SiteImageKey; value: stri
 
   return (
     <div className="py-3 border-b border-outline-variant/40 last:border-0">
-      <label className="block text-xs font-bold text-on-surface-variant uppercase tracking-wide mb-1">
-        {item.label}
-      </label>
-      <div className="flex items-center gap-2">
-        <input
-          className="w-full px-3 py-2 bg-surface-container-low border border-outline-variant rounded-lg text-sm focus:border-primary outline-none transition-colors"
-          dir="ltr"
-          placeholder="Any video link: MP4, Drive, YouTube, Vimeo, Loom…"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-        />
-        <button
-          disabled={busy}
-          onClick={commit}
-          className="px-4 py-2 bg-primary text-on-primary rounded-lg text-xs font-bold disabled:opacity-60 shrink-0"
-        >
-          {busy ? "Saving…" : "Save"}
-        </button>
-      </div>
+      <VideoUploader label={item.label} value={url} onChange={commit} />
       <div className="mt-1 flex items-center gap-2">
+        {busy && <span className="text-xs text-on-surface-variant">Saving…</span>}
         {saved && <span className="text-xs text-primary font-bold">Saved ✓ — live on the site</span>}
         {failed && <span className="text-xs text-error font-bold">Save failed</span>}
-        {!url && !saved && <span className="text-xs text-on-surface-variant">no video yet — the card's play button stays inactive</span>}
+        {!url && !saved && !busy && <span className="text-xs text-on-surface-variant">no video yet — the card's play button stays inactive</span>}
       </div>
     </div>
   );
@@ -160,11 +145,11 @@ export default function SiteImagesTab() {
 
       <details className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden" open>
         <summary className="font-label-lg text-label-lg px-5 py-3 cursor-pointer list-none border-b border-outline-variant/50">
-          Home page — video URLs
+          Home page — videos
         </summary>
         <div className="px-5">
           {(data.videoUrlKeys ?? []).map((item) => (
-            <VideoUrlRow key={item.key} item={item} value={data.values[item.key] ?? ""} onSaved={load} />
+            <VideoUploadRow key={item.key} item={item} value={data.values[item.key] ?? ""} onSaved={load} />
           ))}
         </div>
       </details>
