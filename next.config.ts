@@ -21,7 +21,9 @@ const contentSecurityPolicy = [
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self' data:",
   `img-src 'self' data: https://lh3.googleusercontent.com https://upload.wikimedia.org${supabaseHost ? ` https://${supabaseHost}` : ""}`,
-  "connect-src 'self' https://formspree.io",
+  // Supabase host required for the admin's direct-to-Storage video uploads
+  // (signed-URL PUTs go straight from the browser to Storage).
+  `connect-src 'self' https://formspree.io${supabaseHost ? ` https://${supabaseHost}` : ""}`,
   // Video lightboxes: embedded players for every auto-detected provider
   // (see lib/video-url.ts) — YouTube, Drive preview fallback, Vimeo, Loom,
   // OneDrive.

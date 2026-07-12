@@ -64,11 +64,26 @@ export default function VideoUploader({
         xhr.upload.onprogress = (e) => {
           if (e.lengthComputable) setProgress(Math.round((e.loaded / e.total) * 100));
         };
-        xhr.onload = () =>
-          xhr.status >= 200 && xhr.status < 300
-            ? resolve()
-            : reject(new Error(`storage rejected the upload (${xhr.status})`));
-        xhr.onerror = () => reject(new Error("network error during upload"));
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) return resolve();
+          // Surface the real storage error (e.g. "Payload too large",
+          // "Bucket not found", policy violations) instead of a code.
+          let detail = "";
+          try {
+            const body = JSON.parse(xhr.responseText) as { message?: string; error?: string };
+            detail = body.message || body.error || "";
+          } catch {
+            detail = xhr.responseText?.slice(0, 120) ?? "";
+          }
+          reject(new Error(`storage rejected the upload (${xhr.status}${detail ? `: ${detail}` : ""})`));
+        };
+        xhr.onerror = () =>
+          reject(
+            new Error(
+              "the browser blocked the upload before it reached storage — usually a connection drop or a security-policy (CSP/CORS) block; try again and contact the developer if it persists"
+            )
+          );
+        xhr.ontimeout = () => reject(new Error("upload timed out — check your connection and try again"));
         xhr.send(file);
       });
 
