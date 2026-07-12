@@ -68,11 +68,6 @@ export default function ProductCatalog({
                 <div className="quick-view-overlay">
                   <span className="quick-view-text">{t("quickView")}</span>
                 </div>
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-secondary-container text-on-secondary-container font-label-sm text-label-sm rounded-full">
-                    {product.badge}
-                  </span>
-                </div>
               </div>
               <div className="p-6 flex flex-col flex-grow">
                 <p className="text-xs font-bold uppercase tracking-widest text-primary/60 mb-1">

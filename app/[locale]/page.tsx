@@ -373,24 +373,6 @@ export default async function Home({
               <AboutImageParallax src={ABOUT_IMG} alt={t("aboutTitle1")} />
               <div className="about-corner-tl" />
               <div className="about-corner-br" />
-              <div className="absolute -bottom-6 -left-6 rtl:left-auto rtl:-right-6 bg-primary p-6 rounded-xl text-on-primary hidden md:flex items-center gap-4 shadow-xl">
-                <span
-                  className="material-symbols-outlined text-4xl"
-                  style={{
-                    fontVariationSettings: "'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24",
-                  }}
-                >
-                  verified
-                </span>
-                <div>
-                  <p className="font-headline-md text-headline-md leading-tight">
-                    {t("isoBadgeTitle")}
-                  </p>
-                  <p className="font-label-sm text-label-sm opacity-80">
-                    {t("isoBadgeSub")}
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </div>

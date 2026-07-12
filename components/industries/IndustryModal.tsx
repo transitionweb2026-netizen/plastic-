@@ -89,56 +89,6 @@ export default function IndustryModal({ data, onClose }: IndustryModalProps) {
               {data.description}
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <p className="modal-section-title">{t("technicalSpecifications")}</p>
-                <div>
-                  {data.specs.map(([label, value]) => (
-                    <div key={label} className="spec-row">
-                      <span className="spec-label">{label}</span>
-                      <span className="spec-value">{value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="modal-section-title">{t("keyFeatures")}</p>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {data.features.map((feature) => (
-                    <span key={feature} className="feature-chip">
-                      <span
-                        className="material-symbols-outlined text-primary"
-                        style={{
-                          fontSize: 14,
-                          fontVariationSettings:
-                            "'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24",
-                        }}
-                      >
-                        check_circle
-                      </span>
-                      {feature}
-                    </span>
-                  ))}
-                </div>
-                <p className="modal-section-title">{t("applications")}</p>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {data.applications.map((app) => (
-                    <span key={app} className="app-tag">
-                      {app}
-                    </span>
-                  ))}
-                </div>
-                <p className="modal-section-title">{t("industriesServed")}</p>
-                <div className="flex flex-wrap gap-2">
-                  {data.industries.map((industry) => (
-                    <span key={industry} className="ind-tag">
-                      {industry}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
             <div className="mt-8 pt-6 border-t border-outline-variant flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
               <p className="text-sm text-on-surface-variant">
                 <span className="font-semibold text-on-surface">
