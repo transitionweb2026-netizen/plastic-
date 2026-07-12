@@ -23,7 +23,9 @@ export default async function ProductsPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("productsUi");
-  const products = await getProducts(locale);
+  // The last three catalog entries are hidden from the listing on request —
+  // they stay in the CMS/database untouched, just not displayed.
+  const products = (await getProducts(locale)).slice(0, -3);
 
   return (
     <div className="relative overflow-hidden pt-6 pb-20">
