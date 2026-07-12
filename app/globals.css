@@ -2774,20 +2774,18 @@ html[lang="ar"] .font-serif {
   border-color: rgba(146, 213, 166, 0.75);
   text-shadow: 0 0 14px rgba(146, 213, 166, 0.4);
 }
+/* Standalone white Transition mark (no disc) — sized to occupy roughly
+   the footprint the old 28px circular badge had, vertically centered by
+   the .fbar-credit flex row. */
 .fbar-t-badge {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 9999px;
-  background: #ffffff;
-  color: #0e4a30;
-  font-weight: 900;
-  font-size: 15px;
-  line-height: 1;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+.fbar-t-badge img {
+  width: 36px;
+  height: auto;
+  object-fit: contain;
 }
 
 /* ═══════════════ FLOATING CONTACT WIDGET (right rail) ═══════════════ */

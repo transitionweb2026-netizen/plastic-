@@ -156,7 +156,8 @@ export default async function Footer() {
                 {t("createdBy")}
               </span>
               <span className="fbar-t-badge" aria-hidden>
-                T
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/transition-badge.png" alt="" width={36} height={22} />
               </span>
               <a
                 href="https://transitioneg.com/"
