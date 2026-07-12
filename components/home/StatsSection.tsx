@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 
 const STAT_DEFS = [
-  { target: 22, suffix: "+", key: "statsMarkets" },
+  { target: 150000, suffix: "+", key: "statsMarkets" },
   { target: 600, suffix: "k", key: "statsUnits" },
   { target: 150, suffix: "+", key: "statsClients" },
   { target: 100, suffix: "%", key: "statsRecyclable" },
@@ -28,11 +28,11 @@ export default function StatsSection() {
       const step = (now: number) => {
         const p = Math.min((now - start) / duration, 1);
         const eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = Math.floor(eased * target) + suffix;
+        el.textContent = Math.floor(eased * target).toLocaleString("en-US") + suffix;
         if (p < 1) {
           requestAnimationFrame(step);
         } else {
-          el.textContent = target + suffix;
+          el.textContent = target.toLocaleString("en-US") + suffix;
           el.classList.add("stat-pulse");
           el.addEventListener(
             "animationend",
