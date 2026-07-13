@@ -2283,10 +2283,7 @@ html[lang="ar"] .font-serif {
   text-align: left;
 }
 
-/* Gallery captions + lightbox controls */
-[dir="rtl"] .gallery-caption {
-  text-align: right;
-}
+/* Lightbox controls */
 [dir="rtl"] .lightbox-close {
   right: auto;
   left: 1.25rem;
@@ -2454,11 +2451,6 @@ html[lang="ar"] .font-serif {
     transform: scale(1);
   }
 }
-.gfeat-caption {
-  opacity: 1;
-  transform: none;
-}
-
 .gfeat-track {
   transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;

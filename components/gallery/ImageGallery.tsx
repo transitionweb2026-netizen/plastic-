@@ -98,7 +98,6 @@ export default function ImageGallery({
               className="object-cover"
             />
           </div>
-          <span className="gallery-caption gfeat-caption">{featured.caption}</span>
         </button>
       </div>
 
@@ -191,11 +190,7 @@ export default function ImageGallery({
                 priority
               />
               <figcaption className="lightbox-caption">
-                {active.caption}
-                <span className="opacity-60">
-                  {" "}
-                  · <span dir="ltr">{openIdx + 1} / {total}</span>
-                </span>
+                <span dir="ltr">{openIdx + 1} / {total}</span>
               </figcaption>
             </figure>
 
