@@ -118,21 +118,16 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
           )}
 
           <div className="p-6 md:p-8">
-            <div className="flex flex-wrap items-start justify-between gap-3 mb-2">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-primary mb-1">
-                  {product.category}
-                </p>
-                <h2
-                  id="modal-title"
-                  className="font-headline-md text-headline-md text-on-surface"
-                >
-                  {product.name}
-                </h2>
-              </div>
-              <span className="px-3 py-1 bg-secondary-container text-on-secondary-container font-label-sm text-label-sm rounded-full self-start">
-                {product.badge}
-              </span>
+            <div className="mb-2">
+              <p className="text-xs font-bold uppercase tracking-widest text-primary mb-1">
+                {product.category}
+              </p>
+              <h2
+                id="modal-title"
+                className="font-headline-md text-headline-md text-on-surface"
+              >
+                {product.name}
+              </h2>
             </div>
 
             <p className="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
