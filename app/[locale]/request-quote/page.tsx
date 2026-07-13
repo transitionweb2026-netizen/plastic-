@@ -106,13 +106,6 @@ export default async function RequestQuotePage({
                 </p>
               </div>
             </div>
-
-            <div className="border-s-4 border-primary p-6 bg-surface-container-high/50 italic text-on-surface-variant">
-              {t("testimonial")}
-              <p className="not-italic font-bold text-on-surface mt-4 text-sm">
-                {t("testimonialBy")}
-              </p>
-            </div>
           </aside>
         </div>
       </section>
