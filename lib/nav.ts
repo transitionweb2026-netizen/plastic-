@@ -73,7 +73,7 @@ export const WHATSAPP_HREF = `https://wa.me/${CONTACT.phoneMain.href.replace(/\D
 export const SOCIAL_LINKS: { label: string; brand: string; href: string }[] = [
   { label: "WhatsApp", brand: "whatsapp", href: WHATSAPP_HREF },
   { label: "Instagram", brand: "instagram", href: "https://www.instagram.com/giant.storage.eg?igsh=NDJvZDcwZWlvYzhv" },
-  { label: "Facebook", brand: "facebook", href: "https://www.facebook.com/giantstorage.eg" },
+  { label: "Facebook", brand: "facebook", href: "https://www.facebook.com/profile.php?id=61585673944863" },
   { label: "TikTok", brand: "tiktok", href: "https://www.tiktok.com/@giant.storage?_r=1&_t=ZS-97wfDP1kQcu" },
 ];
 
