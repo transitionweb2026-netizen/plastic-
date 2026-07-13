@@ -152,9 +152,7 @@
     "productTypes": "Product Types",
     "productTypeOptions": {
       "racking": "Automated Racking Systems",
-      "mezzanines": "Heavy-Duty Mezzanines",
-      "shelving": "Industrial Shelving",
-      "custom": "Custom Warehouse Integration"
+      "mezzanines": "Heavy-Duty Mezzanines"
     },
     "quantity": "Estimated Quantity",
     "quantityPlaceholder": "e.g. 500 units",

@@ -152,9 +152,7 @@
     "productTypes": "أنواع المنتجات",
     "productTypeOptions": {
       "racking": "أنظمة أرفف مؤتمتة",
-      "mezzanines": "ميزانين شديد التحمل",
-      "shelving": "أرفف صناعية",
-      "custom": "تكامل مخازن مخصص"
+      "mezzanines": "ميزانين شديد التحمل"
     },
     "quantity": "الكمية التقديرية",
     "quantityPlaceholder": "مثال: 500 وحدة",

@@ -11,7 +11,7 @@ const whatsappBase = envNumber ? `https://wa.me/${envNumber}` : WHATSAPP_HREF;
 
 type Status = "idle" | "loading" | "success" | "error";
 
-const PRODUCT_TYPE_KEYS = ["racking", "mezzanines", "shelving", "custom"] as const;
+const PRODUCT_TYPE_KEYS = ["racking", "mezzanines"] as const;
 const LEAD_TIME_KEYS = ["urgent", "standard", "future"] as const;
 const ENVIRONMENT_KEYS = ["cold", "ambient", "hazardous", "humidity"] as const;
 const STEP_KEYS = ["project", "logistics", "company"] as const;
