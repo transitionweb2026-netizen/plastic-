@@ -40,6 +40,8 @@ const VIDEO_IMGS_DEFAULT = [
 
 /* Five of the legacy Wikimedia logo URLs had gone dead (404/400/429);
    replaced with the current Commons file locations (verified 200). */
+const LOGO_PLACEHOLDER_DEFAULT = "/images/logo-placeholder.svg";
+
 const CLIENT_LOGOS_DEFAULT = [
   { key: "amazon", src: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", alt: "Amazon" },
   { key: "carrefour", src: "https://upload.wikimedia.org/wikipedia/commons/0/09/Grupo_Carrefour_Brasil_logo.svg", alt: "Carrefour" },
@@ -48,6 +50,15 @@ const CLIENT_LOGOS_DEFAULT = [
   { key: "airbus", src: "https://upload.wikimedia.org/wikipedia/commons/5/5d/Airbus_Logo_2017.svg", alt: "Airbus" },
   { key: "nestle", src: "https://upload.wikimedia.org/wikipedia/commons/5/50/Nestle_textlogo_blue.svg", alt: "Nestlé" },
   { key: "unilever", src: "https://upload.wikimedia.org/wikipedia/commons/8/87/Unilever_text_logo.svg", alt: "Unilever" },
+  // New slots — placeholder image until an admin uploads the real logo via
+  // the existing Site Images CMS tab (same home.clientLogo.* key pattern).
+  { key: "partner1", src: LOGO_PLACEHOLDER_DEFAULT, alt: "Partner 1" },
+  { key: "partner2", src: LOGO_PLACEHOLDER_DEFAULT, alt: "Partner 2" },
+  { key: "partner3", src: LOGO_PLACEHOLDER_DEFAULT, alt: "Partner 3" },
+  { key: "partner4", src: LOGO_PLACEHOLDER_DEFAULT, alt: "Partner 4" },
+  { key: "partner5", src: LOGO_PLACEHOLDER_DEFAULT, alt: "Partner 5" },
+  { key: "partner6", src: LOGO_PLACEHOLDER_DEFAULT, alt: "Partner 6" },
+  { key: "partner7", src: LOGO_PLACEHOLDER_DEFAULT, alt: "Partner 7" },
 ];
 
 const CATEGORY_IMAGES_DEFAULT = {
@@ -399,14 +410,15 @@ export default async function Home({
             <div className="logo-track">
               {[...CLIENT_LOGOS, ...CLIENT_LOGOS].map((logo, i) => (
                 <div key={`${logo.alt}-${i}`} className="logo-item">
-                  <Image
-                    src={logo.src}
-                    alt={i >= CLIENT_LOGOS.length ? "" : logo.alt}
-                    width={120}
-                    height={40}
-                    unoptimized
-                    aria-hidden={i >= CLIENT_LOGOS.length}
-                  />
+                  <div className="logo-item-frame">
+                    <Image
+                      src={logo.src}
+                      alt={i >= CLIENT_LOGOS.length ? "" : logo.alt}
+                      fill
+                      unoptimized
+                      aria-hidden={i >= CLIENT_LOGOS.length}
+                    />
+                  </div>
                 </div>
               ))}
             </div>
@@ -418,14 +430,15 @@ export default async function Home({
             <div className="logo-track logo-track-mobile">
               {[...CLIENT_LOGOS, ...CLIENT_LOGOS].map((logo, i) => (
                 <div key={`m-${logo.alt}-${i}`} className="logo-item logo-item-mobile">
-                  <Image
-                    src={logo.src}
-                    alt={i >= CLIENT_LOGOS.length ? "" : logo.alt}
-                    width={140}
-                    height={56}
-                    unoptimized
-                    aria-hidden={i >= CLIENT_LOGOS.length}
-                  />
+                  <div className="logo-item-frame">
+                    <Image
+                      src={logo.src}
+                      alt={i >= CLIENT_LOGOS.length ? "" : logo.alt}
+                      fill
+                      unoptimized
+                      aria-hidden={i >= CLIENT_LOGOS.length}
+                    />
+                  </div>
                 </div>
               ))}
             </div>
