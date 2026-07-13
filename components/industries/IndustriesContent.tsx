@@ -10,10 +10,10 @@ import IndustryModal from "./IndustryModal";
 import type { IndustryModal as IndustryModalData } from "@/lib/industries";
 
 const STAT_DEFS = [
-  { num: "22", suffix: "+", key: "stat1" },
-  { num: "600K", suffix: "+", key: "stat2" },
-  { num: "150", suffix: "+", key: "stat3" },
-  { num: "5", suffix: "", key: "stat4" },
+  { key: "stat1" },
+  { key: "stat2" },
+  { key: "stat3" },
+  { key: "stat4" },
 ] as const;
 
 const STEP_DEFS = [
@@ -54,7 +54,20 @@ export default function IndustriesContent({
     STEP_DEFS.map((s) => [s.id, modals[s.id]?.image ?? ""])
   );
 
-  const stats = STAT_DEFS.map((s) => ({ ...s, label: t(s.key) }));
+  // Only the number itself is CMS-editable (e.g. "600K+", "5") — the label
+  // below it stays translation-driven like the rest of the page copy. A
+  // trailing "+" is split off so it keeps rendering in the dimmer tone,
+  // matching the pre-existing two-tone stat styling exactly.
+  const stats = STAT_DEFS.map((s) => {
+    const value = t(`${s.key}Value`);
+    const hasPlus = value.endsWith("+");
+    return {
+      key: s.key,
+      label: t(s.key),
+      num: hasPlus ? value.slice(0, -1) : value,
+      suffix: hasPlus ? "+" : "",
+    };
+  });
   const processSteps = STEP_DEFS.map((s) => ({
     ...s,
     title: t(`${s.id}Title`),
