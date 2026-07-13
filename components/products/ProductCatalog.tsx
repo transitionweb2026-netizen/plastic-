@@ -70,9 +70,6 @@ export default function ProductCatalog({
                 </div>
               </div>
               <div className="p-6 flex flex-col flex-grow">
-                <p className="text-xs font-bold uppercase tracking-widest text-primary/60 mb-1">
-                  {product.category}
-                </p>
                 <h3 className="font-headline-md text-headline-md text-on-surface mb-2">
                   {product.name}
                 </h3>
