@@ -64,7 +64,7 @@ export default function StatsSection() {
   return (
     <section
       ref={sectionRef}
-      className="py-20 bg-primary text-on-primary relative overflow-hidden"
+      className="stats-band py-20 bg-primary text-on-primary relative overflow-hidden"
     >
       <div
         className="stats-orb absolute"

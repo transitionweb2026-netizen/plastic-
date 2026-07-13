@@ -2981,6 +2981,16 @@ textarea:focus-visible {
 
 /* ═══════════════ MOBILE POLISH (≤767px only — desktop untouched) ═══════════════ */
 @media (max-width: 767px) {
+  /* Home stats band: the fixed headline size clipped six-figure numbers
+     inside the 2×2 grid cells — scale fluidly with the viewport so every
+     number ("150,000+") fits its 50% column, centered, no overflow. */
+  .stats-band .stat-num {
+    font-size: clamp(1.5rem, 8.5vw, 2.5rem);
+    line-height: 1.15;
+    max-width: 100%;
+  }
+}
+@media (max-width: 767px) {
   /* Scroll reveals: shorter travel + snappier premium ease. 32-44px jumps
      read as aggressive on a phone-sized viewport; 20-24px with a fast-out
      curve feels native. Applies to the generic .reveal system and the
