@@ -31,7 +31,7 @@ export const CONTACT = {
   email: "info@giantstorage.com",
   phoneMain: { display: "+20 102 515 1199", href: "tel:+201025151199" },
   phoneLogistics: { display: "+20 127 013 7779", href: "tel:+201270137779" },
-  address: "22 El Tayaran St., Nasr City, Cairo, Egypt",
+  address: "63 Al-Nasr Street, Sheraton Al-Matar, El Nozha District, Heliopolis, Cairo, Egypt",
 } as const;
 
 /** Resolves CONTACT with an optional CMS override layered on top

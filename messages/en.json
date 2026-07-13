@@ -29,7 +29,7 @@
     },
     "contact": {
       "title": "Contact Us",
-      "description": "Reach the Giant Storage team — sales inquiries, technical support, and distribution partnerships. Offices in Nasr City, Cairo."
+      "description": "Reach the Giant Storage team — sales inquiries, technical support, and distribution partnerships. Offices in Heliopolis, Cairo."
     },
     "quote": {
       "title": "Request a Quote",
@@ -77,7 +77,7 @@
     "contactLink": "Contact Us",
     "galleryLink": "Gallery",
     "contactHeading": "Contact Headquarters",
-    "address": "22 El Tayaran St., Nasr City, Cairo, Egypt",
+    "address": "63 Al-Nasr Street, Sheraton Al-Matar, El Nozha District, Heliopolis, 3rd Floor, Unit 13",
     "copyright": "© {year} Giant Storage Integrated Solutions. All rights reserved.",
     "createdBy": "Created by",
     "privacyPolicy": "Privacy Policy",
@@ -357,8 +357,8 @@
     "heroTitle2": "Local Support.",
     "heroPara": "Whether you're streamlining a pharmaceutical warehouse or optimizing heavy industrial logistics, our Cairo-based team is ready to engineer your efficiency.",
     "regionalHq": "Regional HQ",
-    "addressL1": "22 El Tayaran St., Nasr City,",
-    "addressL2": "Cairo, Egypt",
+    "addressL1": "63 Al-Nasr Street, Sheraton Al-Matar, El Nozha District,",
+    "addressL2": "Heliopolis, Cairo, Egypt — 3rd Floor, Unit 13",
     "getDirections": "Get Directions",
     "directLines": "Direct Lines",
     "mainOffice": "Main Office",
@@ -370,7 +370,7 @@
     "closed": "Closed",
     "formTitle": "Technical Inquiry",
     "formSub": "Fill out the form below and an engineering consultant will contact you within 24 business hours.",
-    "mapAlt": "Stylized map of Nasr City, Cairo, marking Giant Storage's headquarters at 22 El Tayaran Street",
+    "mapAlt": "Stylized map of Heliopolis, Cairo, marking Giant Storage's headquarters at 63 Al-Nasr Street",
     "hubTitle": "Main Logistics Hub",
     "hubDesc": "Strategic location for rapid deployment across the MENA region.",
     "openInMaps": "Open in Maps"

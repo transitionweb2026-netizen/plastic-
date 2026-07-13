@@ -196,7 +196,7 @@ export async function orgSettings(): Promise<OrgSchema> {
     phone: cms.phone || CONTACT.phoneMain.display,
     email: cms.email || CONTACT.email,
     address: {
-      street: cms.address.street || "22 El Tayaran St., Nasr City",
+      street: cms.address.street || "63 Al-Nasr Street, Sheraton Al-Matar, El Nozha District, Heliopolis, 3rd Floor, Unit 13",
       city: cms.address.city || "Cairo",
       country: cms.address.country || "EG",
     },
