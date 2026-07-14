@@ -221,20 +221,6 @@ export default function ContactForm({
             {t("terms")}
           </label>
         </div>
-        <button
-          className="bg-primary text-on-primary h-14 px-10 rounded-lg font-label-md text-label-md active:scale-95 transition-all industrial-shadow whitespace-nowrap flex items-center justify-center gap-3 disabled:opacity-70"
-          type="submit"
-          disabled={status === "loading"}
-        >
-          {status === "loading"
-            ? t("sending")
-            : status === "success"
-              ? t("sent")
-              : t("sendInquiry")}
-          {status === "idle" && (
-            <span className="material-symbols-outlined rtl-flip">send</span>
-          )}
-        </button>
       </div>
       {status === "error" && (
         <p className="md:col-span-2 text-error text-sm">
