@@ -13,9 +13,11 @@ export const metadata: Metadata = {
       { url: `/favicon-default.ico${FAVICON_VERSION}` },
       { url: `/favicon-16x16.png${FAVICON_VERSION}`, sizes: "16x16", type: "image/png" },
       { url: `/favicon-32x32.png${FAVICON_VERSION}`, sizes: "32x32", type: "image/png" },
+      { url: `/favicon-48x48.png${FAVICON_VERSION}`, sizes: "48x48", type: "image/png" },
     ],
     apple: `/apple-touch-icon.png${FAVICON_VERSION}`,
   },
+  manifest: "/site.webmanifest",
 };
 
 /** Standalone admin shell (outside the locale tree, always LTR English). */

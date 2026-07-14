@@ -80,11 +80,13 @@ export async function generateMetadata({
         { url: icons.favicon || `/favicon-default.ico${FAVICON_VERSION}` },
         { url: `/favicon-16x16.png${FAVICON_VERSION}`, sizes: "16x16", type: "image/png" },
         { url: `/favicon-32x32.png${FAVICON_VERSION}`, sizes: "32x32", type: "image/png" },
+        { url: `/favicon-48x48.png${FAVICON_VERSION}`, sizes: "48x48", type: "image/png" },
         { url: `/android-chrome-192x192.png${FAVICON_VERSION}`, sizes: "192x192", type: "image/png" },
         { url: `/android-chrome-512x512.png${FAVICON_VERSION}`, sizes: "512x512", type: "image/png" },
       ],
       apple: icons.appleTouchIcon || `/apple-touch-icon.png${FAVICON_VERSION}`,
     },
+    manifest: "/site.webmanifest",
     title: {
       default: t("siteTitle"),
       template: `%s | ${t("siteName")}`,

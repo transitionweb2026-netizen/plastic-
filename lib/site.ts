@@ -7,4 +7,4 @@ export const SITE_NAME = "Giant Storage Integrated Solutions";
 /** Cache-buster for the static favicon defaults — bump when the underlying
  *  files in public/ change, since browsers cache favicon URLs very
  *  aggressively and often ignore normal content/cache-control changes. */
-export const FAVICON_VERSION = "?v=2";
+export const FAVICON_VERSION = "?v=3";
