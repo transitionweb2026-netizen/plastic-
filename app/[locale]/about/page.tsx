@@ -18,8 +18,6 @@ export async function generateMetadata({
 const HERO_IMG_DEFAULT =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBz7QZ_kL3IeykdpqgX6okEIbX4C78Vw1YX_52h2cnrS3ZyUghmQh911YI26l3Ywp1lM9HwgsOKT66vSRnqVTDYmu0JIZZfDv9pGg2_M8g--eq6CqUzc4NTPPXHtoWcxD4BRjfUp8VHzOigpPSYVOkAmSAdFvzTgYI6uelwuXSqYBa3RgfVNSpQa_9BFhI3AVFdg85QcN7ygqfmXlTlirqeK-20zfJ6J8NNDRFT0_jzwNnSHBRx0ud0n3amqNJZXPhbY-0V7-NxYG3E";
 
-const STAT_VALUES = ["40+", "1.2M", "50k+", "85"];
-
 const FACTORY_CARDS_DEFAULT = [
   {
     key: "1",
@@ -48,7 +46,6 @@ export default async function AboutPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("aboutPage");
-  const stats = STAT_VALUES.map((value, i) => ({ value, label: t(`stat${i + 1}`) }));
   const values = [t("value1"), t("value2"), t("value3")];
   const HERO_IMG = await siteImage("about.hero", HERO_IMG_DEFAULT);
   const factoryCards = await Promise.all(
@@ -111,23 +108,6 @@ export default async function AboutPage({
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </div>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="relative overflow-hidden bg-surface-container px-4 md:px-margin-desktop py-12">
-        <div aria-hidden className="absolute inset-0 dot-pattern-light opacity-30 pointer-events-none" />
-        <div className="relative max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {stats.map((stat) => (
-            <div key={stat.label} className="p-6">
-              <div className="font-display-lg text-headline-lg text-primary mb-2">
-                {stat.value}
-              </div>
-              <div className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
-                {stat.label}
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
