@@ -28,7 +28,7 @@ export const REQUEST_QUOTE = { label: "Request Quote", href: "/request-quote" };
  *  These are the built-in defaults; the CMS can override email/phones (see
  *  resolveContact() below) — address stays translation-driven (messages/*.json). */
 export const CONTACT = {
-  email: "info@giantstorage.com",
+  email: "info@gaintstorage.com",
   phoneMain: { display: "+20 102 515 1199", href: "tel:+201025151199" },
   phoneLogistics: { display: "+20 127 013 7779", href: "tel:+201270137779" },
   address: "63 Al-Nasr Street, Sheraton Al-Matar, El Nozha District, Heliopolis, Cairo, Egypt",
