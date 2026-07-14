@@ -63,6 +63,15 @@ const nextConfig: NextConfig = {
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
         ],
       },
+      // Belt-and-suspenders: the sitemap route already sets this header
+      // itself, but some hosting proxies have been observed dropping
+      // dynamic Route Handler response headers — this framework-level
+      // config is a second, independent enforcement path for the same
+      // header so the browser/crawler always sees valid XML content-type.
+      {
+        source: "/sitemap.xml",
+        headers: [{ key: "Content-Type", value: "application/xml; charset=utf-8" }],
+      },
     ];
   },
 };
