@@ -64,10 +64,18 @@ export async function generateMetadata({
     // that as its own <link rel="icon">, alongside (not replacing) this
     // one, so a CMS-uploaded favicon couldn't reliably win over it. This
     // field is the single source of truth, falling back to the build-time
-    // default until the CMS sets an override.
+    // defaults until the CMS sets an override. The sized PNGs are always
+    // included alongside the primary icon so browsers/OSes can pick the
+    // best match (tab favicon, Android home screen, etc.).
     icons: {
-      icon: icons.favicon || "/favicon-default.ico",
-      ...(icons.appleTouchIcon ? { apple: icons.appleTouchIcon } : {}),
+      icon: [
+        { url: icons.favicon || "/favicon-default.ico" },
+        { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+        { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+        { url: "/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
+        { url: "/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
+      ],
+      apple: icons.appleTouchIcon || "/apple-touch-icon.png",
     },
     title: {
       default: t("siteTitle"),
