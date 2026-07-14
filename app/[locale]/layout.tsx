@@ -8,7 +8,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import FloatingContactWidget from "@/components/ui/FloatingContactWidget";
 import { routing } from "@/i18n/routing";
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL, FAVICON_VERSION } from "@/lib/site";
 import { faviconLinks, organizationJsonLd } from "@/lib/cms/seo";
 import { siteImage } from "@/lib/cms/images-data";
 import { LOGO_SRC_DEFAULT } from "@/lib/nav";
@@ -66,16 +66,19 @@ export async function generateMetadata({
     // field is the single source of truth, falling back to the build-time
     // defaults until the CMS sets an override. The sized PNGs are always
     // included alongside the primary icon so browsers/OSes can pick the
-    // best match (tab favicon, Android home screen, etc.).
+    // best match (tab favicon, Android home screen, etc.). The ?v= query
+    // string on the static defaults is a cache-buster — browsers cache
+    // favicons far more aggressively than other assets and often won't
+    // re-fetch an unchanged URL even after its file contents change.
     icons: {
       icon: [
-        { url: icons.favicon || "/favicon-default.ico" },
-        { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-        { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-        { url: "/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
-        { url: "/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
+        { url: icons.favicon || `/favicon-default.ico${FAVICON_VERSION}` },
+        { url: `/favicon-16x16.png${FAVICON_VERSION}`, sizes: "16x16", type: "image/png" },
+        { url: `/favicon-32x32.png${FAVICON_VERSION}`, sizes: "32x32", type: "image/png" },
+        { url: `/android-chrome-192x192.png${FAVICON_VERSION}`, sizes: "192x192", type: "image/png" },
+        { url: `/android-chrome-512x512.png${FAVICON_VERSION}`, sizes: "512x512", type: "image/png" },
       ],
-      apple: icons.appleTouchIcon || "/apple-touch-icon.png",
+      apple: icons.appleTouchIcon || `/apple-touch-icon.png${FAVICON_VERSION}`,
     },
     title: {
       default: t("siteTitle"),
