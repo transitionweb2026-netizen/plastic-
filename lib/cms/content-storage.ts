@@ -144,29 +144,32 @@ export async function writeSiteContact(record: SiteContactOverride): Promise<voi
     });
   if (error) throw error;
   revalidateTag("content-overrides", { expire: 0 });
-  revalidateTag("site-contact", { expire: 0 });
 }
 
 /** Site-wide contact info (Footer, forms, hero widget) — no per-locale
- *  split, no publish gate, same always-active singleton as before. */
-export const siteContact = unstable_cache(
-  async (): Promise<SiteContactOverride> => {
-    const { data, error } = await supabase()
-      .from("content_site_contact")
-      .select("*")
-      .eq("id", 1)
-      .maybeSingle();
-    if (error) throw error;
-    return data
-      ? {
-          email: data.email ?? undefined,
-          phoneMainDisplay: data.phone_main_display ?? undefined,
-          phoneMainHref: data.phone_main_href ?? undefined,
-          phoneLogisticsDisplay: data.phone_logistics_display ?? undefined,
-          phoneLogisticsHref: data.phone_logistics_href ?? undefined,
-        }
-      : {};
-  },
-  ["site-contact"],
-  { tags: ["site-contact"] }
-);
+ *  split, no publish gate, same always-active singleton as before.
+ *
+ *  Deliberately NOT wrapped in unstable_cache: this is a single cheap
+ *  row read, and tag-based invalidation alone proved unreliable on this
+ *  host (self-hosted Next.js deployments commonly persist the on-disk
+ *  Data Cache across deploys, so a stale entry here could outlive even a
+ *  full redeploy). Reading it fresh on every request guarantees CMS
+ *  edits show up immediately, at the cost of one trivial query per
+ *  page render. */
+export async function siteContact(): Promise<SiteContactOverride> {
+  const { data, error } = await supabase()
+    .from("content_site_contact")
+    .select("*")
+    .eq("id", 1)
+    .maybeSingle();
+  if (error) throw error;
+  return data
+    ? {
+        email: data.email ?? undefined,
+        phoneMainDisplay: data.phone_main_display ?? undefined,
+        phoneMainHref: data.phone_main_href ?? undefined,
+        phoneLogisticsDisplay: data.phone_logistics_display ?? undefined,
+        phoneLogisticsHref: data.phone_logistics_href ?? undefined,
+      }
+    : {};
+}
