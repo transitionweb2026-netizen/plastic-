@@ -29,6 +29,10 @@ export async function generateMetadata({
   return cmsMetadata("home", locale as "en" | "ar");
 }
 
+// See app/[locale]/layout.tsx — same CDN-staleness reasoning, this page
+// additionally renders the CMS-driven contact info in its hero widget.
+export const revalidate = 30;
+
 const HERO_BG_DEFAULT = "/images/home-hero.webp";
 const ABOUT_IMG_DEFAULT = "/images/about-us.webp";
 

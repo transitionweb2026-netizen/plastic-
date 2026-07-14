@@ -17,6 +17,10 @@ export async function generateMetadata({
   return cmsMetadata("contact", locale as "en" | "ar");
 }
 
+// See app/[locale]/layout.tsx — same CDN-staleness reasoning, this page
+// additionally renders the CMS-driven email/phone directly (not just via Footer).
+export const revalidate = 30;
+
 const MAP_IMG_DEFAULT =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuAgvTljDfpm5vdwOxt5YpPXyz6xER5qgSXF6dDaZ79iz-kz7ePQWF_O8kBSsiZvZ5OFdhGSvxBxG5aL2jR4b93DZHeib8J-x2Tx73QsZaLg82vrG6jo3uhxePwjmpTQeDEQRBB62pAn44sbNE6fy9q4xvuCnw-RCv26idq29XO6h8Y9juWS5zL8gRmMj-UpPF0p8G2Gfje6xenL-DRx84Oe_76rIdWqYztjDLZWIjR-QZIaUg_QgGEC9nNeKx1ziUAEJ60BYYG8krCO";
 

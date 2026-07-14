@@ -17,6 +17,10 @@ export async function generateMetadata({
   return cmsMetadata("quote", locale as "en" | "ar");
 }
 
+// See app/[locale]/layout.tsx — same CDN-staleness reasoning, this page
+// additionally renders the CMS-driven contact info passed into QuoteForm.
+export const revalidate = 30;
+
 const SPOTLIGHT_IMG_DEFAULT =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuCu-r1AtSl49qnI-a6NpF3tIMe9S-lR-_cjAB-1B1UFjSmtwMjuChO8r_vHNeznJ12flZiGZ4SxWZ8hD6TGOulSfBizqWR9qxtIJY52SlcUX1Mbk_7JJGm5n7rwbflv7mWhPhh6LBAqkdIc70TCCcuCPfd_hvvH2WiPZLU-qSWh2krADab1dLpe8oZl16qEn98rf1MTStEiM_YPxBIJSdPGtm31NnmvEbgU0j7AymSOMtp4_TySD5AhRTnoUwHxZpWeQNr9Ri9ZfAg";
 

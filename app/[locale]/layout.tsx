@@ -50,6 +50,11 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+// Caps how long the CDN in front of this site (which doesn't reliably
+// respect Next's own on-demand revalidation) can serve a stale Footer —
+// it renders CMS-driven contact info on every page. See lib/cms/content-storage.ts.
+export const revalidate = 30;
+
 export async function generateMetadata({
   params,
 }: {
