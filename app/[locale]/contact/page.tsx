@@ -7,6 +7,7 @@ import ContactForm from "@/components/forms/ContactForm";
 import { CONTACT, resolveContact } from "@/lib/nav";
 import { siteContact } from "@/lib/cms/content-storage";
 import { siteImage } from "@/lib/cms/images-data";
+import PhoneLink from "@/components/tracking/PhoneLink";
 
 export async function generateMetadata({
   params,
@@ -100,19 +101,19 @@ export default async function ContactPage({
             <div className="space-y-2">
               <p className="text-on-surface-variant flex flex-wrap items-center justify-between gap-1">
                 <span>{t("mainOffice")}</span>
-                <a className="font-bold text-primary" href={contact.phoneMain.href} dir="ltr">
+                <PhoneLink className="font-bold text-primary" href={contact.phoneMain.href} dir="ltr">
                   {contact.phoneMain.display}
-                </a>
+                </PhoneLink>
               </p>
               <p className="text-on-surface-variant flex flex-wrap items-center justify-between gap-1">
                 <span>{t("logisticsDept")}</span>
-                <a
+                <PhoneLink
                   className="font-bold text-primary"
                   href={contact.phoneLogistics.href}
                   dir="ltr"
                 >
                   {contact.phoneLogistics.display}
-                </a>
+                </PhoneLink>
               </p>
             </div>
           </div>

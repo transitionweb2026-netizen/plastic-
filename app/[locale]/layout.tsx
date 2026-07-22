@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter, Lora, IBM_Plex_Sans_Arabic } from "next/font/google";
 import localFont from "next/font/local";
 import { notFound } from "next/navigation";
@@ -12,6 +13,7 @@ import { SITE_URL, FAVICON_VERSION } from "@/lib/site";
 import { faviconLinks, organizationJsonLd } from "@/lib/cms/seo";
 import { siteImage } from "@/lib/cms/images-data";
 import { LOGO_SRC_DEFAULT } from "@/lib/nav";
+import { GOOGLE_ADS_ID } from "@/lib/googleAds";
 import "../globals.css";
 
 const inter = Inter({
@@ -130,6 +132,25 @@ export default async function LocaleLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
         />
+        {/* Google Ads gtag.js — loaded exactly once here, in the single
+            shared public-site root layout (the /admin dashboard has its own
+            separate root layout and no tracked interactions, so it's
+            deliberately excluded). afterInteractive per Next.js's
+            recommendation for third-party analytics: it doesn't block
+            hydration, and next/script already de-dupes/guards against
+            double-injection across client-side route changes. */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-ads-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GOOGLE_ADS_ID}');
+          `}
+        </Script>
         <NextIntlClientProvider>
           {/* key={locale} remounts on language change → smooth fade-in */}
           <div key={locale} className="locale-fade flex min-h-screen flex-col">

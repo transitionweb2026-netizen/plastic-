@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { NAV_LINKS, REQUEST_QUOTE } from "@/lib/nav";
+import { trackBookAppointment } from "@/lib/googleAds";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 type MobileDrawerProps = {
@@ -77,7 +78,10 @@ export default function MobileDrawer({ open, onClose }: MobileDrawerProps) {
           ))}
           <Link
             href={REQUEST_QUOTE.href}
-            onClick={onClose}
+            onClick={() => {
+              trackBookAppointment();
+              onClose();
+            }}
             className="btn-primary w-fit mx-4 mt-4"
           >
             {t("nav.requestQuote")}

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { IndustryModal as IndustryModalData } from "@/lib/industries";
+import { trackBookAppointment } from "@/lib/googleAds";
 
 type IndustryModalProps = {
   data: IndustryModalData | null;
@@ -105,6 +106,7 @@ export default function IndustryModal({ data, onClose }: IndustryModalProps) {
                 </Link>
                 <Link
                   href="/request-quote"
+                  onClick={() => trackBookAppointment()}
                   className="bg-primary text-on-primary px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-secondary active:scale-95 transition-all inline-flex items-center min-h-[44px]"
                   style={{ boxShadow: "0 6px 20px rgba(14,74,48,.3)" }}
                 >

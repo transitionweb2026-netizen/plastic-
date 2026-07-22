@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { NAV_LINKS, REQUEST_QUOTE } from "@/lib/nav";
+import { trackBookAppointment } from "@/lib/googleAds";
 import LanguageSwitcher from "./LanguageSwitcher";
 import MobileDrawer from "./MobileDrawer";
 
@@ -80,6 +81,7 @@ export default function Header({ logoSrc }: { logoSrc: string }) {
             <LanguageSwitcher />
             <Link
               href={REQUEST_QUOTE.href}
+              onClick={() => trackBookAppointment()}
               className="bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-lg text-label-lg hover:bg-secondary active:scale-95 transition-all premium-shadow hidden lg:inline-flex items-center"
               style={{ boxShadow: "0 4px 18px rgba(14,74,48,.3)" }}
             >

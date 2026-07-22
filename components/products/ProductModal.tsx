@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { productGallery, type Product } from "@/lib/products";
+import { trackBookAppointment } from "@/lib/googleAds";
 
 type ProductModalProps = {
   product: Product | null;
@@ -173,6 +174,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                 )}
                 <Link
                   href="/request-quote"
+                  onClick={() => trackBookAppointment()}
                   className="bg-primary text-on-primary px-8 py-3 rounded-lg font-label-md text-label-md hover:bg-secondary active:scale-95 transition-all inline-flex items-center"
                   style={{ boxShadow: "0 6px 20px rgba(14,74,48,.3)" }}
                 >

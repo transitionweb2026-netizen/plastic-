@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { resolveContact } from "@/lib/nav";
 import { siteContact } from "@/lib/cms/content-storage";
+import PhoneLink from "@/components/tracking/PhoneLink";
 
 export async function generateMetadata({
   params,
@@ -46,12 +47,12 @@ export default async function TermsOfServicePage({
             {CONTACT.email}
           </a>{" "}
           {t("orCall")}{" "}
-          <a
+          <PhoneLink
             className="text-primary font-semibold hover:underline"
             href={CONTACT.phoneMain.href}
           >
             {CONTACT.phoneMain.display}
-          </a>
+          </PhoneLink>
           .
         </p>
         <p>

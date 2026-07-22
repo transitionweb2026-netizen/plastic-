@@ -5,6 +5,7 @@ import { PalletBlueprint, DimensionLine, HexOutline } from "@/components/ui/Deco
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { siteImage } from "@/lib/cms/images-data";
+import BookAppointmentLink from "@/components/tracking/BookAppointmentLink";
 
 export async function generateMetadata({
   params,
@@ -231,12 +232,12 @@ export default async function AboutPage({
             <p className="font-body-lg text-body-lg mb-8 max-w-2xl mx-auto opacity-90">
               {t("ctaPara")}
             </p>
-            <Link
+            <BookAppointmentLink
               href="/request-quote"
               className="bg-white text-primary px-10 py-4 rounded-xl font-headline-md text-headline-md hover:bg-surface-container-low hover:-translate-y-0.5 transition-all inline-flex items-center min-h-[44px]"
             >
               {t("ctaBtn")}
-            </Link>
+            </BookAppointmentLink>
           </div>
         </div>
       </section>

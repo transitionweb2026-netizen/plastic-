@@ -8,6 +8,7 @@ import RevealObserver from "@/components/ui/RevealObserver";
 import { HexOutline } from "@/components/ui/DecorArt";
 import IndustryModal from "./IndustryModal";
 import type { IndustryModal as IndustryModalData } from "@/lib/industries";
+import { trackBookAppointment } from "@/lib/googleAds";
 
 const STAT_DEFS = [
   { key: "stat1" },
@@ -327,6 +328,7 @@ export default function IndustriesContent({
           <div className="flex flex-wrap gap-4 justify-center reveal d2">
             <Link
               href="/request-quote"
+              onClick={() => trackBookAppointment()}
               className="bg-white text-primary font-bold px-8 py-4 rounded-lg text-sm hover:shadow-xl active:scale-95 transition-all inline-flex items-center"
               style={{ boxShadow: "0 8px 24px rgba(0,0,0,.2)" }}
             >

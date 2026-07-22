@@ -3,6 +3,8 @@ import SocialIcon from "@/components/ui/SocialIcon";
 import { Link } from "@/i18n/navigation";
 import { SOCIAL_LINKS, resolveContact } from "@/lib/nav";
 import { siteContact } from "@/lib/cms/content-storage";
+import PhoneLink from "@/components/tracking/PhoneLink";
+import WhatsAppLink from "@/components/tracking/WhatsAppLink";
 
 /**
  * Canonical site footer: home.html's 4-column layout and styling, with the
@@ -25,18 +27,29 @@ export default async function Footer() {
           </h3>
           <p className="font-body-md text-body-md mb-8 opacity-80">{t("blurb")}</p>
           <div className="flex gap-4">
-            {SOCIAL_LINKS.map((s) => (
-              <a
-                key={s.label}
-                className="footer-social w-10 h-10 border border-outline rounded-full flex items-center justify-center hover:bg-primary hover:text-on-primary hover:border-primary"
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={s.label}
-              >
-                <SocialIcon brand={s.brand} size={17} />
-              </a>
-            ))}
+            {SOCIAL_LINKS.map((s) =>
+              s.brand === "whatsapp" ? (
+                <WhatsAppLink
+                  key={s.label}
+                  className="footer-social w-10 h-10 border border-outline rounded-full flex items-center justify-center hover:bg-primary hover:text-on-primary hover:border-primary"
+                  href={s.href}
+                  aria-label={s.label}
+                >
+                  <SocialIcon brand={s.brand} size={17} />
+                </WhatsAppLink>
+              ) : (
+                <a
+                  key={s.label}
+                  className="footer-social w-10 h-10 border border-outline rounded-full flex items-center justify-center hover:bg-primary hover:text-on-primary hover:border-primary"
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                >
+                  <SocialIcon brand={s.brand} size={17} />
+                </a>
+              )
+            )}
           </div>
         </div>
 
@@ -119,13 +132,13 @@ export default async function Footer() {
               <span className="material-symbols-outlined text-primary" aria-hidden>
                 call
               </span>
-              <a
+              <PhoneLink
                 className="hover:text-primary transition-colors"
                 href={CONTACT.phoneMain.href}
                 dir="ltr"
               >
                 {CONTACT.phoneMain.display}
-              </a>
+              </PhoneLink>
             </li>
             <li className="flex items-center gap-3">
               <span className="material-symbols-outlined text-primary" aria-hidden>

@@ -19,6 +19,8 @@ import { Link } from "@/i18n/navigation";
 import { SOCIAL_LINKS, resolveContact } from "@/lib/nav";
 import { siteContact } from "@/lib/cms/content-storage";
 import { siteImage } from "@/lib/cms/images-data";
+import PhoneLink from "@/components/tracking/PhoneLink";
+import WhatsAppLink from "@/components/tracking/WhatsAppLink";
 
 export async function generateMetadata({
   params,
@@ -255,21 +257,33 @@ export default async function Home({
                   {t("connectWithUs")}
                 </p>
                 <div className="flex items-center justify-center gap-2.5">
-                  {SOCIAL_LINKS.map((s, i) => (
-                    <a
-                      key={s.label}
-                      href={s.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={s.label}
-                      className="widget-social"
-                      style={{ animationDelay: `${1.3 + i * 0.12}s` }}
-                    >
-                      <SocialIcon brand={s.brand} size={18} />
-                    </a>
-                  ))}
+                  {SOCIAL_LINKS.map((s, i) =>
+                    s.brand === "whatsapp" ? (
+                      <WhatsAppLink
+                        key={s.label}
+                        href={s.href}
+                        aria-label={s.label}
+                        className="widget-social"
+                        style={{ animationDelay: `${1.3 + i * 0.12}s` }}
+                      >
+                        <SocialIcon brand={s.brand} size={18} />
+                      </WhatsAppLink>
+                    ) : (
+                      <a
+                        key={s.label}
+                        href={s.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={s.label}
+                        className="widget-social"
+                        style={{ animationDelay: `${1.3 + i * 0.12}s` }}
+                      >
+                        <SocialIcon brand={s.brand} size={18} />
+                      </a>
+                    )
+                  )}
                 </div>
-                <a
+                <PhoneLink
                   href={CONTACT.phoneMain.href}
                   aria-label={tw("callAria", { phone: CONTACT.phoneMain.display })}
                   className="widget-phone"
@@ -280,7 +294,7 @@ export default async function Home({
                     </svg>
                   </span>
                   <span dir="ltr">{CONTACT.phoneMain.display}</span>
-                </a>
+                </PhoneLink>
               </div>
             </div>
           </div>
@@ -295,21 +309,33 @@ export default async function Home({
               {t("connectWithUs")}
             </p>
             <div className="flex items-center justify-center gap-2.5">
-              {SOCIAL_LINKS.map((s, i) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="widget-social"
-                  style={{ animationDelay: `${1.3 + i * 0.12}s` }}
-                >
-                  <SocialIcon brand={s.brand} size={18} />
-                </a>
-              ))}
+              {SOCIAL_LINKS.map((s, i) =>
+                s.brand === "whatsapp" ? (
+                  <WhatsAppLink
+                    key={s.label}
+                    href={s.href}
+                    aria-label={s.label}
+                    className="widget-social"
+                    style={{ animationDelay: `${1.3 + i * 0.12}s` }}
+                  >
+                    <SocialIcon brand={s.brand} size={18} />
+                  </WhatsAppLink>
+                ) : (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.label}
+                    className="widget-social"
+                    style={{ animationDelay: `${1.3 + i * 0.12}s` }}
+                  >
+                    <SocialIcon brand={s.brand} size={18} />
+                  </a>
+                )
+              )}
             </div>
-            <a
+            <PhoneLink
               href={CONTACT.phoneMain.href}
               aria-label={tw("callAria", { phone: CONTACT.phoneMain.display })}
               className="widget-phone"
@@ -320,7 +346,7 @@ export default async function Home({
                 </svg>
               </span>
               <span dir="ltr">{CONTACT.phoneMain.display}</span>
-            </a>
+            </PhoneLink>
           </div>
         </div>
 

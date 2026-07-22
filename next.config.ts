@@ -17,13 +17,20 @@ const supabaseHost = process.env.SUPABASE_URL
  */
 const contentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  // Google Ads conversion tracking (gtag.js) — see lib/googleAds.ts /
+  // app/[locale]/layout.tsx. gtag.js itself loads from googletagmanager.com,
+  // then reports conversions via a chain of background script/image/fetch
+  // requests spanning google.com, googleadservices.com, and multiple
+  // doubleclick.net subdomains (googleads.g.doubleclick.net for the
+  // conversion pixel, ad.doubleclick.net for the collect beacon) — allowed
+  // via wildcard below since Google doesn't document a fixed, stable set.
+  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://*.doubleclick.net",
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self' data:",
-  `img-src 'self' data: https://lh3.googleusercontent.com https://upload.wikimedia.org${supabaseHost ? ` https://${supabaseHost}` : ""}`,
+  `img-src 'self' data: https://lh3.googleusercontent.com https://upload.wikimedia.org https://www.googletagmanager.com https://*.google.com https://*.doubleclick.net${supabaseHost ? ` https://${supabaseHost}` : ""}`,
   // Supabase host required for the admin's direct-to-Storage video uploads
   // (signed-URL PUTs go straight from the browser to Storage).
-  `connect-src 'self' https://formspree.io${supabaseHost ? ` https://${supabaseHost}` : ""}`,
+  `connect-src 'self' https://formspree.io https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.google.com https://www.googleadservices.com https://*.doubleclick.net${supabaseHost ? ` https://${supabaseHost}` : ""}`,
   // Video lightboxes: embedded players for every auto-detected provider
   // (see lib/video-url.ts) — YouTube, Drive preview fallback, Vimeo, Loom,
   // OneDrive.

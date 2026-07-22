@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import SocialIcon from "@/components/ui/SocialIcon";
 import { WHATSAPP_HREF, resolveContact, type ResolvedContact } from "@/lib/nav";
+import { trackWhatsapp } from "@/lib/googleAds";
+import PhoneLink from "@/components/tracking/PhoneLink";
 
 const formId = process.env.NEXT_PUBLIC_FORMSPREE_CONTACT_ID;
 const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
@@ -91,6 +93,7 @@ export default function ContactForm({
   const sendViaWhatsApp = (e: React.MouseEvent<HTMLButtonElement>) => {
     const d = collectForm(e.currentTarget.form);
     if (!d) return;
+    trackWhatsapp();
     window.open(
       `${whatsappBase}?text=${encodeURIComponent(formatInquiry(d))}`,
       "_blank",
@@ -230,13 +233,13 @@ export default function ContactForm({
             {contact.email}
           </a>{" "}
           {t("or")}{" "}
-          <a
+          <PhoneLink
             className="underline font-semibold"
             href={contact.phoneMain.href}
             dir="ltr"
           >
             {contact.phoneMain.display}
-          </a>
+          </PhoneLink>
           .
         </p>
       )}
